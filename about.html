@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>会社概要 | SHUKR Hair Salon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Noto+Serif+JP:wght@200;300;400;500&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/shared.css">
+<style>
+.about-body { font-family: 'Noto Sans JP', sans-serif; font-size: 14px; line-height: 2.4; color: var(--fg-muted); font-weight: 300; letter-spacing: 0.08em; text-align: center; }
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; margin-top: 40px; }
+.info-map { aspect-ratio: 4/3; background: #e0dbd4; position: relative; overflow: hidden; }
+.info-map-stripe { position: absolute; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 30px, rgba(0,0,0,0.04) 30px, rgba(0,0,0,0.04) 31px); }
+.map-label { position: absolute; top: 20px; left: 20px; font-family: 'Cormorant Garamond', serif; font-size: 16px; letter-spacing: 0.3em; color: rgba(0,0,0,0.25); }
+.info-rows { margin: 0; }
+.info-row { display: grid; grid-template-columns: 120px 1fr; gap: 20px; padding: 18px 0; border-bottom: 1px solid var(--border); align-items: start; }
+.info-row:first-child { border-top: 1px solid var(--border); }
+.info-row dt { font-family: 'Noto Sans JP', sans-serif; font-size: 11px; letter-spacing: 0.15em; color: var(--fg-muted); padding-top: 2px; font-weight: 400; }
+.info-row dd { font-family: 'Noto Sans JP', sans-serif; font-size: 13px; font-weight: 300; line-height: 2; letter-spacing: 0.06em; }
+.info-row dd a { color: var(--gold); text-decoration: none; }
+.timeline { list-style: none; padding: 0; margin: 40px 0 0; max-width: 720px; }
+.timeline li { display: grid; grid-template-columns: 100px 1fr; gap: 40px; padding: 20px 0; border-bottom: 1px solid var(--border); }
+.tl-year { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: var(--gold); letter-spacing: 0.15em; }
+.tl-body { font-family: 'Noto Sans JP', sans-serif; font-size: 14px; line-height: 1.8; font-weight: 300; padding-top: 4px; }
+@media(max-width:900px){ .about-grid { grid-template-columns: 1fr; } .timeline li { grid-template-columns: 70px 1fr; gap: 16px; } }
+</style>
+</head>
+<body>
+
+<nav id="mainNav">
+  <a href="index.html" class="nav-logo"><img src="assets/shukr-logo.png" alt="SHUKR"></a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="index.html" class=" lang-ja">ホーム</a><a href="index.html" class=" lang-cn">首页</a></li>
+      <li><a href="stylists.html" class=" lang-ja">スタイリスト</a><a href="stylists.html" class=" lang-cn">造型师</a></li>
+      <li><a href="services.html" class=" lang-ja">サービス紹介</a><a href="services.html" class=" lang-cn">服务介绍</a></li>
+      <li><a href="fc.html" class=" lang-ja">FC募集</a><a href="fc.html" class=" lang-cn">加盟招募</a></li>
+      <li><a href="about.html" class="active lang-ja">会社概要</a><a href="about.html" class="active lang-cn">公司概要</a></li>
+      <li><a href="column.html" class=" lang-ja">コラム</a><a href="column.html" class=" lang-cn">专栏</a></li>
+    </ul>
+    <div class="lang-switch">
+      <button class="lang-btn" id="btnZh" onclick="setLang('zh')">中文</button>
+      <button class="lang-btn active" id="btnJa" onclick="setLang('ja')">日本語</button>
+    </div>
+    <div class="nav-divider"></div>
+    <a href="reserve.html" class="btn-reserve lang-ja">予約する</a>
+    <a href="reserve.html" class="btn-reserve lang-cn">立即预约</a>
+  </div>
+</nav>
+
+
+<section class="page-hero">
+  <p class="page-hero-label">ABOUT</p>
+  <h1 class="page-hero-title-en">About SHUKR</h1>
+  <p class="page-hero-title-jp lang-ja">会社概要</p>
+  <p class="page-hero-title-jp lang-cn">关于SHUKR</p>
+</section>
+
+
+<div class="breadcrumb">
+  <a href="index.html" class="lang-ja">ホーム</a>
+  <a href="index.html" class="lang-cn">首页</a>
+  <span class="sep">/</span>
+  <span class="lang-ja">会社概要</span>
+  <span class="lang-cn">公司概要</span>
+</div>
+
+
+<section>
+  <div class="container" style="max-width: 840px;">
+    <p class="section-label" style="text-align:center;">ABOUT SHUKR</p>
+    <h2 class="section-title lang-ja" style="text-align:center;">日本と中国をつなぐ<br>プレミアムサロン</h2>
+    <h2 class="section-title lang-cn" style="text-align:center;">连接日本与中国的<br>高端美发沙龙</h2>
+    <div class="section-divider" style="margin: 0 auto 40px;"></div>
+    <p class="about-body lang-ja">
+      SHUKRは、大阪・梅田を拠点とするプレミアムヘアサロンです。<br>
+      日本の繊細な技術と、多文化に対応するホスピタリティを融合。<br>
+      在日中国人のお客様と日本のお客様、<br>どちらにも心地よい時間をお届けします。<br><br>
+      「髪を整えることは、心を整えること」<br>
+      SHUKRはあなたの日々に、少しの豊かさを添える場所でありたい。
+    </p>
+    <p class="about-body lang-cn">
+      SHUKR是一家位于大阪梅田的高端美发沙龙。<br>
+      融合日式细腻的技术与多元文化的贴心服务，<br>
+      无论是在日中国客人还是日本本地客人，<br>都能在此享受到舒适惬意的时光。<br><br>
+      「整理头发，也是整理心情」<br>
+      希望SHUKR能为您的日常增添一份从容与优雅。
+    </p>
+  </div>
+</section>
+
+<section style="background:#fff;">
+  <div class="container">
+    <p class="section-label">COMPANY INFO</p>
+    <h2 class="section-title lang-ja">会社概要</h2>
+    <h2 class="section-title lang-cn">公司概要</h2>
+    <div class="section-divider"></div>
+
+    <div class="about-grid">
+      <div class="info-map"><div class="info-map-stripe"></div><span class="map-label">MAP</span></div>
+      <dl class="info-rows">
+        <div class="info-row">
+          <dt class="lang-ja">会社名</dt><dt class="lang-cn">公司名称</dt>
+          <dd>株式会社 SHUKR / SHUKR Co., Ltd.</dd>
+        </div>
+        <div class="info-row">
+          <dt class="lang-ja">店舗名</dt><dt class="lang-cn">店铺名称</dt>
+          <dd>SHUKR Hair Salon</dd>
+        </div>
+        <div class="info-row">
+          <dt class="lang-ja">所在地</dt><dt class="lang-cn">地址</dt>
+          <dd class="lang-ja">〒530-0001<br>大阪府大阪市北区梅田1丁目</dd>
+          <dd class="lang-cn">〒530-0001<br>日本 大阪府大阪市北区梅田1丁目</dd>
+        </div>
+        <div class="info-row">
+          <dt class="lang-ja">電話</dt><dt class="lang-cn">电话</dt>
+          <dd><a href="tel:+81600000000">06-0000-0000</a></dd>
+        </div>
+        <div class="info-row">
+          <dt class="lang-ja">メール</dt><dt class="lang-cn">邮箱</dt>
+          <dd><a href="mailto:info@mumushukr.com">info@mumushukr.com</a></dd>
+        </div>
+        <div class="info-row">
+          <dt class="lang-ja">設立</dt><dt class="lang-cn">成立</dt>
+          <dd class="lang-ja">2020年4月</dd><dd class="lang-cn">2020年4月</dd>
+        </div>
+        <div class="info-row">
+          <dt class="lang-ja">代表</dt><dt class="lang-cn">代表</dt>
+          <dd class="lang-ja">山田 健太</dd><dd class="lang-cn">山田 健太</dd>
+        </div>
+        <div class="info-row">
+          <dt class="lang-ja">営業時間</dt><dt class="lang-cn">营业时间</dt>
+          <dd class="lang-ja">平日 10:00 – 20:00<br>土日祝 9:00 – 19:00</dd>
+          <dd class="lang-cn">工作日 10:00 – 20:00<br>周末节假日 9:00 – 19:00</dd>
+        </div>
+        <div class="info-row">
+          <dt class="lang-ja">定休日</dt><dt class="lang-cn">休息日</dt>
+          <dd class="lang-ja">毎週火曜日</dd><dd class="lang-cn">每周二</dd>
+        </div>
+        <div class="info-row">
+          <dt class="lang-ja">アクセス</dt><dt class="lang-cn">交通</dt>
+          <dd class="lang-ja">大阪メトロ 梅田駅より徒歩3分<br>JR大阪駅より徒歩5分</dd>
+          <dd class="lang-cn">大阪地铁 梅田站步行3分钟<br>JR大阪站步行5分钟</dd>
+        </div>
+        <div class="info-row">
+          <dt class="lang-ja">事業内容</dt><dt class="lang-cn">业务</dt>
+          <dd class="lang-ja">ヘアサロン運営 / フランチャイズ事業 / 美容教育</dd>
+          <dd class="lang-cn">美发沙龙运营 / 加盟连锁 / 美容教育</dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <p class="section-label">HISTORY</p>
+    <h2 class="section-title lang-ja">沿革</h2>
+    <h2 class="section-title lang-cn">沿革</h2>
+    <div class="section-divider"></div>
+    <ol class="timeline">
+      <li><span class="tl-year">2020</span><span class="tl-body lang-ja">大阪・梅田にSHUKR 1号店をオープン</span><span class="tl-body lang-cn">于大阪梅田开设SHUKR 1号店</span></li>
+      <li><span class="tl-year">2022</span><span class="tl-body lang-ja">多言語対応スタッフを拡充、在日中国人向けサービスを本格化</span><span class="tl-body lang-cn">扩充多语言员工团队，正式推出面向在日中国客人的专属服务</span></li>
+      <li><span class="tl-year">2024</span><span class="tl-body lang-ja">教育プログラム「SHUKR ACADEMY」設立</span><span class="tl-body lang-cn">成立教育计划「SHUKR ACADEMY」</span></li>
+      <li><span class="tl-year">2026</span><span class="tl-body lang-ja">フランチャイズ事業を開始</span><span class="tl-body lang-cn">启动加盟连锁业务</span></li>
+    </ol>
+  </div>
+</section>
+
+
+<footer>
+  <div class="footer-logo"><img src="assets/shukr-logo.png" alt="SHUKR"></div>
+  <ul class="footer-links">
+    <li><a href="index.html" class="lang-ja">ホーム</a><a href="index.html" class="lang-cn">首页</a></li>
+    <li><a href="services.html" class="lang-ja">サービス紹介</a><a href="services.html" class="lang-cn">服务介绍</a></li>
+    <li><a href="stylists.html" class="lang-ja">スタイリスト</a><a href="stylists.html" class="lang-cn">造型师</a></li>
+    <li><a href="about.html" class="lang-ja">会社概要</a><a href="about.html" class="lang-cn">公司概要</a></li>
+    <li><a href="column.html" class="lang-ja">コラム</a><a href="column.html" class="lang-cn">专栏</a></li>
+    <li><a href="fc.html" class="lang-ja">FC募集</a><a href="fc.html" class="lang-cn">加盟招募</a></li>
+  </ul>
+  <p class="footer-copy">© 2026 SHUKR Hair Salon. All rights reserved.</p>
+</footer>
+
+
+<button class="ai-chat-btn" onclick="toggleChat()">
+  <svg viewBox="0 0 24 24" fill="none"><path d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 9H16M8 13H13" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+</button>
+<div class="chat-modal" id="chatModal">
+  <div class="chat-header">
+    <div class="chat-header-dot"></div>
+    <span class="chat-header-title lang-ja">SHUKRアシスタント</span>
+    <span class="chat-header-title lang-cn">SHUKR AI客服</span>
+    <button class="chat-close" onclick="toggleChat()">×</button>
+  </div>
+  <div class="chat-messages" id="chatMessages">
+    <div class="chat-bubble bot lang-ja">こんにちは！ご予約・サービスについてお気軽にご質問ください。</div>
+    <div class="chat-bubble bot lang-cn">您好！有关预约或服务的任何问题请告诉我。</div>
+  </div>
+  <div class="chat-input-row">
+    <input type="text" class="chat-input" id="chatInput" placeholder="メッセージを入力…" onkeydown="if(event.key==='Enter') sendChat()">
+    <input type="text" class="chat-input" id="chatInputCn" placeholder="请输入消息…" style="display:none" onkeydown="if(event.key==='Enter') sendChat()">
+    <button class="chat-send" onclick="sendChat()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</div>
+
+<script src="assets/shared.js"></script>
+</body>
+</html>

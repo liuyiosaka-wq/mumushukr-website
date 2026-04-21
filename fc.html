@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FC募集 | SHUKR Hair Salon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Noto+Serif+JP:wght@200;300;400;500&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/shared.css">
+<style>
+.fc-lead { font-family: 'Noto Sans JP', sans-serif; font-size: 15px; line-height: 2.2; color: rgba(255,255,255,0.7); font-weight: 300; letter-spacing: 0.06em; }
+.fc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 60px; }
+.fc-card { background: #fff; padding: 36px 28px; border: 1px solid var(--border); position: relative; transition: all 0.3s; }
+.fc-card:hover { border-color: var(--gold); transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.06); }
+.fc-num { font-family: 'Cormorant Garamond', serif; font-size: 14px; letter-spacing: 0.2em; color: var(--gold); margin-bottom: 20px; display: block; }
+.fc-card-title { font-family: 'Noto Serif JP', serif; font-size: 18px; font-weight: 400; letter-spacing: 0.12em; margin-bottom: 14px; }
+.fc-card-body { font-family: 'Noto Sans JP', sans-serif; font-size: 12.5px; line-height: 2; color: var(--fg-muted); font-weight: 300; }
+.fc-req { margin-top: 40px; }
+.fc-req-row { display: grid; grid-template-columns: 160px 1fr; gap: 24px; padding: 18px 0; border-bottom: 1px solid var(--border); }
+.fc-req-row:first-child { border-top: 1px solid var(--border); }
+.fc-req-row dt { font-family: 'Noto Sans JP', sans-serif; font-size: 12px; letter-spacing: 0.15em; color: var(--fg-muted); padding-top: 2px; }
+.fc-req-row dd { font-family: 'Noto Sans JP', sans-serif; font-size: 14px; font-weight: 300; letter-spacing: 0.06em; }
+.fc-note { font-family: 'Noto Sans JP', sans-serif; font-size: 11px; color: var(--fg-muted); margin-top: 20px; line-height: 1.8; letter-spacing: 0.04em; }
+.fc-steps { list-style: none; padding: 0; margin: 40px 0 0; }
+.fc-steps li { display: grid; grid-template-columns: 80px 1fr; gap: 32px; padding: 24px 0; border-bottom: 1px solid var(--border); align-items: start; }
+.fc-step-num { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 300; color: var(--gold); letter-spacing: 0.1em; line-height: 1; padding-top: 4px; }
+.fc-steps h4 { font-family: 'Noto Serif JP', serif; font-size: 17px; font-weight: 400; letter-spacing: 0.1em; margin-bottom: 8px; }
+.fc-steps p { font-family: 'Noto Sans JP', sans-serif; font-size: 12.5px; color: var(--fg-muted); line-height: 1.9; font-weight: 300; }
+@media(max-width:900px){ .fc-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<nav id="mainNav">
+  <a href="index.html" class="nav-logo"><img src="assets/shukr-logo.png" alt="SHUKR"></a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="index.html" class=" lang-ja">ホーム</a><a href="index.html" class=" lang-cn">首页</a></li>
+      <li><a href="stylists.html" class=" lang-ja">スタイリスト</a><a href="stylists.html" class=" lang-cn">造型师</a></li>
+      <li><a href="services.html" class=" lang-ja">サービス紹介</a><a href="services.html" class=" lang-cn">服务介绍</a></li>
+      <li><a href="fc.html" class="active lang-ja">FC募集</a><a href="fc.html" class="active lang-cn">加盟招募</a></li>
+      <li><a href="about.html" class=" lang-ja">会社概要</a><a href="about.html" class=" lang-cn">公司概要</a></li>
+      <li><a href="column.html" class=" lang-ja">コラム</a><a href="column.html" class=" lang-cn">专栏</a></li>
+    </ul>
+    <div class="lang-switch">
+      <button class="lang-btn" id="btnZh" onclick="setLang('zh')">中文</button>
+      <button class="lang-btn active" id="btnJa" onclick="setLang('ja')">日本語</button>
+    </div>
+    <div class="nav-divider"></div>
+    <a href="reserve.html" class="btn-reserve lang-ja">予約する</a>
+    <a href="reserve.html" class="btn-reserve lang-cn">立即预约</a>
+  </div>
+</nav>
+
+
+<section class="page-hero">
+  <p class="page-hero-label">FRANCHISE</p>
+  <h1 class="page-hero-title-en">Franchise</h1>
+  <p class="page-hero-title-jp lang-ja">フランチャイズ募集</p>
+  <p class="page-hero-title-jp lang-cn">加盟招募</p>
+</section>
+
+
+<div class="breadcrumb">
+  <a href="index.html" class="lang-ja">ホーム</a>
+  <a href="index.html" class="lang-cn">首页</a>
+  <span class="sep">/</span>
+  <span class="lang-ja">FC募集</span>
+  <span class="lang-cn">加盟招募</span>
+</div>
+
+
+<section style="background:var(--charcoal);color:#fff;">
+  <div class="container" style="max-width: 900px;">
+    <p class="section-label" style="color:var(--gold);">FRANCHISE RECRUITMENT</p>
+    <h2 class="section-title lang-ja" style="color:#fff;">共に、日本の美を<br>世界へ届けるパートナーを</h2>
+    <h2 class="section-title lang-cn" style="color:#fff;">携手将日本之美<br>传递至世界的合作伙伴</h2>
+    <div class="section-divider" style="background:var(--gold);"></div>
+    <p class="fc-lead lang-ja">SHUKRのブランド・技術・ノウハウを共有し、日本各地・そしてアジア圏に展開するフランチャイズパートナーを募集しています。美容業界での独立・開業をお考えの方は、ぜひご相談ください。</p>
+    <p class="fc-lead lang-cn">我们正在招募加盟合作伙伴，与您共享SHUKR的品牌、技术与运营知识，携手在日本各地乃至亚洲地区展开布局。如果您有意在美容行业独立创业，欢迎随时咨询。</p>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <p class="section-label">MERITS</p>
+    <h2 class="section-title lang-ja">加盟のメリット</h2>
+    <h2 class="section-title lang-cn">加盟优势</h2>
+    <div class="section-divider"></div>
+    <div class="fc-grid">
+      <div class="fc-card">
+        <span class="fc-num">01</span>
+        <h3 class="fc-card-title lang-ja">ブランド力</h3>
+        <h3 class="fc-card-title lang-cn">品牌影响力</h3>
+        <p class="fc-card-body lang-ja">日本と中国、両マーケットで確立されたSHUKRブランドの信頼と知名度を活用できます。</p>
+        <p class="fc-card-body lang-cn">共享SHUKR在中日两大市场建立的信赖与知名度。</p>
+      </div>
+      <div class="fc-card">
+        <span class="fc-num">02</span>
+        <h3 class="fc-card-title lang-ja">技術研修</h3>
+        <h3 class="fc-card-title lang-cn">技术培训</h3>
+        <p class="fc-card-body lang-ja">SHUKR ACADEMYによる独自の教育プログラム。カット・カラーから接客まで一貫サポート。</p>
+        <p class="fc-card-body lang-cn">通过SHUKR ACADEMY提供专属教育体系。从剪发、染发到服务全方位支持。</p>
+      </div>
+      <div class="fc-card">
+        <span class="fc-num">03</span>
+        <h3 class="fc-card-title lang-ja">多言語対応</h3>
+        <h3 class="fc-card-title lang-cn">多语言运营</h3>
+        <p class="fc-card-body lang-ja">日本語・中国語・英語対応のオペレーションモデル。インバウンド需要も取り込み可能。</p>
+        <p class="fc-card-body lang-cn">日语、中文、英语三语运营模式。同时承接入境旅游客群需求。</p>
+      </div>
+      <div class="fc-card">
+        <span class="fc-num">04</span>
+        <h3 class="fc-card-title lang-ja">経営サポート</h3>
+        <h3 class="fc-card-title lang-cn">经营支援</h3>
+        <p class="fc-card-body lang-ja">開業前準備から開業後の運営まで、専任チームが継続的にサポートします。</p>
+        <p class="fc-card-body lang-cn">开业前筹备至开业后运营，由专属团队持续提供支援。</p>
+      </div>
+      <div class="fc-card">
+        <span class="fc-num">05</span>
+        <h3 class="fc-card-title lang-ja">仕入れ最適化</h3>
+        <h3 class="fc-card-title lang-cn">采购优化</h3>
+        <p class="fc-card-body lang-ja">本部一括仕入れによる薬剤・機材のコストダウン、安定供給を実現。</p>
+        <p class="fc-card-body lang-cn">通过总部统一采购，实现药剂、器材的成本优化与稳定供应。</p>
+      </div>
+      <div class="fc-card">
+        <span class="fc-num">06</span>
+        <h3 class="fc-card-title lang-ja">マーケティング</h3>
+        <h3 class="fc-card-title lang-cn">市场推广</h3>
+        <p class="fc-card-body lang-ja">SNS・Web・中国系プラットフォーム（小紅書・微信）での集客支援。</p>
+        <p class="fc-card-body lang-cn">通过社交媒体、网站及中国平台（小红书、微信）提供集客支援。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#fff;">
+  <div class="container" style="max-width: 900px;">
+    <p class="section-label">REQUIREMENTS</p>
+    <h2 class="section-title lang-ja">加盟条件</h2>
+    <h2 class="section-title lang-cn">加盟条件</h2>
+    <div class="section-divider"></div>
+    <dl class="fc-req">
+      <div class="fc-req-row"><dt class="lang-ja">加盟金</dt><dt class="lang-cn">加盟金</dt><dd>¥3,000,000（税別）</dd></div>
+      <div class="fc-req-row"><dt class="lang-ja">保証金</dt><dt class="lang-cn">保证金</dt><dd>¥1,500,000</dd></div>
+      <div class="fc-req-row"><dt class="lang-ja">ロイヤリティ</dt><dt class="lang-cn">加盟金比例</dt><dd class="lang-ja">売上の5%</dd><dd class="lang-cn">营业额的5%</dd></div>
+      <div class="fc-req-row"><dt class="lang-ja">契約期間</dt><dt class="lang-cn">合约期</dt><dd class="lang-ja">5年（更新可）</dd><dd class="lang-cn">5年（可续约）</dd></div>
+      <div class="fc-req-row"><dt class="lang-ja">推奨物件</dt><dt class="lang-cn">推荐店面</dt><dd class="lang-ja">20坪以上、駅徒歩5分以内</dd><dd class="lang-cn">20坪以上，距车站步行5分钟以内</dd></div>
+      <div class="fc-req-row"><dt class="lang-ja">募集エリア</dt><dt class="lang-cn">招募地区</dt><dd class="lang-ja">全国（関西・関東優先）/ 中国本土</dd><dd class="lang-cn">日本全国（关西、关东优先）/ 中国大陆</dd></div>
+    </dl>
+    <p class="fc-note lang-ja">※ 物件・立地により条件が変動する場合がございます。詳細はお問い合わせください。</p>
+    <p class="fc-note lang-cn">※ 具体条件可能因店面与地段而有所调整，详情请咨询。</p>
+  </div>
+</section>
+
+<section>
+  <div class="container" style="max-width: 900px;">
+    <p class="section-label">PROCESS</p>
+    <h2 class="section-title lang-ja">加盟までの流れ</h2>
+    <h2 class="section-title lang-cn">加盟流程</h2>
+    <div class="section-divider"></div>
+    <ol class="fc-steps">
+      <li><span class="fc-step-num">01</span><div><h4 class="lang-ja">お問い合わせ</h4><h4 class="lang-cn">咨询联系</h4><p class="lang-ja">フォーム・メールからお問い合わせ</p><p class="lang-cn">通过表单或邮件联系我们</p></div></li>
+      <li><span class="fc-step-num">02</span><div><h4 class="lang-ja">初回面談</h4><h4 class="lang-cn">初次面谈</h4><p class="lang-ja">事業説明・ヒアリング</p><p class="lang-cn">事业说明与需求沟通</p></div></li>
+      <li><span class="fc-step-num">03</span><div><h4 class="lang-ja">事業計画</h4><h4 class="lang-cn">事业规划</h4><p class="lang-ja">立地調査・収支シミュレーション</p><p class="lang-cn">选址调查与收支模拟</p></div></li>
+      <li><span class="fc-step-num">04</span><div><h4 class="lang-ja">契約締結</h4><h4 class="lang-cn">签订合约</h4><p class="lang-ja">フランチャイズ契約</p><p class="lang-cn">加盟合约签订</p></div></li>
+      <li><span class="fc-step-num">05</span><div><h4 class="lang-ja">研修・開業準備</h4><h4 class="lang-cn">培训与筹备</h4><p class="lang-ja">SHUKR ACADEMY研修・店舗設計</p><p class="lang-cn">SHUKR ACADEMY培训与店铺设计</p></div></li>
+      <li><span class="fc-step-num">06</span><div><h4 class="lang-ja">オープン</h4><h4 class="lang-cn">正式开业</h4><p class="lang-ja">開業後の継続サポート</p><p class="lang-cn">开业后持续支援</p></div></li>
+    </ol>
+  </div>
+</section>
+
+<section style="background:var(--charcoal);color:#fff;text-align:center;padding:100px 40px;">
+  <p class="section-label" style="color:var(--gold);">CONTACT</p>
+  <h2 class="section-title lang-ja" style="color:#fff;">お問い合わせ</h2>
+  <h2 class="section-title lang-cn" style="color:#fff;">咨询联系</h2>
+  <div class="section-divider" style="background:var(--gold);margin:0 auto 32px;"></div>
+  <p class="lang-ja" style="font-family:'Noto Sans JP',sans-serif;font-size:14px;color:rgba(255,255,255,0.6);margin-bottom:32px;letter-spacing:0.08em;">まずはお気軽にご相談ください</p>
+  <p class="lang-cn" style="font-family:'Noto Sans JP',sans-serif;font-size:14px;color:rgba(255,255,255,0.6);margin-bottom:32px;letter-spacing:0.08em;">欢迎先与我们轻松咨询</p>
+  <a href="mailto:fc@mumushukr.com" class="btn-reserve lang-ja" style="padding:14px 36px;font-size:13px;background:var(--gold);">お問い合わせはこちら</a>
+  <a href="mailto:fc@mumushukr.com" class="btn-reserve lang-cn" style="padding:14px 36px;font-size:13px;background:var(--gold);">立即咨询</a>
+</section>
+
+
+<footer>
+  <div class="footer-logo"><img src="assets/shukr-logo.png" alt="SHUKR"></div>
+  <ul class="footer-links">
+    <li><a href="index.html" class="lang-ja">ホーム</a><a href="index.html" class="lang-cn">首页</a></li>
+    <li><a href="services.html" class="lang-ja">サービス紹介</a><a href="services.html" class="lang-cn">服务介绍</a></li>
+    <li><a href="stylists.html" class="lang-ja">スタイリスト</a><a href="stylists.html" class="lang-cn">造型师</a></li>
+    <li><a href="about.html" class="lang-ja">会社概要</a><a href="about.html" class="lang-cn">公司概要</a></li>
+    <li><a href="column.html" class="lang-ja">コラム</a><a href="column.html" class="lang-cn">专栏</a></li>
+    <li><a href="fc.html" class="lang-ja">FC募集</a><a href="fc.html" class="lang-cn">加盟招募</a></li>
+  </ul>
+  <p class="footer-copy">© 2026 SHUKR Hair Salon. All rights reserved.</p>
+</footer>
+
+
+<button class="ai-chat-btn" onclick="toggleChat()">
+  <svg viewBox="0 0 24 24" fill="none"><path d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 9H16M8 13H13" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+</button>
+<div class="chat-modal" id="chatModal">
+  <div class="chat-header">
+    <div class="chat-header-dot"></div>
+    <span class="chat-header-title lang-ja">SHUKRアシスタント</span>
+    <span class="chat-header-title lang-cn">SHUKR AI客服</span>
+    <button class="chat-close" onclick="toggleChat()">×</button>
+  </div>
+  <div class="chat-messages" id="chatMessages">
+    <div class="chat-bubble bot lang-ja">こんにちは！ご予約・サービスについてお気軽にご質問ください。</div>
+    <div class="chat-bubble bot lang-cn">您好！有关预约或服务的任何问题请告诉我。</div>
+  </div>
+  <div class="chat-input-row">
+    <input type="text" class="chat-input" id="chatInput" placeholder="メッセージを入力…" onkeydown="if(event.key==='Enter') sendChat()">
+    <input type="text" class="chat-input" id="chatInputCn" placeholder="请输入消息…" style="display:none" onkeydown="if(event.key==='Enter') sendChat()">
+    <button class="chat-send" onclick="sendChat()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</div>
+
+<script src="assets/shared.js"></script>
+</body>
+</html>

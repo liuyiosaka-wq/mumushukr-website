@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>スタイリスト募集 | SHUKR Hair Salon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Noto+Serif+JP:wght@200;300;400;500&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/shared.css">
+<style>
+/* Hero */
+.rc-hero { background: var(--charcoal); color: #fff; padding: 140px 40px 100px; text-align: center; position: relative; overflow: hidden; }
+.rc-hero::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(-45deg, transparent, transparent 30px, rgba(255,255,255,0.02) 30px, rgba(255,255,255,0.02) 31px); pointer-events: none; }
+.rc-hero-label { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 13px; letter-spacing: 0.4em; color: var(--gold); margin-bottom: 24px; position: relative; }
+.rc-hero-title { font-family: 'Cormorant Garamond', serif; font-size: 64px; font-weight: 300; letter-spacing: 0.08em; line-height: 1.1; margin-bottom: 20px; position: relative; }
+.rc-hero-sub { font-family: 'Noto Serif JP', serif; font-size: 17px; font-weight: 300; letter-spacing: 0.15em; color: rgba(255,255,255,0.7); margin-bottom: 32px; position: relative; }
+.rc-hero-body { max-width: 640px; margin: 0 auto; font-family: 'Noto Sans JP', sans-serif; font-size: 14px; line-height: 2.2; color: rgba(255,255,255,0.6); font-weight: 300; letter-spacing: 0.06em; position: relative; }
+
+/* Why section */
+.rc-why { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 60px; }
+.rc-why-item { text-align: center; padding: 36px 20px; background: #fff; border: 1px solid var(--border); transition: all 0.3s; }
+.rc-why-item:hover { border-color: var(--gold); transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.05); }
+.rc-why-num { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 44px; font-weight: 300; color: var(--gold); line-height: 1; margin-bottom: 18px; }
+.rc-why-title { font-family: 'Noto Serif JP', serif; font-size: 15px; font-weight: 400; letter-spacing: 0.12em; margin-bottom: 12px; }
+.rc-why-body { font-family: 'Noto Sans JP', sans-serif; font-size: 12px; line-height: 2; color: var(--fg-muted); font-weight: 300; }
+@media(max-width:900px){ .rc-why { grid-template-columns: repeat(2, 1fr); } }
+
+/* Tabs */
+.rc-tabs { display: flex; justify-content: center; gap: 0; margin: 40px 0 50px; border-bottom: 1px solid var(--border); }
+.rc-tab { padding: 18px 40px; background: transparent; border: none; border-bottom: 2px solid transparent; font-family: 'Cormorant Garamond', serif; font-size: 17px; letter-spacing: 0.2em; color: var(--fg-muted); cursor: pointer; transition: all 0.25s; position: relative; top: 1px; }
+.rc-tab .rc-tab-jp { display: block; font-family: 'Noto Serif JP', serif; font-size: 11px; letter-spacing: 0.2em; margin-top: 4px; }
+.rc-tab.active { color: var(--fg); border-bottom-color: var(--gold); }
+
+/* Form */
+.rc-form { max-width: 760px; margin: 0 auto; }
+.rc-intro { font-family: 'Noto Sans JP', sans-serif; font-size: 13px; line-height: 2.2; color: var(--fg-muted); text-align: center; margin-bottom: 50px; font-weight: 300; letter-spacing: 0.06em; }
+.rc-field { display: grid; grid-template-columns: 200px 1fr; gap: 32px; padding: 24px 0; border-bottom: 1px solid var(--border); align-items: start; }
+.rc-field:first-of-type { border-top: 1px solid var(--border); }
+.rc-label { font-family: 'Noto Sans JP', sans-serif; font-size: 12px; letter-spacing: 0.15em; color: var(--fg); padding-top: 10px; display: flex; align-items: flex-start; gap: 8px; flex-wrap: wrap; }
+.rc-label-en { display: block; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 11px; letter-spacing: 0.25em; color: var(--gold); margin-bottom: 4px; text-transform: uppercase; }
+.rc-required { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 10px; color: #c0392b; letter-spacing: 0.1em; }
+.rc-input, .rc-select, .rc-textarea { width: 100%; padding: 12px 14px; border: 1px solid var(--border); background: #fff; font-family: 'Noto Sans JP', sans-serif; font-size: 13px; font-weight: 300; color: var(--fg); letter-spacing: 0.04em; transition: border-color 0.2s; box-sizing: border-box; }
+.rc-input:focus, .rc-select:focus, .rc-textarea:focus { outline: none; border-color: var(--gold); }
+.rc-textarea { min-height: 120px; resize: vertical; line-height: 1.8; }
+.rc-radio-group { display: flex; flex-wrap: wrap; gap: 12px; }
+.rc-radio { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border: 1px solid var(--border); cursor: pointer; transition: all 0.2s; font-family: 'Noto Sans JP', sans-serif; font-size: 12px; letter-spacing: 0.08em; background: #fff; }
+.rc-radio input { display: none; }
+.rc-radio:hover { border-color: var(--gold); }
+.rc-radio.checked { background: var(--fg); color: #fff; border-color: var(--fg); }
+.rc-check-group { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.rc-hint { font-family: 'Noto Sans JP', sans-serif; font-size: 11px; color: var(--fg-muted); margin-top: 6px; letter-spacing: 0.04em; line-height: 1.7; }
+
+/* Submit */
+.rc-submit-row { text-align: center; margin-top: 60px; }
+.rc-submit { display: inline-flex; align-items: center; gap: 16px; padding: 20px 60px; background: var(--fg); color: #fff; border: 1px solid var(--fg); font-family: 'Cormorant Garamond', serif; font-size: 16px; letter-spacing: 0.3em; cursor: pointer; transition: all 0.3s; }
+.rc-submit:hover { background: var(--gold); border-color: var(--gold); }
+.rc-submit-jp { display: block; font-family: 'Noto Serif JP', serif; font-size: 11px; letter-spacing: 0.2em; margin-top: 40px; color: var(--fg-muted); }
+.rc-privacy { font-family: 'Noto Sans JP', sans-serif; font-size: 11px; color: var(--fg-muted); margin-top: 20px; line-height: 1.8; letter-spacing: 0.04em; text-align: center; }
+
+/* Panel */
+.rc-panel { display: none; }
+.rc-panel.active { display: block; }
+
+/* Success */
+.rc-success { display: none; text-align: center; padding: 80px 40px; max-width: 600px; margin: 0 auto; }
+.rc-success.show { display: block; }
+.rc-success-icon { width: 72px; height: 72px; border: 1px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 30px; font-family: 'Cormorant Garamond', serif; font-size: 36px; color: var(--gold); font-style: italic; }
+.rc-success-title { font-family: 'Cormorant Garamond', serif; font-size: 38px; font-weight: 300; letter-spacing: 0.08em; margin-bottom: 16px; }
+.rc-success-body { font-family: 'Noto Sans JP', sans-serif; font-size: 14px; line-height: 2.2; color: var(--fg-muted); font-weight: 300; margin-bottom: 40px; }
+
+@media(max-width:900px){
+  .rc-hero-title { font-size: 42px; }
+  .rc-field { grid-template-columns: 1fr; gap: 12px; }
+  .rc-check-group { grid-template-columns: 1fr; }
+  .rc-tab { padding: 14px 20px; font-size: 14px; }
+}
+</style>
+</head>
+<body>
+
+<nav id="mainNav">
+  <a href="index.html" class="nav-logo"><img src="assets/shukr-logo.png" alt="SHUKR"></a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="index.html" class=" lang-ja">ホーム</a><a href="index.html" class=" lang-cn">首页</a></li>
+      <li><a href="stylists.html" class="active lang-ja">スタイリスト</a><a href="stylists.html" class="active lang-cn">造型师</a></li>
+      <li><a href="services.html" class=" lang-ja">サービス紹介</a><a href="services.html" class=" lang-cn">服务介绍</a></li>
+      <li><a href="fc.html" class=" lang-ja">FC募集</a><a href="fc.html" class=" lang-cn">加盟招募</a></li>
+      <li><a href="about.html" class=" lang-ja">会社概要</a><a href="about.html" class=" lang-cn">公司概要</a></li>
+      <li><a href="column.html" class=" lang-ja">コラム</a><a href="column.html" class=" lang-cn">专栏</a></li>
+    </ul>
+    <div class="lang-switch">
+      <button class="lang-btn" id="btnZh" onclick="setLang('zh')">中文</button>
+      <button class="lang-btn active" id="btnJa" onclick="setLang('ja')">日本語</button>
+    </div>
+    <div class="nav-divider"></div>
+    <a href="reserve.html" class="btn-reserve lang-ja">予約する</a>
+    <a href="reserve.html" class="btn-reserve lang-cn">立即预约</a>
+  </div>
+</nav>
+
+
+<section class="rc-hero">
+  <p class="rc-hero-label">JOIN OUR TEAM</p>
+  <h1 class="rc-hero-title">We're Hiring Stylists</h1>
+  <p class="rc-hero-sub lang-ja">新しい仲間を募集しています</p>
+  <p class="rc-hero-sub lang-cn">我们正在寻找新伙伴</p>
+  <p class="rc-hero-body lang-ja">SHUKRは、技術と心を大切にする美容師の仲間を募集しています。ご自身の応募も、素敵な美容師さんのご紹介も、どちらも大歓迎です。</p>
+  <p class="rc-hero-body lang-cn">SHUKR 正在招募重视技术与心意的美发师伙伴。无论是自荐还是推荐您身边优秀的美发师，我们都非常欢迎。</p>
+</section>
+
+
+<div class="breadcrumb">
+  <a href="index.html" class="lang-ja">ホーム</a>
+  <a href="index.html" class="lang-cn">首页</a>
+  <span class="sep">/</span>
+  <a href="stylists.html" class="lang-ja">スタイリスト</a>
+  <a href="stylists.html" class="lang-cn">造型师</a>
+  <span class="sep">/</span>
+  <span class="lang-ja">募集</span>
+  <span class="lang-cn">招募</span>
+</div>
+
+
+<section>
+  <div class="container">
+    <p class="section-label">WHY SHUKR</p>
+    <h2 class="section-title lang-ja">SHUKRで働く魅力</h2>
+    <h2 class="section-title lang-cn">加入 SHUKR 的魅力</h2>
+    <div class="section-divider"></div>
+    <div class="rc-why">
+      <div class="rc-why-item">
+        <div class="rc-why-num">01</div>
+        <h3 class="rc-why-title lang-ja">多国籍な顧客層</h3>
+        <h3 class="rc-why-title lang-cn">多元国际客层</h3>
+        <p class="rc-why-body lang-ja">日本・中国・英語圏のお客様が集まる、国際的なサロン環境。</p>
+        <p class="rc-why-body lang-cn">日本、中国及英语圈客人汇聚的国际化沙龙。</p>
+      </div>
+      <div class="rc-why-item">
+        <div class="rc-why-num">02</div>
+        <h3 class="rc-why-title lang-ja">確かな技術教育</h3>
+        <h3 class="rc-why-title lang-cn">扎实的技术教育</h3>
+        <p class="rc-why-body lang-ja">SHUKR ACADEMYによる継続的な技術研修制度。</p>
+        <p class="rc-why-body lang-cn">SHUKR ACADEMY 持续的技术培训体系。</p>
+      </div>
+      <div class="rc-why-item">
+        <div class="rc-why-num">03</div>
+        <h3 class="rc-why-title lang-ja">働きやすい環境</h3>
+        <h3 class="rc-why-title lang-cn">舒适的工作环境</h3>
+        <p class="rc-why-body lang-ja">週休2日制・有給休暇取得率高め。産休育休制度あり。</p>
+        <p class="rc-why-body lang-cn">每周双休，高带薪休假率。设有产假育儿假制度。</p>
+      </div>
+      <div class="rc-why-item">
+        <div class="rc-why-num">04</div>
+        <h3 class="rc-why-title lang-ja">紹介インセンティブ</h3>
+        <h3 class="rc-why-title lang-cn">推荐奖励</h3>
+        <p class="rc-why-body lang-ja">ご紹介による入社が決定した際は、お礼金をお贈りします。</p>
+        <p class="rc-why-body lang-cn">经您推荐入职成功者，我们将致赠谢礼金。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section style="background:#fff;">
+  <div class="container" style="max-width: 900px;">
+    <p class="section-label">APPLICATION FORM</p>
+    <h2 class="section-title lang-ja">エントリーフォーム</h2>
+    <h2 class="section-title lang-cn">申请表单</h2>
+    <div class="section-divider"></div>
+
+    <div id="rcMain">
+      <div class="rc-tabs">
+        <button class="rc-tab active" data-tab="apply" onclick="switchTab('apply')">
+          Apply for Myself
+          <span class="rc-tab-jp lang-ja">自分で応募</span>
+          <span class="rc-tab-jp lang-cn">自己应聘</span>
+        </button>
+        <button class="rc-tab" data-tab="refer" onclick="switchTab('refer')">
+          Refer a Friend
+          <span class="rc-tab-jp lang-ja">友人を紹介</span>
+          <span class="rc-tab-jp lang-cn">推荐朋友</span>
+        </button>
+      </div>
+
+      <!-- APPLY panel -->
+      <div class="rc-panel active" id="panel-apply">
+        <p class="rc-intro lang-ja">ご自身のご応募はこちらから。全ての項目にご記入いただく必要はありません。分かる範囲でお書きください。</p>
+        <p class="rc-intro lang-cn">自己应聘请从这里填写。无需填完所有项目，填写您所知的范围即可。</p>
+
+        <form class="rc-form" onsubmit="submitForm(event, 'apply')">
+          <div class="rc-field">
+            <label class="rc-label"><span class="rc-label-en">Full Name</span><span class="lang-ja">お名前</span><span class="lang-cn">姓名</span><span class="rc-required">required</span></label>
+            <div><input type="text" class="rc-input" name="name" required placeholder="例：山田 花子 / Yuna"></div>
+          </div>
+
+          <div class="rc-field">
+            <label class="rc-label"><span class="rc-label-en">Age</span><span class="lang-ja">年齢</span><span class="lang-cn">年龄</span></label>
+            <div><input type="number" class="rc-input" name="age" min="18" max="80" placeholder="例：28" style="max-width:160px;"></div>
+          </div>
+
+          <div class="rc-field">
+            <label class="rc-label"><span class="rc-label-en">Contact</span><span class="lang-ja">ご連絡先</span><span class="lang-cn">联系方式</span><span class="rc-required">required</span></label>
+            <div>
+              <input type="text" class="rc-input" name="contact" required placeholder="Email / LINE / WeChat / 微信 ID" style="margin-bottom:10px;">
+              <p class="rc-hint lang-ja">メール・LINE・WeChatなど、ご都合の良い連絡手段をお書きください。</p>
+              <p class="rc-hint lang-cn">邮件、LINE、微信等任何方便您接收的联络方式皆可。</p>
+            </div>
+          </div>
+
+          <div class="rc-field">
+            <label class="rc-label"><span class="rc-label-en">Experience</span><span class="lang-ja">経験年数</span><span class="lang-cn">从业年限</span></label>
+            <div class="rc-radio-group" data-name="experience">
+              <label class="rc-radio"><input type="radio" name="experience" value="student"><span class="lang-ja">学生・見習い</span><span class="lang-cn">学生·见习</span></label>
+              <label class="rc-radio"><input type="radio" name="experience" value="1-3"><span>1–3 年</span></label>
+              <label class="rc-radio"><input type="radio" name="experience" value="4-7"><span>4–7 年</span></label>
+              <label class="rc-radio"><input type="radio" name="experience" value="8-12"><span>8–12 年</span></label>
+              <label class="rc-radio"><input type="radio" name="experience" value="13+"><span>13 年+</span></label>
+            </div>
+          </div>
+
+          <div class="rc-field">
+            <label class="rc-label"><span class="rc-label-en">Position</span><span class="lang-ja">希望ポジション</span><span class="lang-cn">希望职位</span></label>
+            <div class="rc-radio-group" data-name="position">
+              <label class="rc-radio"><input type="radio" name="position" value="stylist"><span class="lang-ja">スタイリスト</span><span class="lang-cn">造型师</span></label>
+              <label class="rc-radio"><input type="radio" name="position" value="senior"><span class="lang-ja">シニアスタイリスト</span><span class="lang-cn">资深造型师</span></label>
+              <label class="rc-radio"><input type="radio" name="position" value="director"><span class="lang-ja">ディレクター</span><span class="lang-cn">总监</span></label>
+              <label class="rc-radio"><input type="radio" name="position" value="assistant"><span class="lang-ja">アシスタント</span><span class="lang-cn">助理</span></label>
+              <label class="rc-radio"><input type="radio" name="position" value="other"><span class="lang-ja">その他</span><span class="lang-cn">其他</span></label>
+            </div>
+          </div>
+
+          <div class="rc-field">
+            <label class="rc-label"><span class="rc-label-en">Specialties</span><span class="lang-ja">得意分野</span><span class="lang-cn">擅长领域</span></label>
+            <div class="rc-check-group">
+              <label class="rc-radio"><input type="checkbox" name="specialties" value="cut"><span>CUT</span></label>
+              <label class="rc-radio"><input type="checkbox" name="specialties" value="color"><span>COLOR</span></label>
+              <label class="rc-radio"><input type="checkbox" name="specialties" value="perm"><span>PERM</span></label>
+              <label class="rc-radio"><input type="checkbox" name="specialties" value="highlight"><span>HIGHLIGHT</span></label>
+              <label class="rc-radio"><input type="checkbox" name="specialties" value="bridal"><span>BRIDAL</span></label>
+              <label class="rc-radio"><input type="checkbox" name="specialties" value="treatment"><span>TREATMENT</span></label>
+            </div>
+          </div>
+
+          <div class="rc-field">
+            <label class="rc-label"><span class="rc-label-en">Languages</span><span class="lang-ja">対応言語</span><span class="lang-cn">语言能力</span></label>
+            <div class="rc-check-group">
+              <label class="rc-radio"><input type="checkbox" name="languages" value="ja"><span class="lang-ja">日本語</span><span class="lang-cn">日语</span></label>
+              <label class="rc-radio"><input type="checkbox" name="languages" value="cn"><span class="lang-ja">中国語</span><span class="lang-cn">中文</span></label>
+              <label class="rc-radio"><input type="checkbox" name="languages" value="en"><span>English</span></label>
+              <label class="rc-radio"><input type="checkbox" name="languages" value="ko"><span class="lang-ja">韓国語</span><span class="lang-cn">韩语</span></label>
+            </div>
+          </div>
+
+          <div class="rc-field">
+            <label class="rc-label"><span class="rc-label-en">Portfolio</span><span class="lang-ja">ポートフォリオ</span><span class="lang-cn">作品集</span></label>
+            <div>
+              <input type="url" class="rc-input" name="portfolio" placeholder="Instagram / 小红书 / ウェブサイト URL">
+              <p class="rc-hint lang-ja">SNSリンク、ウェブサイト、オンラインポートフォリオなど。</p>
+              <p class="rc-hint lang-cn">可以是 SNS、网站或线上作品集链接。</p>
+            </div>
+          </div>
+
+          <div class="rc-field">
+            <label class="rc-label"><span class="rc-label-en">Message</span><span class="lang-ja">自己PR・メッセージ</span><span class="lang-cn">自我介绍·留言</span></label>
+            <div><textarea class="rc-textarea" name="message" placeholder="大切にしていること、得意なスタイル、入社後に挑戦したいことなど自由にお書きください。"></textarea></div>
+          </div>
+
+          <div class="rc-submit-row">
+            <button type="submit" class="rc-submit">
+              <span class="lang-ja">応募する</span>
+              <span class="lang-cn">提交申请</span>
+              <span>→</span>
+            </button>
+            <p class="rc-privacy lang-ja">送信いただいた情報は採用目的以外には使用いたしません。</p>
+            <p class="rc-privacy lang-cn">所提交的信息仅用于招聘用途，不作其他使用。</p>
+          </div>
+        </form>
+      </div>
+
+      <!-- REFER panel -->
+      <div class="rc-panel" id="panel-refer">
+        <p class="rc-intro lang-ja">素敵な美容師さんをご紹介ください。ご紹介者さま・ご紹介されるスタイリストさま、それぞれの情報をお書きいただけるとスムーズです。</p>
+        <p class="rc-intro lang-cn">请推荐您认识的优秀美发师。填写推荐人与被推荐人的信息，能让我们更顺利地联系。</p>
+
+        <form class="rc-form" onsubmit="submitForm(event, 'refer')">
+          <div class="rc-field">
+            <label class="rc-label"><span class="rc-label-en">Your Name</span><span class="lang-ja">ご紹介者さま</span><span class="lang-cn">推荐人姓名</span><span class="rc-required">required</span></label>
+            <div><input type="text" class="rc-input" name="referrer_name" required placeholder="例：田中 太郎"></div>
+          </div>
+
+          <div class="rc-field">
+            <label class="rc-label"><span class="rc-label-en">Your Contact</span><span class="lang-ja">ご紹介者連絡先</span><span class="lang-cn">推荐人联系方式</span><span class="rc-required">required</span></label>
+            <div><input type="text" class="rc-input" name="referrer_contact" required placeholder="Email / LINE / WeChat"></div>
+          </div>
+
+          <div class="rc-field">
+            <label class="rc-label"><span class="rc-label-en">Relation</span><span class="lang-ja">ご紹介者との関係</span><span class="lang-cn">与被推荐人的关系</span></label>
+            <div class="rc-radio-group" data-name="relation">
+              <label class="rc-radio"><input type="radio" name="relation" value="colleague"><span class="lang-ja">同僚</span><span class="lang-cn">同事</span></label>
+              <label class="rc-radio"><input type="radio" name="relation" value="classmate"><span class="lang-ja">同級生</span><span class="lang-cn">同学</span></label>
+              <label class="rc-radio"><input type="radio" name="relation" value="friend"><span class="lang-ja">友人</span><span class="lang-cn">朋友</span></label>
+              <label class="rc-radio"><input type="radio" name="relation" value="customer"><span class="lang-ja">お客様として</span><span class="lang-cn">作为顾客</span></label>
+              <label class="rc-radio"><input type="radio" name="relation" value="other"><span class="lang-ja">その他</span><span class="lang-cn">其他</span></label>
+            </div>
+          </div>
+
+          <div class="rc-field">
+            <label class="rc-label"><span class="rc-label-en">Candidate Name</span><span class="lang-ja">推薦する方のお名前</span><span class="lang-cn">被推荐人姓名</span><span class="rc-required">required</span></label>
+            <div><input type="text" class="rc-input" name="candidate_name" required placeholder="例：Yuna / 山田 花子"></div>
+          </div>
+
+          <div class="rc-field">
+            <label class="rc-label"><span class="rc-label-en">Candidate Contact</span><span class="lang-ja">推薦する方の連絡先</span><span class="lang-cn">被推荐人联系方式</span></label>
+            <div>
+              <input type="text" class="rc-input" name="candidate_contact" placeholder="Email / LINE / WeChat / Instagram">
+              <p class="rc-hint lang-ja">ご本人の許可を得た上でお書きください。不明な場合は空欄で構いません。</p>
+              <p class="rc-hint lang-cn">请在征得本人同意后填写。如不确定，可留空。</p>
+            </div>
+          </div>
+
+          <div class="rc-field">
+            <label class="rc-label"><span class="rc-label-en">Current Shop</span><span class="lang-ja">現在の所属サロン</span><span class="lang-cn">目前所在沙龙</span></label>
+            <div><input type="text" class="rc-input" name="candidate_shop" placeholder="例：〇〇ヘアサロン 大阪梅田店"></div>
+          </div>
+
+          <div class="rc-field">
+            <label class="rc-label"><span class="rc-label-en">Portfolio</span><span class="lang-ja">作品・SNS</span><span class="lang-cn">作品·SNS</span></label>
+            <div><input type="url" class="rc-input" name="candidate_portfolio" placeholder="Instagram / 小红书 / ウェブサイト URL"></div>
+          </div>
+
+          <div class="rc-field">
+            <label class="rc-label"><span class="rc-label-en">Why Recommend</span><span class="lang-ja">推薦理由</span><span class="lang-cn">推荐理由</span></label>
+            <div><textarea class="rc-textarea" name="reason" placeholder="その方の素敵なところ、技術的な強み、SHUKRに合うと感じる理由などお聞かせください。"></textarea></div>
+          </div>
+
+          <div class="rc-submit-row">
+            <button type="submit" class="rc-submit">
+              <span class="lang-ja">紹介を送信</span>
+              <span class="lang-cn">提交推荐</span>
+              <span>→</span>
+            </button>
+            <p class="rc-privacy lang-ja">ご紹介による入社が決定した際は、お礼のご連絡をさせていただきます。</p>
+            <p class="rc-privacy lang-cn">若经您推荐成功入职，我们将与您致谢联络。</p>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- SUCCESS -->
+    <div class="rc-success" id="rcSuccess">
+      <div class="rc-success-icon">✓</div>
+      <h3 class="rc-success-title lang-ja">ありがとうございます</h3>
+      <h3 class="rc-success-title lang-cn">感谢您的投递</h3>
+      <p class="rc-success-body lang-ja">内容を確認の上、担当より3営業日以内にご連絡いたします。<br>今後の SHUKR を、どうぞ楽しみにしていてください。</p>
+      <p class="rc-success-body lang-cn">我们会在审阅内容后，于 3 个工作日内由专人与您联系。<br>敬请期待 SHUKR 的下一步。</p>
+      <a href="stylists.html" class="rc-submit" style="display:inline-flex;">
+        <span class="lang-ja">スタイリスト一覧へ戻る</span>
+        <span class="lang-cn">返回造型师列表</span>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+
+<footer>
+  <div class="footer-logo"><img src="assets/shukr-logo.png" alt="SHUKR"></div>
+  <ul class="footer-links">
+    <li><a href="index.html" class="lang-ja">ホーム</a><a href="index.html" class="lang-cn">首页</a></li>
+    <li><a href="services.html" class="lang-ja">サービス紹介</a><a href="services.html" class="lang-cn">服务介绍</a></li>
+    <li><a href="stylists.html" class="lang-ja">スタイリスト</a><a href="stylists.html" class="lang-cn">造型师</a></li>
+    <li><a href="about.html" class="lang-ja">会社概要</a><a href="about.html" class="lang-cn">公司概要</a></li>
+    <li><a href="column.html" class="lang-ja">コラム</a><a href="column.html" class="lang-cn">专栏</a></li>
+    <li><a href="fc.html" class="lang-ja">FC募集</a><a href="fc.html" class="lang-cn">加盟招募</a></li>
+  </ul>
+  <p class="footer-copy">© 2026 SHUKR Hair Salon. All rights reserved.</p>
+</footer>
+
+
+<button class="ai-chat-btn" onclick="toggleChat()">
+  <svg viewBox="0 0 24 24" fill="none"><path d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 9H16M8 13H13" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+</button>
+<div class="chat-modal" id="chatModal">
+  <div class="chat-header">
+    <div class="chat-header-dot"></div>
+    <span class="chat-header-title lang-ja">SHUKRアシスタント</span>
+    <span class="chat-header-title lang-cn">SHUKR AI客服</span>
+    <button class="chat-close" onclick="toggleChat()">×</button>
+  </div>
+  <div class="chat-messages" id="chatMessages">
+    <div class="chat-bubble bot lang-ja">こんにちは！応募・紹介についてもお気軽にどうぞ。</div>
+    <div class="chat-bubble bot lang-cn">您好！关于应聘或推荐等问题，欢迎随时咨询。</div>
+  </div>
+  <div class="chat-input-row">
+    <input type="text" class="chat-input" id="chatInput" placeholder="メッセージを入力…" onkeydown="if(event.key==='Enter') sendChat()">
+    <input type="text" class="chat-input" id="chatInputCn" placeholder="请输入消息…" style="display:none" onkeydown="if(event.key==='Enter') sendChat()">
+    <button class="chat-send" onclick="sendChat()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</div>
+
+<script src="assets/shared.js"></script>
+<script>
+function switchTab(tab) {
+  document.querySelectorAll('.rc-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+  document.querySelectorAll('.rc-panel').forEach(p => p.classList.toggle('active', p.id === 'panel-' + tab));
+}
+
+// radio visual toggle
+document.addEventListener('change', (e) => {
+  if (e.target.type === 'radio') {
+    const group = document.querySelectorAll(`[name="${e.target.name}"]`);
+    group.forEach(r => r.closest('.rc-radio')?.classList.toggle('checked', r.checked));
+  } else if (e.target.type === 'checkbox' && e.target.closest('.rc-radio')) {
+    e.target.closest('.rc-radio').classList.toggle('checked', e.target.checked);
+  }
+});
+
+function submitForm(e, kind) {
+  e.preventDefault();
+  document.getElementById('rcMain').style.display = 'none';
+  document.getElementById('rcSuccess').classList.add('show');
+  window.scrollTo({ top: document.getElementById('rcSuccess').offsetTop - 100, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>

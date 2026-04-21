@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ご予約 | SHUKR Hair Salon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Noto+Serif+JP:wght@200;300;400;500&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/shared.css">
+<style>
+.rsv-ways { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-bottom: 80px; }
+.rsv-way { background: #fff; border: 1px solid var(--border); padding: 36px 24px; text-align: center; }
+.rsv-num { font-family: 'Cormorant Garamond', serif; font-size: 14px; color: var(--gold); letter-spacing: 0.2em; }
+.rsv-way h3 { font-family: 'Noto Serif JP', serif; font-size: 16px; font-weight: 400; letter-spacing: 0.12em; margin: 14px 0 20px; }
+.rsv-phone { font-family: 'Cormorant Garamond', serif; font-size: 26px; letter-spacing: 0.08em; color: var(--charcoal); text-decoration: none; display: block; margin-bottom: 14px; }
+.rsv-phone:hover { color: var(--gold); }
+.rsv-way p { font-family: 'Noto Sans JP', sans-serif; font-size: 11px; color: var(--fg-muted); letter-spacing: 0.06em; }
+.rsv-qr { width: 110px; height: 110px; background: repeating-conic-gradient(#1c1c1c 0 25%, #f2ede7 0 50%) 50% / 14px 14px; margin: 0 auto 14px; display: flex; align-items: center; justify-content: center; }
+.rsv-qr span { background: #fff; padding: 3px 8px; font-family: 'Noto Sans JP', sans-serif; font-size: 9px; letter-spacing: 0.1em; color: var(--fg-muted); }
+
+.rsv-form { background: #fff; padding: 48px; border: 1px solid var(--border); }
+.rsv-form-title { font-family: 'Noto Serif JP', serif; font-size: 18px; font-weight: 400; letter-spacing: 0.12em; margin-bottom: 30px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+.rsv-field { margin-bottom: 20px; }
+.rsv-field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.rsv-field label { display: block; font-family: 'Noto Sans JP', sans-serif; font-size: 11px; letter-spacing: 0.1em; color: var(--fg-muted); margin-bottom: 8px; }
+.rsv-field label span { color: var(--gold); margin-left: 6px; }
+.rsv-field input, .rsv-field select, .rsv-field textarea {
+  width: 100%; padding: 12px 14px; border: 1px solid var(--border);
+  background: var(--bg); font-family: 'Noto Sans JP', sans-serif;
+  font-size: 13px; letter-spacing: 0.04em; color: var(--fg); outline: none; transition: border-color 0.2s;
+}
+.rsv-field input:focus, .rsv-field select:focus, .rsv-field textarea:focus { border-color: var(--gold); }
+.rsv-submit {
+  background: var(--charcoal); color: #fff; border: none;
+  width: 100%; padding: 16px; font-family: 'Noto Sans JP', sans-serif;
+  font-size: 13px; letter-spacing: 0.2em; cursor: pointer; transition: background 0.2s; margin-top: 12px;
+}
+.rsv-submit:hover { background: var(--gold); }
+@media(max-width:900px){ .rsv-ways { grid-template-columns: 1fr; } .rsv-field-row { grid-template-columns: 1fr; } .rsv-form { padding: 28px; } }
+</style>
+</head>
+<body>
+
+<nav id="mainNav">
+  <a href="index.html" class="nav-logo"><img src="assets/shukr-logo.png" alt="SHUKR"></a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="index.html" class=" lang-ja">ホーム</a><a href="index.html" class=" lang-cn">首页</a></li>
+      <li><a href="stylists.html" class=" lang-ja">スタイリスト</a><a href="stylists.html" class=" lang-cn">造型师</a></li>
+      <li><a href="services.html" class=" lang-ja">サービス紹介</a><a href="services.html" class=" lang-cn">服务介绍</a></li>
+      <li><a href="fc.html" class=" lang-ja">FC募集</a><a href="fc.html" class=" lang-cn">加盟招募</a></li>
+      <li><a href="about.html" class=" lang-ja">会社概要</a><a href="about.html" class=" lang-cn">公司概要</a></li>
+      <li><a href="column.html" class=" lang-ja">コラム</a><a href="column.html" class=" lang-cn">专栏</a></li>
+    </ul>
+    <div class="lang-switch">
+      <button class="lang-btn" id="btnZh" onclick="setLang('zh')">中文</button>
+      <button class="lang-btn active" id="btnJa" onclick="setLang('ja')">日本語</button>
+    </div>
+    <div class="nav-divider"></div>
+    <a href="reserve.html" class="btn-reserve lang-ja">予約する</a>
+    <a href="reserve.html" class="btn-reserve lang-cn">立即预约</a>
+  </div>
+</nav>
+
+
+<section class="page-hero">
+  <p class="page-hero-label">RESERVATION</p>
+  <h1 class="page-hero-title-en">Reservation</h1>
+  <p class="page-hero-title-jp lang-ja">ご予約</p>
+  <p class="page-hero-title-jp lang-cn">在线预约</p>
+</section>
+
+
+<div class="breadcrumb">
+  <a href="index.html" class="lang-ja">ホーム</a>
+  <a href="index.html" class="lang-cn">首页</a>
+  <span class="sep">/</span>
+  <span class="lang-ja">ご予約</span>
+  <span class="lang-cn">预约</span>
+</div>
+
+
+<section>
+  <div class="container" style="max-width: 780px;">
+    <p class="section-label" style="text-align:center;">RESERVATION</p>
+    <h2 class="section-title lang-ja" style="text-align:center;">ご予約</h2>
+    <h2 class="section-title lang-cn" style="text-align:center;">预约</h2>
+    <div class="section-divider" style="margin:0 auto 40px;"></div>
+
+    <div class="rsv-ways">
+      <div class="rsv-way">
+        <span class="rsv-num">01</span>
+        <h3 class="lang-ja">お電話</h3>
+        <h3 class="lang-cn">电话预约</h3>
+        <a href="tel:+81600000000" class="rsv-phone">06-0000-0000</a>
+        <p class="lang-ja">営業時間内にお電話ください</p>
+        <p class="lang-cn">请在营业时间内来电</p>
+      </div>
+      <div class="rsv-way">
+        <span class="rsv-num">02</span>
+        <h3 class="lang-ja">LINE予約</h3>
+        <h3 class="lang-cn">LINE预约</h3>
+        <div class="rsv-qr"><span>LINE QR</span></div>
+        <p class="lang-ja">@shukr-hair</p><p class="lang-cn">@shukr-hair</p>
+      </div>
+      <div class="rsv-way">
+        <span class="rsv-num">03</span>
+        <h3 class="lang-ja">WeChat</h3>
+        <h3 class="lang-cn">微信预约</h3>
+        <div class="rsv-qr"><span>WeChat QR</span></div>
+        <p>shukr_osaka</p>
+      </div>
+    </div>
+
+    <form class="rsv-form" id="rsvForm" onsubmit="submitReservation(event)">
+      <h3 class="rsv-form-title lang-ja">WEB予約フォーム</h3>
+      <h3 class="rsv-form-title lang-cn">网络预约表单</h3>
+
+      <div class="rsv-field">
+        <label class="lang-ja">お名前 <span>必須</span></label>
+        <label class="lang-cn">姓名 <span>必填</span></label>
+        <input type="text" name="name" required>
+      </div>
+      <div class="rsv-field-row">
+        <div class="rsv-field">
+          <label class="lang-ja">電話番号 <span>必須</span></label>
+          <label class="lang-cn">电话 <span>必填</span></label>
+          <input type="tel" name="phone" required>
+        </div>
+        <div class="rsv-field">
+          <label>Email</label>
+          <input type="email" name="email">
+        </div>
+      </div>
+      <div class="rsv-field-row">
+        <div class="rsv-field">
+          <label class="lang-ja">ご希望日 <span>必須</span></label>
+          <label class="lang-cn">希望日期 <span>必填</span></label>
+          <input type="date" name="date" required>
+        </div>
+        <div class="rsv-field">
+          <label class="lang-ja">ご希望時間 <span>必須</span></label>
+          <label class="lang-cn">希望时间 <span>必填</span></label>
+          <input type="time" name="time" required>
+        </div>
+      </div>
+      <div class="rsv-field">
+        <label class="lang-ja">メニュー <span>必須</span></label>
+        <label class="lang-cn">服务项目 <span>必填</span></label>
+        <select name="service" required>
+          <option value="" disabled selected class="lang-ja">選択してください</option>
+          <option value="cut" class="lang-ja">カット</option>
+          <option value="cut" class="lang-cn">剪发</option>
+          <option value="color" class="lang-ja">カラー</option>
+          <option value="color" class="lang-cn">染发</option>
+          <option value="perm" class="lang-ja">パーマ</option>
+          <option value="perm" class="lang-cn">烫发</option>
+          <option value="treatment" class="lang-ja">トリートメント</option>
+          <option value="treatment" class="lang-cn">护发护理</option>
+        </select>
+      </div>
+      <div class="rsv-field">
+        <label class="lang-ja">ご担当スタイリスト</label>
+        <label class="lang-cn">指定造型师</label>
+        <select name="stylist">
+          <option value="">指名なし / 不指定</option>
+          <option value="yuna">勝木 由奈 / Katuki Yuna</option>
+          <option value="yu">于 常校 / Yu Changxiao</option>
+        </select>
+      </div>
+      <div class="rsv-field">
+        <label class="lang-ja">備考</label>
+        <label class="lang-cn">备注</label>
+        <textarea name="notes" rows="4"></textarea>
+      </div>
+      <button type="submit" class="rsv-submit lang-ja">予約を送信</button>
+      <button type="submit" class="rsv-submit lang-cn">提交预约</button>
+    </form>
+  </div>
+</section>
+
+
+<footer>
+  <div class="footer-logo"><img src="assets/shukr-logo.png" alt="SHUKR"></div>
+  <ul class="footer-links">
+    <li><a href="index.html" class="lang-ja">ホーム</a><a href="index.html" class="lang-cn">首页</a></li>
+    <li><a href="services.html" class="lang-ja">サービス紹介</a><a href="services.html" class="lang-cn">服务介绍</a></li>
+    <li><a href="stylists.html" class="lang-ja">スタイリスト</a><a href="stylists.html" class="lang-cn">造型师</a></li>
+    <li><a href="about.html" class="lang-ja">会社概要</a><a href="about.html" class="lang-cn">公司概要</a></li>
+    <li><a href="column.html" class="lang-ja">コラム</a><a href="column.html" class="lang-cn">专栏</a></li>
+    <li><a href="fc.html" class="lang-ja">FC募集</a><a href="fc.html" class="lang-cn">加盟招募</a></li>
+  </ul>
+  <p class="footer-copy">© 2026 SHUKR Hair Salon. All rights reserved.</p>
+</footer>
+
+
+<button class="ai-chat-btn" onclick="toggleChat()">
+  <svg viewBox="0 0 24 24" fill="none"><path d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 9H16M8 13H13" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+</button>
+<div class="chat-modal" id="chatModal">
+  <div class="chat-header">
+    <div class="chat-header-dot"></div>
+    <span class="chat-header-title lang-ja">SHUKRアシスタント</span>
+    <span class="chat-header-title lang-cn">SHUKR AI客服</span>
+    <button class="chat-close" onclick="toggleChat()">×</button>
+  </div>
+  <div class="chat-messages" id="chatMessages">
+    <div class="chat-bubble bot lang-ja">こんにちは！ご予約・サービスについてお気軽にご質問ください。</div>
+    <div class="chat-bubble bot lang-cn">您好！有关预约或服务的任何问题请告诉我。</div>
+  </div>
+  <div class="chat-input-row">
+    <input type="text" class="chat-input" id="chatInput" placeholder="メッセージを入力…" onkeydown="if(event.key==='Enter') sendChat()">
+    <input type="text" class="chat-input" id="chatInputCn" placeholder="请输入消息…" style="display:none" onkeydown="if(event.key==='Enter') sendChat()">
+    <button class="chat-send" onclick="sendChat()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</div>
+
+<script src="assets/shared.js"></script>
+</body>
+</html>
