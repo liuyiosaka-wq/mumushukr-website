@@ -51,7 +51,22 @@
   font-size: 13px; letter-spacing: 0.2em; cursor: pointer; transition: background 0.2s; margin-top: 12px;
 }
 .rsv-submit:hover { background: var(--gold); }
-@media(max-width:900px){ .rsv-ways { grid-template-columns: 1fr; } .rsv-field-row { grid-template-columns: 1fr; } .rsv-form { padding: 28px; } }
+@media(max-width:900px){ .rsv-field-row { grid-template-columns: 1fr; } .rsv-form { padding: 28px; } }
+
+/* Access section */
+.access-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 48px; max-width: 1080px; margin-left: auto; margin-right: auto; }
+.access-photo { aspect-ratio: 4/3; overflow: hidden; background: #e0dbd4; }
+.access-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.access-map { position: relative; aspect-ratio: 4/3; display: block; overflow: hidden; text-decoration: none; cursor: pointer; background: #e0dbd4; }
+.access-map iframe { width: 100%; height: 100%; border: 0; display: block; pointer-events: none; }
+.access-map-hint { position: absolute; bottom: 14px; right: 14px; background: rgba(28,28,28,0.85); color: #fff; padding: 8px 16px; font-family: 'Noto Sans JP', sans-serif; font-size: 12px; letter-spacing: 0.1em; transition: background 0.2s; }
+.access-map:hover .access-map-hint { background: var(--gold); }
+.access-info { max-width: 780px; margin: 0 auto; padding: 0; }
+.access-info > div { display: grid; grid-template-columns: 120px 1fr; gap: 20px; padding: 18px 0; border-bottom: 1px solid var(--border); align-items: start; }
+.access-info > div:first-child { border-top: 1px solid var(--border); }
+.access-info dt { font-family: 'Noto Sans JP', sans-serif; font-size: 11px; letter-spacing: 0.15em; color: var(--fg-muted); padding-top: 2px; font-weight: 400; margin: 0; }
+.access-info dd { font-family: 'Noto Sans JP', sans-serif; font-size: 13px; line-height: 1.8; margin: 0; font-weight: 300; letter-spacing: 0.06em; }
+@media(max-width:900px){ .access-grid { grid-template-columns: 1fr; } .access-info > div { grid-template-columns: 90px 1fr; gap: 14px; } }
 </style>
 </head>
 <body>
@@ -97,11 +112,6 @@
 
 <section>
   <div class="container">
-    <p class="section-label" style="text-align:center;">RESERVATION</p>
-    <h2 class="section-title lang-ja" style="text-align:center;">ご予約</h2>
-    <h2 class="section-title lang-cn" style="text-align:center;">预约</h2>
-    <div class="section-divider" style="margin:0 auto 40px;"></div>
-
     <div class="booking">
       <div class="booking-head">
         <p class="section-label" style="justify-content:center;">— HOW TO BOOK</p>
@@ -122,7 +132,7 @@
           <h3 class="booking-card-title lang-cn">在线预约</h3>
           <p class="booking-card-body lang-ja">24時間いつでもご利用いただける、便利なオンライン予約システムです。スタイリストの空き状況をリアルタイムで確認しながら、ご希望のメニューや時間帯を選んでご予約いただけます。</p>
           <p class="booking-card-body lang-cn">本店登录在 Hot pepper 预约网站上，该网站有 24 小时随时可用的在线预约系统。使用 Hot pepper 的客人可点击下方预约链接，实时查看造型师的空闲时段，选择希望的项目与时间进行预约。</p>
-          <a href="#rsvForm" class="booking-card-cta"><span class="lang-ja">今すぐ予約</span><span class="lang-cn">立即预约</span><svg width="18" height="10" viewBox="0 0 18 10" fill="none" stroke-width="1.2"><path d="M1 5h16M13 1l4 4-4 4"/></svg></a>
+          <a href="https://beauty.hotpepper.jp/slnH000743235/stylist/" target="_blank" rel="noopener" class="booking-card-cta"><span class="lang-ja">今すぐ予約</span><span class="lang-cn">立即预约</span><svg width="18" height="10" viewBox="0 0 18 10" fill="none" stroke-width="1.2"><path d="M1 5h16M13 1l4 4-4 4"/></svg></a>
         </div>
 
         <!-- 02 WeChat -->
@@ -160,23 +170,8 @@
         <p style="font-family:'Cormorant Garamond',serif;font-size:12px;letter-spacing:0.3em;color:var(--gold);margin-bottom:8px;">WECHAT</p>
         <h4 class="lang-ja" style="font-family:'Noto Serif JP',serif;font-size:18px;font-weight:400;margin-bottom:24px;">店舗アシスタント</h4>
         <h4 class="lang-cn" style="font-family:'Noto Serif JP',serif;font-size:18px;font-weight:400;margin-bottom:24px;">店铺助理</h4>
-        <div style="width:200px;height:200px;margin:0 auto;background:#f8f5f0;border:1px solid rgba(0,0,0,0.08);display:flex;align-items:center;justify-content:center;position:relative;">
-          <svg width="160" height="160" viewBox="0 0 160 160" style="display:block;">
-            <rect width="160" height="160" fill="#fff"/>
-            <g fill="#1c1c1c">
-              <rect x="10" y="10" width="40" height="40"/><rect x="20" y="20" width="20" height="20" fill="#fff"/><rect x="25" y="25" width="10" height="10"/>
-              <rect x="110" y="10" width="40" height="40"/><rect x="120" y="20" width="20" height="20" fill="#fff"/><rect x="125" y="25" width="10" height="10"/>
-              <rect x="10" y="110" width="40" height="40"/><rect x="20" y="120" width="20" height="20" fill="#fff"/><rect x="25" y="125" width="10" height="10"/>
-              <rect x="60" y="10" width="5" height="5"/><rect x="70" y="10" width="10" height="5"/><rect x="85" y="10" width="5" height="10"/><rect x="95" y="15" width="10" height="5"/>
-              <rect x="60" y="25" width="10" height="5"/><rect x="75" y="30" width="5" height="10"/><rect x="90" y="25" width="15" height="5"/><rect x="60" y="40" width="5" height="5"/><rect x="75" y="40" width="10" height="5"/><rect x="95" y="40" width="10" height="10"/>
-              <rect x="10" y="60" width="10" height="5"/><rect x="25" y="60" width="5" height="10"/><rect x="40" y="60" width="15" height="5"/><rect x="65" y="60" width="5" height="10"/><rect x="80" y="60" width="10" height="5"/><rect x="100" y="60" width="5" height="5"/><rect x="115" y="60" width="10" height="10"/><rect x="135" y="60" width="15" height="5"/>
-              <rect x="15" y="75" width="10" height="10"/><rect x="35" y="75" width="5" height="5"/><rect x="50" y="80" width="15" height="5"/><rect x="75" y="75" width="5" height="10"/><rect x="90" y="75" width="10" height="5"/><rect x="110" y="80" width="5" height="5"/><rect x="125" y="75" width="15" height="5"/><rect x="145" y="75" width="5" height="10"/>
-              <rect x="10" y="90" width="5" height="10"/><rect x="25" y="95" width="15" height="5"/><rect x="50" y="90" width="5" height="5"/><rect x="65" y="95" width="10" height="10"/><rect x="85" y="90" width="5" height="10"/><rect x="100" y="95" width="15" height="5"/><rect x="125" y="90" width="5" height="10"/><rect x="140" y="95" width="10" height="5"/>
-              <rect x="60" y="115" width="5" height="5"/><rect x="75" y="110" width="10" height="10"/><rect x="95" y="115" width="15" height="5"/><rect x="120" y="110" width="5" height="5"/><rect x="140" y="110" width="10" height="10"/>
-              <rect x="65" y="130" width="15" height="5"/><rect x="85" y="130" width="5" height="10"/><rect x="100" y="135" width="10" height="5"/><rect x="115" y="130" width="5" height="5"/><rect x="130" y="135" width="15" height="5"/>
-              <rect x="60" y="145" width="5" height="5"/><rect x="75" y="145" width="10" height="5"/><rect x="95" y="145" width="5" height="5"/><rect x="110" y="145" width="15" height="5"/><rect x="135" y="145" width="10" height="5"/>
-            </g>
-          </svg>
+        <div style="width:220px;margin:0 auto;">
+          <img src="assets/qri.png" alt="WeChat QR" style="width:100%;height:auto;display:block;">
         </div>
         <p style="font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--gold);letter-spacing:0.08em;margin-top:20px;">Yedda8425</p>
         <p class="lang-ja" style="font-family:'Noto Sans JP',sans-serif;font-size:11px;color:var(--fg-muted);margin-top:12px;letter-spacing:0.08em;line-height:1.8;">微信をスキャンして、「予約」とメッセージをお送りください</p>
@@ -254,6 +249,41 @@
       <button type="submit" class="rsv-submit lang-cn">提交预约</button>
     </form>
     </div>
+  </div>
+</section>
+
+<section style="background:#f8f5f0;border-top:1px solid var(--border);">
+  <div class="container">
+    <p class="section-label" style="justify-content:center;">— ACCESS</p>
+    <h2 class="section-title lang-ja" style="text-align:center;">アクセス</h2>
+    <h2 class="section-title lang-cn" style="text-align:center;">交通指引</h2>
+    <div class="section-divider" style="margin:24px auto 48px;"></div>
+
+    <div class="access-grid">
+      <div class="access-photo"><img src="assets/reserve-dian.jpg" alt="SHUKR 店舗外観"></div>
+      <a class="access-map" href="https://www.google.com/maps/dir/?api=1&destination=%E5%A4%A7%E9%98%AA%E5%B8%82%E7%94%9F%E9%87%8E%E5%8C%BA%E5%B0%8F%E8%B7%AF%E6%9D%B12-5-15" target="_blank" rel="noopener">
+        <iframe src="https://maps.google.com/maps?q=%E5%A4%A7%E9%98%AA%E5%B8%82%E7%94%9F%E9%87%8E%E5%8C%BA%E5%B0%8F%E8%B7%AF%E6%9D%B12-5-15&output=embed" loading="lazy"></iframe>
+        <span class="access-map-hint lang-ja">タップでナビを開く</span>
+        <span class="access-map-hint lang-cn">点击打开导航</span>
+      </a>
+    </div>
+
+    <dl class="access-info">
+      <div>
+        <dt class="lang-ja">住所</dt><dt class="lang-cn">店铺地址</dt>
+        <dd>大阪市生野区小路東2-5-15</dd>
+      </div>
+      <div>
+        <dt class="lang-ja">電車</dt><dt class="lang-cn">地铁出行</dt>
+        <dd class="lang-ja">大阪メトロ 千日前線「小路」駅 3番出口より徒歩5分</dd>
+        <dd class="lang-cn">地铁千日前线「小路」站 3号出口 步行 5 分钟</dd>
+      </div>
+      <div>
+        <dt class="lang-ja">お車</dt><dt class="lang-cn">自驾出行</dt>
+        <dd class="lang-ja">専用駐車場はございません。近隣にコインパーキング複数あり。</dd>
+        <dd class="lang-cn">店铺无停车位，附近有多个付费停车场。</dd>
+      </div>
+    </dl>
   </div>
 </section>
 
