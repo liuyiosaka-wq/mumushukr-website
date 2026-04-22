@@ -25,28 +25,6 @@
 .svc-table td:last-child { text-align: right; font-family: 'Cormorant Garamond', serif; font-size: 17px; color: var(--gold); }
 .svc-table.dark td { color: rgba(255,255,255,0.8); }
 .svc-table.dark td:last-child { color: var(--gold); }
-/* Booking methods */
-.booking { padding: 140px 0 120px; background: #f8f5f0; border-top: 1px solid var(--border); }
-.booking-head { text-align: center; margin-bottom: 80px; }
-.booking-head .section-label { justify-content: center; }
-.booking-intro { max-width: 720px; margin: 32px auto 0; font-size: 13px; line-height: 2.2; color: var(--fg-muted); font-weight: 300; text-align: center; }
-.booking-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
-.booking-card { background: #fff; padding: 56px 40px 48px; border: 1px solid var(--border); position: relative; display: flex; flex-direction: column; transition: all 0.3s; }
-.booking-card:hover { border-color: var(--gold); box-shadow: 0 16px 40px rgba(0,0,0,0.05); transform: translateY(-3px); }
-.booking-num { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 44px; color: var(--gold); line-height: 1; margin-bottom: 24px; font-weight: 400; }
-.booking-icon { width: 48px; height: 48px; stroke: var(--fg); fill: none; stroke-width: 1.2; margin-bottom: 24px; }
-.booking-card-title-en { font-family: 'Cormorant Garamond', serif; font-size: 13px; letter-spacing: 0.3em; color: var(--gold); margin-bottom: 8px; text-transform: uppercase; }
-.booking-card-title { font-family: 'Noto Serif JP', serif; font-size: 22px; font-weight: 400; color: var(--fg); letter-spacing: 0.08em; margin-bottom: 20px; }
-.booking-card-body { font-family: 'Noto Sans JP', sans-serif; font-size: 12.5px; line-height: 2; color: var(--fg-muted); font-weight: 300; flex: 1; margin-bottom: 28px; }
-.booking-card-body strong { color: var(--fg); font-weight: 500; letter-spacing: 0.06em; }
-.booking-card-body .wechat-id { display: inline-block; font-family: 'Cormorant Garamond', serif; font-size: 16px; color: var(--gold); letter-spacing: 0.08em; background: #f8f5f0; padding: 6px 14px; margin: 6px 0; border: 1px solid var(--border); }
-.booking-card-body .hours { display: block; margin-top: 10px; font-size: 11.5px; letter-spacing: 0.12em; color: var(--fg); }
-.booking-card-cta { font-family: 'Cormorant Garamond', serif; font-size: 12px; letter-spacing: 0.3em; color: var(--fg); text-transform: uppercase; border-top: 1px solid var(--border); padding-top: 20px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: color 0.2s; }
-.booking-card-cta:hover { color: var(--gold); }
-.booking-card-cta svg { stroke: currentColor; transition: transform 0.3s; }
-.booking-card-cta:hover svg { transform: translateX(4px); }
-.booking-note { margin-top: 56px; text-align: center; font-family: 'Noto Sans JP', sans-serif; font-size: 11.5px; letter-spacing: 0.15em; color: var(--fg-muted); font-weight: 300; }
-@media(max-width:900px){ .booking-grid { grid-template-columns: 1fr; } .booking { padding: 80px 0; } }
 @media(max-width:900px){ section > .container > div { grid-template-columns: 1fr !important; gap: 40px !important; } }
 </style>
 </head>
@@ -103,10 +81,10 @@
         <p class="svc-body lang-ja">お客様一人ひとりの骨格・髪質・ライフスタイルに合わせたオーダーメイドのカット。再現性の高いスタイルで、毎日のスタイリングをラクに。</p>
         <p class="svc-body lang-cn">根据每位顾客的骨骼、发质与生活方式，量身定制剪发方案。高还原度的造型让日常打理更轻松。</p>
         <table class="svc-table">
-          <tr><td class="lang-ja">カット</td><td class="lang-cn">基础剪发</td><td>¥6,600〜</td></tr>
-          <tr><td class="lang-ja">カット（学生）</td><td class="lang-cn">剪发（学生）</td><td>¥5,500〜</td></tr>
-          <tr><td class="lang-ja">メンズカット</td><td class="lang-cn">男士剪发</td><td>¥5,500〜</td></tr>
-          <tr><td class="lang-ja">キッズカット（小学生以下）</td><td class="lang-cn">儿童剪发（小学生以下）</td><td>¥3,300〜</td></tr>
+          <tr><td class="lang-ja">カット（シャンプー込み）</td><td class="lang-cn">剪发（含洗发水）</td><td>¥4,400</td></tr>
+          <tr><td class="lang-ja">メンズカット</td><td class="lang-cn">男士剪发</td><td>¥3,850</td></tr>
+          <tr><td class="lang-ja">キッズカット（高校生以下）</td><td class="lang-cn">儿童剪发（高中生以下）</td><td>¥3,300</td></tr>
+          <tr><td class="lang-ja">キッズカット（中学生以下）</td><td class="lang-cn">儿童剪发（中学生以下）</td><td>¥2,200</td></tr>
         </table>
       </div>
     </div>
@@ -124,11 +102,11 @@
         <p class="svc-body lang-ja" style="color:rgba(255,255,255,0.7);">イルミナカラー・アディクシーなど、ダメージレスで深みのある発色を実現する薬剤を厳選。あなたのパーソナルカラーに合わせた提案を。</p>
         <p class="svc-body lang-cn" style="color:rgba(255,255,255,0.7);">精选伊璐美娜等低损伤、深邃感十足的染发药剂。结合您的个人色调提出最合适的方案。</p>
         <table class="svc-table dark">
-          <tr><td class="lang-ja">全体カラー</td><td class="lang-cn">全头染发</td><td>¥8,800〜</td></tr>
-          <tr><td class="lang-ja">リタッチカラー</td><td class="lang-cn">补色</td><td>¥6,600〜</td></tr>
-          <tr><td class="lang-ja">ハイライト</td><td class="lang-cn">挑染</td><td>¥12,100〜</td></tr>
-          <tr><td class="lang-ja">インナーカラー</td><td class="lang-cn">内层染</td><td>¥9,900〜</td></tr>
-          <tr><td class="lang-ja">ダブルカラー</td><td class="lang-cn">双重染</td><td>¥16,500〜</td></tr>
+          <tr><td class="lang-ja">リタッチ（根元）</td><td class="lang-cn">补染（发根）</td><td>¥5,500</td></tr>
+          <tr><td class="lang-ja">フルカラー</td><td class="lang-cn">全头染发</td><td>¥6,600</td></tr>
+          <tr><td class="lang-ja">ヘナカラー（白髪染め）</td><td class="lang-cn">香草染发（灰发/白发覆盖）</td><td>¥7,700</td></tr>
+          <tr><td class="lang-ja">ハイライト（foil）</td><td class="lang-cn">挑染（foil 设计染）</td><td><span class="lang-ja">要相談</span><span class="lang-cn">需咨询</span></td></tr>
+          <tr><td class="lang-ja">ブリーチオンカラー</td><td class="lang-cn">漂发染发</td><td>¥8,800〜</td></tr>
         </table>
       </div>
       <div class="svc-img dark"><img src="assets/svc-color.jpg" alt=""><span class="svc-img-label">COLOR</span></div>
@@ -148,10 +126,8 @@
         <p class="svc-body lang-ja">髪質や求めるスタイルに合わせて、最適なパーマをセレクト。ナチュラルなウェーブから、しっかりとしたカールまで。</p>
         <p class="svc-body lang-cn">根据发质与需求，选择最适合的烫发方式。从自然波浪到明显卷曲，全面对应。</p>
         <table class="svc-table">
-          <tr><td class="lang-ja">デジタルパーマ</td><td class="lang-cn">数码烫</td><td>¥16,500〜</td></tr>
-          <tr><td class="lang-ja">コールドパーマ</td><td class="lang-cn">冷烫</td><td>¥13,200〜</td></tr>
-          <tr><td class="lang-ja">縮毛矯正</td><td class="lang-cn">直发烫</td><td>¥19,800〜</td></tr>
-          <tr><td class="lang-ja">前髪パーマ</td><td class="lang-cn">刘海烫</td><td>¥5,500〜</td></tr>
+          <tr><td class="lang-ja">コールドパーマ</td><td class="lang-cn">冷烫</td><td>¥6,600</td></tr>
+          <tr><td class="lang-ja">デジタルパーマ</td><td class="lang-cn">数码烫发</td><td>¥13,200</td></tr>
         </table>
       </div>
     </div>
@@ -166,108 +142,18 @@
         <h2 class="section-title lang-ja">トリートメント</h2>
         <h2 class="section-title lang-cn">护发护理</h2>
         <div class="section-divider"></div>
-        <p class="svc-body lang-ja">髪内部のダメージを補修し、艶・手触り・扱いやすさを回復。ホームケアとのトータルサポートも。</p>
-        <p class="svc-body lang-cn">修复发丝内部损伤，恢复光泽、手感与好打理度。提供家庭护理的完整搭配建议。</p>
+        <p class="svc-body lang-ja">くせ毛・広がり・うねりに悩む髪を、まっすぐ扱いやすい状態へ。ダメージを抑えつつ自然な仕上がりを実現します。</p>
+        <p class="svc-body lang-cn">针对自然卷、毛躁、发量蓬松等困扰，在尽量降低损伤的同时，打造柔顺自然、易于打理的发质。</p>
         <table class="svc-table">
-          <tr><td class="lang-ja">ベーシックトリートメント</td><td class="lang-cn">基础护理</td><td>¥4,400〜</td></tr>
-          <tr><td class="lang-ja">プレミアムトリートメント</td><td class="lang-cn">高级护理</td><td>¥8,800〜</td></tr>
-          <tr><td class="lang-ja">ケラチントリートメント</td><td class="lang-cn">角蛋白护理</td><td>¥11,000〜</td></tr>
-          <tr><td class="lang-ja">ヘッドスパ（30分）</td><td class="lang-cn">头皮SPA（30分）</td><td>¥6,600〜</td></tr>
+          <tr><td class="lang-ja">縮毛矯正</td><td class="lang-cn">缩毛矫正</td><td>¥13,200</td></tr>
+          <tr><td class="lang-ja">部分縮毛矯正</td><td class="lang-cn">局部缩毛矫正</td><td>¥3,300</td></tr>
+          <tr><td class="lang-ja">酸性ストレート</td><td class="lang-cn">酸性拉直</td><td>¥16,500</td></tr>
         </table>
       </div>
       <div class="svc-img"><img src="assets/svc-treatment.jpg" alt=""><span class="svc-img-label">TREATMENT</span></div>
     </div>
   </div>
 </section>
-
-<!-- Booking Methods -->
-<section class="booking">
-  <div class="container">
-    <div class="booking-head">
-      <p class="section-label" style="justify-content:center;">— HOW TO BOOK</p>
-      <h2 class="section-title lang-ja">ご予約方法</h2>
-      <h2 class="section-title lang-cn">预约方式</h2>
-      <div class="section-divider" style="margin:24px auto 0;"></div>
-      <p class="booking-intro lang-ja">お客様のご都合に合わせて、以下の3つの方法でご予約を受け付けております。完全予約制となっておりますので、ご希望の日時がある方はお早めのご連絡をおすすめします。</p>
-      <p class="booking-intro lang-cn">为方便每位顾客，我们提供以下 3 种预约方式。本店采取完全预约制，如需确认近期可预约时间，可以和我们网站的 AI 助理沟通获取近期预约时间，然后按照您的情况选择预约。如有心仪的日期与时间，建议尽早联系。</p>
-    </div>
-
-    <div class="booking-grid">
-      <!-- 01 Online -->
-      <div class="booking-card">
-        <div class="booking-num">01</div>
-        <svg class="booking-icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="14" rx="1"/><path d="M3 8h18"/><circle cx="7" cy="6" r="0.5" fill="currentColor"/><path d="M9 13h6M9 15h4"/></svg>
-        <p class="booking-card-title-en">Online</p>
-        <h3 class="booking-card-title lang-ja">オンライン予約</h3>
-        <h3 class="booking-card-title lang-cn">在线预约</h3>
-        <p class="booking-card-body lang-ja">24時間いつでもご利用いただける、便利なオンライン予約システムです。スタイリストの空き状況をリアルタイムで確認しながら、ご希望のメニューや時間帯を選んでご予約いただけます。</p>
-        <p class="booking-card-body lang-cn">本店登录在 Hot pepper 预约网站上，该网站有 24 小时随时可用的在线预约系统。使用 Hot pepper 的客人可点击下方预约链接，实时查看造型师的空闲时段，选择希望的项目与时间进行预约。</p>
-        <a href="reserve.html" class="booking-card-cta"><span class="lang-ja">今すぐ予約</span><span class="lang-cn">立即预约</span><svg width="18" height="10" viewBox="0 0 18 10" fill="none" stroke-width="1.2"><path d="M1 5h16M13 1l4 4-4 4"/></svg></a>
-      </div>
-
-      <!-- 02 WeChat -->
-      <div class="booking-card">
-        <div class="booking-num">02</div>
-        <svg class="booking-icon" viewBox="0 0 24 24"><path d="M9 3C5.13 3 2 5.69 2 9c0 1.87 1 3.54 2.56 4.64L4 16l2.73-1.5c.4.08.83.13 1.27.15M15 8c-3.87 0-7 2.69-7 6s3.13 6 7 6c.85 0 1.66-.13 2.4-.37L20 21l-.56-2.36C21 17.54 22 15.87 22 14c0-3.31-3.13-6-7-6z"/><circle cx="6" cy="8.5" r="0.6" fill="currentColor"/><circle cx="11" cy="8.5" r="0.6" fill="currentColor"/><circle cx="13" cy="13.5" r="0.6" fill="currentColor"/><circle cx="17" cy="13.5" r="0.6" fill="currentColor"/></svg>
-        <p class="booking-card-title-en">WeChat</p>
-        <h3 class="booking-card-title lang-ja">WeChat（微信）</h3>
-        <h3 class="booking-card-title lang-cn">微信预约</h3>
-        <p class="booking-card-body lang-ja">中国語でのご予約をご希望のお客様は、店舗カスタマーアシスタントのWeChatを追加してご希望の日時をお知らせください。追加時は「予約」とご記載ください。<br><span class="wechat-id">Yedda8425</span><br>下のボタンからQRコードを取得できます。</p>
-        <p class="booking-card-body lang-cn">使用中文的客人可以通过添加店铺客户助理的微信，预约适合的时间。添加时请备注"预约"。<br><span class="wechat-id">Yedda8425</span><br>点击下方按钮可获取微信二维码。</p>
-        <a href="#" onclick="showWeChatQR(event)" class="booking-card-cta"><span class="lang-ja">QRコードを表示</span><span class="lang-cn">获取二维码</span><svg width="18" height="10" viewBox="0 0 18 10" fill="none" stroke-width="1.2"><path d="M1 5h16M13 1l4 4-4 4"/></svg></a>
-      </div>
-
-      <!-- 03 Phone -->
-      <div class="booking-card">
-        <div class="booking-num">03</div>
-        <svg class="booking-icon" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-        <p class="booking-card-title-en">Telephone</p>
-        <h3 class="booking-card-title lang-ja">お電話</h3>
-        <h3 class="booking-card-title lang-cn">电话预约</h3>
-        <p class="booking-card-body lang-ja">お電話でのご予約も可能です。施術中などで対応できない場合は、折り返しご連絡いたします。<span class="hours">【受付時間】10:00 〜 19:00（月定休）</span></p>
-        <p class="booking-card-body lang-cn">也可通过电话进行预约。若因接待中暂时无法接听，我们将尽快回拨。<span class="hours">【营业时间】10:00 — 19:00（周一定休）</span></p>
-        <a href="tel:+81" class="booking-card-cta"><span class="lang-ja">電話する</span><span class="lang-cn">拨打电话</span><svg width="18" height="10" viewBox="0 0 18 10" fill="none" stroke-width="1.2"><path d="M1 5h16M13 1l4 4-4 4"/></svg></a>
-      </div>
-    </div>
-
-    <p class="booking-note lang-ja">※ 完全予約制／当日予約も空き状況によりご対応可能です</p>
-    <p class="booking-note lang-cn">※ 完全预约制 ／ 当日预约视空档情况而定</p>
-  </div>
-</section>
-
-<!-- WeChat QR Modal -->
-<div id="wechatQRModal" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(28,28,28,0.7);align-items:center;justify-content:center;" onclick="this.style.display='none'">
-  <div style="background:#fff;padding:48px 56px;max-width:360px;text-align:center;border:1px solid rgba(0,0,0,0.08);" onclick="event.stopPropagation()">
-    <p style="font-family:'Cormorant Garamond',serif;font-size:12px;letter-spacing:0.3em;color:var(--gold);margin-bottom:8px;">WECHAT</p>
-    <h4 class="lang-ja" style="font-family:'Noto Serif JP',serif;font-size:18px;font-weight:400;margin-bottom:24px;">店舗アシスタント</h4>
-    <h4 class="lang-cn" style="font-family:'Noto Serif JP',serif;font-size:18px;font-weight:400;margin-bottom:24px;">店铺助理</h4>
-    <div style="width:200px;height:200px;margin:0 auto;background:#f8f5f0;border:1px solid rgba(0,0,0,0.08);display:flex;align-items:center;justify-content:center;position:relative;">
-      <svg width="160" height="160" viewBox="0 0 160 160" style="display:block;">
-        <rect width="160" height="160" fill="#fff"/>
-        <g fill="#1c1c1c">
-          <rect x="10" y="10" width="40" height="40"/><rect x="20" y="20" width="20" height="20" fill="#fff"/><rect x="25" y="25" width="10" height="10"/>
-          <rect x="110" y="10" width="40" height="40"/><rect x="120" y="20" width="20" height="20" fill="#fff"/><rect x="125" y="25" width="10" height="10"/>
-          <rect x="10" y="110" width="40" height="40"/><rect x="20" y="120" width="20" height="20" fill="#fff"/><rect x="25" y="125" width="10" height="10"/>
-          <rect x="60" y="10" width="5" height="5"/><rect x="70" y="10" width="10" height="5"/><rect x="85" y="10" width="5" height="10"/><rect x="95" y="15" width="10" height="5"/>
-          <rect x="60" y="25" width="10" height="5"/><rect x="75" y="30" width="5" height="10"/><rect x="90" y="25" width="15" height="5"/><rect x="60" y="40" width="5" height="5"/><rect x="75" y="40" width="10" height="5"/><rect x="95" y="40" width="10" height="10"/>
-          <rect x="10" y="60" width="10" height="5"/><rect x="25" y="60" width="5" height="10"/><rect x="40" y="60" width="15" height="5"/><rect x="65" y="60" width="5" height="10"/><rect x="80" y="60" width="10" height="5"/><rect x="100" y="60" width="5" height="5"/><rect x="115" y="60" width="10" height="10"/><rect x="135" y="60" width="15" height="5"/>
-          <rect x="15" y="75" width="10" height="10"/><rect x="35" y="75" width="5" height="5"/><rect x="50" y="80" width="15" height="5"/><rect x="75" y="75" width="5" height="10"/><rect x="90" y="75" width="10" height="5"/><rect x="110" y="80" width="5" height="5"/><rect x="125" y="75" width="15" height="5"/><rect x="145" y="75" width="5" height="10"/>
-          <rect x="10" y="90" width="5" height="10"/><rect x="25" y="95" width="15" height="5"/><rect x="50" y="90" width="5" height="5"/><rect x="65" y="95" width="10" height="10"/><rect x="85" y="90" width="5" height="10"/><rect x="100" y="95" width="15" height="5"/><rect x="125" y="90" width="5" height="10"/><rect x="140" y="95" width="10" height="5"/>
-          <rect x="60" y="115" width="5" height="5"/><rect x="75" y="110" width="10" height="10"/><rect x="95" y="115" width="15" height="5"/><rect x="120" y="110" width="5" height="5"/><rect x="140" y="110" width="10" height="10"/>
-          <rect x="65" y="130" width="15" height="5"/><rect x="85" y="130" width="5" height="10"/><rect x="100" y="135" width="10" height="5"/><rect x="115" y="130" width="5" height="5"/><rect x="130" y="135" width="15" height="5"/>
-          <rect x="60" y="145" width="5" height="5"/><rect x="75" y="145" width="10" height="5"/><rect x="95" y="145" width="5" height="5"/><rect x="110" y="145" width="15" height="5"/><rect x="135" y="145" width="10" height="5"/>
-        </g>
-      </svg>
-    </div>
-    <p style="font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--gold);letter-spacing:0.08em;margin-top:20px;">Yedda8425</p>
-    <p class="lang-ja" style="font-family:'Noto Sans JP',sans-serif;font-size:11px;color:var(--fg-muted);margin-top:12px;letter-spacing:0.08em;line-height:1.8;">微信をスキャンして、「予約」とメッセージをお送りください</p>
-    <p class="lang-cn" style="font-family:'Noto Sans JP',sans-serif;font-size:11px;color:var(--fg-muted);margin-top:12px;letter-spacing:0.08em;line-height:1.8;">扫描二维码后发送"预约"即可</p>
-    <button onclick="document.getElementById('wechatQRModal').style.display='none'" style="margin-top:28px;background:none;border:none;font-family:'Cormorant Garamond',serif;font-size:12px;letter-spacing:0.3em;color:var(--fg-muted);cursor:pointer;text-transform:uppercase;">Close</button>
-  </div>
-</div>
-<script>
-function showWeChatQR(e){ e.preventDefault(); document.getElementById('wechatQRModal').style.display='flex'; }
-</script>
 
 <div class="reserve-band">
   <h2 class="section-title-en">Reservation</h2>
