@@ -51,11 +51,11 @@
 .fc-support-table tr:first-child th, .fc-support-table tr:first-child td { border-top: 1px solid var(--border); }
 @media(max-width:700px){ .fc-support-table th { width: 120px; padding: 14px 10px; } .fc-support-table td { padding: 14px 10px; } }
 
-.marquee-section { background: var(--charcoal); padding: 60px 0; overflow: hidden; }
+.marquee-section { background: #fff; padding: 30px 0 50px; overflow: hidden; }
 .marquee-wrap { overflow: hidden; width: 100%; }
 .marquee-track { display: flex; gap: 16px; width: max-content; animation: marquee-scroll 40s linear infinite; }
 .marquee-track:hover { animation-play-state: paused; }
-.marquee-item { height: 240px; width: 360px; flex-shrink: 0; background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%); border: 1px solid rgba(212,175,55,0.2); display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', serif; font-size: 48px; color: rgba(212,175,55,0.35); letter-spacing: 0.15em; }
+.marquee-item { height: 240px; width: 360px; flex-shrink: 0; background: linear-gradient(135deg, #f0ebe0 0%, #e4ddce 100%); border: 1px solid rgba(168,140,70,0.15); display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', serif; font-size: 48px; color: rgba(168,140,70,0.4); letter-spacing: 0.15em; }
 .marquee-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
 @keyframes marquee-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 @media(max-width:700px){ .marquee-item { height: 160px; width: 240px; font-size: 32px; } }
@@ -256,7 +256,7 @@
 </section>
 
 <!-- Section 4: 本部的支持 -->
-<section>
+<section style="background:#f8f5f0;padding-top:60px;">
   <div class="container" style="max-width: 980px;">
     <p class="section-label">HQ SUPPORT</p>
     <h2 class="section-title lang-ja">本部のサポート</h2>
@@ -284,18 +284,18 @@
     <h2 class="section-title lang-ja">開業費用</h2>
     <h2 class="section-title lang-cn">开业费用</h2>
     <div class="section-divider"></div>
-    <p class="fc-lead lang-ja" style="text-align:center;color:var(--fg-muted);margin-bottom:8px;">初期投資の予算：約 XXX 万円（加盟金・内装・機材等含む）</p>
-    <p class="fc-lead lang-cn" style="text-align:center;color:var(--fg-muted);margin-bottom:8px;">预估总投资约 XXX 万日元（含加盟金、装修、设备等）</p>
+    <p class="fc-lead lang-ja" style="text-align:center;color:var(--fg-muted);margin-bottom:8px;">初期投資の目安：約 1,200 万円（加盟金・内装・機材等含む）</p>
+    <p class="fc-lead lang-cn" style="text-align:center;color:var(--fg-muted);margin-bottom:8px;">预估总投资约 1,200 万日元（含加盟金、装修、设备等）</p>
 
     <dl class="fc-req" style="max-width:820px;margin:40px auto 0;">
-      <div class="fc-req-row"><dt class="lang-ja">加盟金</dt><dt class="lang-cn">加盟金</dt><dd class="lang-ja">200万円：ブランド使用権・初期研修</dd><dd class="lang-cn">200 万：品牌使用权、初始培训</dd></div>
-      <div class="fc-req-row"><dt class="lang-ja">賃料・保証金</dt><dt class="lang-cn">店铺租金及保证金</dt><dd class="lang-ja">XXX万円：立地エリアにより変動</dd><dd class="lang-cn">XXX 万：根据选址区域不同有所差异</dd></div>
-      <div class="fc-req-row"><dt class="lang-ja">内装工事</dt><dt class="lang-cn">装修费用</dt><dd class="lang-ja">XXX万円：SHUKR統一ブランド設計</dd><dd class="lang-cn">XXX 万：按 SHUKR 统一品牌形象设计施工</dd></div>
-      <div class="fc-req-row"><dt class="lang-ja">美容機材・器具</dt><dt class="lang-cn">美发设备及器具</dt><dd class="lang-ja">XXX万円：シャンプー台・カットチェア・ドライヤー等</dd><dd class="lang-cn">XXX 万：洗发床、剪发椅、吹风机等</dd></div>
-      <div class="fc-req-row"><dt class="lang-ja">初期在庫</dt><dt class="lang-cn">初始产品库存</dt><dd class="lang-ja">XXX万円：シャンプー・カラー剤・パーマ剤等</dd><dd class="lang-cn">XXX 万：洗发水、染烫产品等</dd></div>
-      <div class="fc-req-row"><dt class="lang-ja">開業マーケ費</dt><dt class="lang-cn">开业营销费用</dt><dd class="lang-ja">XXX万円：Hot Pepper掲載・SNSプロモ立ち上げ</dd><dd class="lang-cn">XXX 万：Hot Pepper 入驻、SNS 推广启动</dd></div>
-      <div class="fc-req-row"><dt class="lang-ja">運転資金</dt><dt class="lang-cn">运营流动资金</dt><dd class="lang-ja">XXX万円：運営2〜3ヶ月分を推奨</dd><dd class="lang-cn">XXX 万：建议预留 2-3 个月运营资金</dd></div>
-      <div class="fc-req-row" style="background:rgba(212,175,55,0.05);"><dt class="lang-ja">合計</dt><dt class="lang-cn">合计</dt><dd class="lang-ja">約 XXX 万円：立地・面積により変動</dd><dd class="lang-cn">约 XXX 万：具体根据店铺面积和选址确定</dd></div>
+      <div class="fc-req-row"><dt class="lang-ja">加盟金</dt><dt class="lang-cn">加盟金</dt><dd class="lang-ja">150 万円：ブランド使用権・初期研修</dd><dd class="lang-cn">150 万：品牌使用权、初始培训</dd></div>
+      <div class="fc-req-row"><dt class="lang-ja">店舗取得費</dt><dt class="lang-cn">店铺取得费</dt><dd class="lang-ja">300 万円：賃料・保証金・仲介料等</dd><dd class="lang-cn">300 万：租金、保证金、中介费等</dd></div>
+      <div class="fc-req-row"><dt class="lang-ja">内装工事費</dt><dt class="lang-cn">装修费</dt><dd class="lang-ja">500 万円：SHUKR統一ブランドデザインで施工</dd><dd class="lang-cn">500 万：按 SHUKR 统一品牌形象设计施工</dd></div>
+      <div class="fc-req-row"><dt class="lang-ja">設備・器具等</dt><dt class="lang-cn">设备器具等</dt><dd class="lang-ja">150 万円：シャンプー台・カットチェア・ドライヤー等</dd><dd class="lang-cn">150 万：洗发床、剪发椅、吹风机等</dd></div>
+      <div class="fc-req-row"><dt class="lang-ja">初回仕入れ</dt><dt class="lang-cn">首次进货</dt><dd class="lang-ja">50 万円：シャンプー・カラー剤・パーマ剤等</dd><dd class="lang-cn">50 万：洗发水、染烫产品等</dd></div>
+      <div class="fc-req-row"><dt class="lang-ja">開業マーケ費</dt><dt class="lang-cn">开业营销费用</dt><dd class="lang-ja">20 万円：Hot Pepper掲載・SNSプロモ立ち上げ</dd><dd class="lang-cn">20 万：Hot Pepper 入驻、SNS 推广启动</dd></div>
+      <div class="fc-req-row"><dt class="lang-ja">その他雑費</dt><dt class="lang-cn">其他杂费</dt><dd class="lang-ja">30 万円：開業関連諸費用</dd><dd class="lang-cn">30 万：开业相关各项杂费</dd></div>
+      <div class="fc-req-row" style="background:rgba(212,175,55,0.08);"><dt class="lang-ja">合計</dt><dt class="lang-cn">合计</dt><dd class="lang-ja">約 1,200 万円：立地・面積により変動</dd><dd class="lang-cn">约 1,200 万：具体根据店铺面积和选址确定</dd></div>
     </dl>
     <p class="fc-cost-note lang-ja">💡 上記は目安金額です。実際の費用は立地・面積等により変動します。加盟詳細はご相談時に正確な見積もりをお渡しします。</p>
     <p class="fc-cost-note lang-cn">💡 以上费用为预估值，实际金额根据选址、店铺面积等因素有所浮动。加盟详情可在咨询时获取精准报价。</p>
@@ -341,7 +341,7 @@
 </section>
 
 <!-- Section 7: 开业流程 -->
-<section>
+<section style="background:#fff;padding-top:60px;">
   <div class="container" style="max-width: 900px;">
     <p class="section-label">PROCESS</p>
     <h2 class="section-title lang-ja">開業までの流れ</h2>
@@ -377,11 +377,11 @@
       </details>
       <details>
         <summary><span class="lang-ja">加盟金はいくらですか？</span><span class="lang-cn">加盟金是多少？</span></summary>
-        <div><span class="lang-ja">加盟金は200万円で、ブランド使用権と初期研修費を含みます。</span><span class="lang-cn">加盟金为 200 万日元，包含品牌使用权和初始培训费用。</span></div>
+        <div><span class="lang-ja">加盟金は150万円で、ブランド使用権と初期研修費を含みます。</span><span class="lang-cn">加盟金为 150 万日元，包含品牌使用权和初始培训费用。</span></div>
       </details>
       <details>
         <summary><span class="lang-ja">開業総額はどれくらい必要ですか？</span><span class="lang-cn">开店大概需要多少总资金？</span></summary>
-        <div><span class="lang-ja">店舗面積・立地により異なりますが、初期投資の目安は約XXX万円（加盟金200万含む）です。詳細なお見積もりはご相談時にお渡しします。</span><span class="lang-cn">根据店铺面积和选址不同，预估总投资约 XXX 万日元左右（含加盟金 200 万）。具体费用可在咨询后获取详细报价。</span></div>
+        <div><span class="lang-ja">店舗面積・立地により異なりますが、初期投資の目安は約1,200万円（加盟金150万含む）です。詳細なお見積もりはご相談時にお渡しします。</span><span class="lang-cn">根据店铺面积和选址不同，预估总投资约 1,200 万日元左右（含加盟金 150 万）。具体费用可在咨询后获取详细报价。</span></div>
       </details>
       <details>
         <summary><span class="lang-ja">本部が店舗を探してくれますか？</span><span class="lang-cn">总部会帮我找店铺吗？</span></summary>
@@ -408,14 +408,14 @@
 </section>
 
 <!-- Section 9: 咨询表单 -->
-<section style="background:var(--charcoal);color:#fff;">
+<section style="background:#faf8f5;padding-top:60px;">
   <div class="container" style="max-width: 780px;">
-    <p class="section-label" style="color:var(--gold);">CONTACT</p>
-    <h2 class="section-title lang-ja" style="color:#fff;">加盟相談フォーム</h2>
+    <p class="section-label">CONTACT</p>
+    <h2 class="section-title lang-ja">加盟相談フォーム</h2>
     <h2 class="section-title lang-cn">加盟咨询表单</h2>
-    <div class="section-divider" style="background:var(--gold);"></div>
-    <p class="fc-lead lang-ja" style="text-align:center;">まずはお気軽にご相談ください。担当者よりご連絡いたします。</p>
-    <p class="fc-lead lang-cn" style="text-align:center;">欢迎先与我们轻松咨询，我们会尽快联系您。</p>
+    <div class="section-divider"></div>
+    <p class="fc-lead lang-ja" style="text-align:center;color:var(--fg-muted);">まずはお気軽にご相談ください。担当者よりご連絡いたします。</p>
+    <p class="fc-lead lang-cn" style="text-align:center;color:var(--fg-muted);">欢迎先与我们轻松咨询，我们会尽快联系您。</p>
 
     <form class="fc-form" id="fcForm" onsubmit="return submitFranchise(event)">
       <div class="fc-form-grid">
