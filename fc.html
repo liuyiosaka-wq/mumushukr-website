@@ -90,6 +90,28 @@
 .fc-form-msg { margin-top: 16px; font-family: 'Noto Sans JP', sans-serif; font-size: 13px; text-align: center; min-height: 20px; }
 .fc-form-msg.ok { color: #2d7a4a; }
 .fc-form-msg.err { color: #c94a4a; }
+
+/* Intro */
+.fc-intro { background: #fff; padding: 80px 40px 60px; text-align: center; }
+.fc-intro p { max-width: 820px; margin: 0 auto; font-family: 'Noto Sans JP', sans-serif; font-size: 15px; line-height: 2.2; color: var(--fg); font-weight: 300; letter-spacing: 0.06em; }
+
+/* Strength 3-subsection alternating */
+.fc-strength-block { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; margin: 80px 0; }
+.fc-strength-block.reverse .fc-strength-text { order: 2; }
+.fc-strength-block.reverse .fc-strength-img { order: 1; }
+.fc-strength-text h3 { font-family: 'Noto Serif JP', serif; font-size: 24px; font-weight: 400; letter-spacing: 0.1em; margin: 0 0 8px; line-height: 1.5; }
+.fc-strength-text .fc-sub-label { font-family: 'Cormorant Garamond', serif; font-size: 14px; letter-spacing: 0.25em; color: var(--gold); display: block; margin-bottom: 18px; }
+.fc-strength-text p { font-family: 'Noto Sans JP', sans-serif; font-size: 14px; line-height: 2; color: var(--fg-muted); font-weight: 300; letter-spacing: 0.05em; margin: 16px 0 0; }
+.fc-strength-text ul { list-style: none; padding: 0; margin: 16px 0 0; }
+.fc-strength-text ul li { font-family: 'Noto Sans JP', sans-serif; font-size: 13.5px; line-height: 1.95; color: var(--fg-muted); font-weight: 300; padding: 8px 0 8px 22px; position: relative; letter-spacing: 0.04em; }
+.fc-strength-text ul li::before { content: ''; position: absolute; left: 0; top: 18px; width: 12px; height: 1px; background: var(--gold); }
+.fc-strength-img { aspect-ratio: 4/3; background: linear-gradient(135deg, #ede8df 0%, #d8d2c5 100%); display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', serif; font-size: 48px; color: rgba(168,140,70,0.35); letter-spacing: 0.15em; }
+.fc-strength-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+@media(max-width:900px){ .fc-strength-block, .fc-strength-block.reverse { grid-template-columns: 1fr; gap: 24px; margin: 50px 0; } .fc-strength-block.reverse .fc-strength-text { order: 2; } .fc-strength-block.reverse .fc-strength-img { order: 1; } }
+
+/* Process jump button */
+.fc-step-btn { display: inline-block; margin-top: 12px; padding: 8px 20px; background: var(--gold); color: #fff; font-family: 'Noto Sans JP', sans-serif; font-size: 12px; letter-spacing: 0.12em; text-decoration: none; transition: background 0.2s; }
+.fc-step-btn:hover { background: #b8982f; }
 </style>
 </head>
 <body>
@@ -133,142 +155,102 @@
 </div>
 
 
-<!-- Section 1: SHUKR 的特点和优势 -->
-<section style="background:var(--charcoal);color:#fff;">
-  <div class="container" style="max-width: 1100px;">
-    <p class="section-label" style="color:var(--gold);">OUR STRENGTH</p>
-    <h2 class="section-title lang-ja" style="color:#fff;">SHUKRの特徴と優位性</h2>
-    <h2 class="section-title lang-cn" style="color:#fff;">SHUKR 的特点和优势</h2>
-    <div class="section-divider" style="background:var(--gold);"></div>
+<!-- Intro -->
+<section class="fc-intro">
+  <p class="lang-ja">SHUKRはムム株式会社傘下の美容ブランドで、本部は大阪にあります。日本国内で数少ない中国人運営の美容ブランドとして、経験豊富な技術リーダーを擁しています。全員が日本の美容専門学校出身で、確かな技術力に加え、新人の育成・チーム構築にも長けています。他の日本ブランドと比べ、我々は中国と日本、両国の美容市場ルール・サプライチェーン・集客チャネルに精通しています。</p>
+  <p class="lang-cn">SHUKR 是ムム株式会社旗下专业美发品牌，总部位于日本大阪。作为全日本为数不多由中国人运营的美发品牌，我们有经验丰富的技术骨干，他们均来自日本美发专门学校，不仅技术过硬，更懂得如何培训新人、组建团队。相比其他日本品牌，我们同时熟悉中国和日本的美发市场规则、供应链体系、获客渠道。</p>
+</section>
 
-    <h3 class="fc-sub-title on-dark lang-ja">中日両市場での集客、客足が途切れない</h3>
-    <h3 class="fc-sub-title on-dark lang-cn">中日双市场获客，客源不断档</h3>
-    <p class="fc-lead lang-ja" style="text-align:center;max-width:820px;margin:0 auto 40px;">SHUKRはムム株式会社傘下の美容ブランドで、本部は大阪にあります。最大の強みは——日本と中国、両国のSNSを同時に深く運営し、安定かつ多様な集客を実現していることです。</p>
-    <p class="fc-lead lang-cn" style="text-align:center;max-width:820px;margin:0 auto 40px;">SHUKR 是ムム株式会社旗下专业美发品牌，总部位于日本大阪。我们最大的优势在于——同时深耕中日两国社交媒体平台，为门店带来稳定且多元的客源。</p>
-
-    <div class="fc-grid">
-      <div class="fc-card">
-        <span class="fc-num">01</span>
-        <h3 class="fc-card-title lang-ja">日本マーケット</h3>
-        <h3 class="fc-card-title lang-cn">日本市场</h3>
-        <p class="fc-card-body lang-ja">Hot Pepper Beautyを本格運用し、日本ローカル層を的確にカバー。予約が安定。</p>
-        <p class="fc-card-body lang-cn">深度运营 Hot Pepper Beauty，精准覆盖日本本地客群，预约稳定。</p>
-      </div>
-      <div class="fc-card">
-        <span class="fc-num">02</span>
-        <h3 class="fc-card-title lang-ja">中国マーケット</h3>
-        <h3 class="fc-card-title lang-cn">中国市场</h3>
-        <p class="fc-card-body lang-ja">小紅書・抖音・視頻号などSNSを使いこなし、在日中国人・訪日観光客を集客。</p>
-        <p class="fc-card-body lang-cn">精通小红书、抖音、视频号等社交平台，吸引在华日本人及中国游客。</p>
-      </div>
-      <div class="fc-card">
-        <span class="fc-num">03</span>
-        <h3 class="fc-card-title lang-ja">ダブルプラットフォーム連動</h3>
-        <h3 class="fc-card-title lang-cn">双平台联动</h3>
-        <p class="fc-card-body lang-ja">単一チャネル依存の従来型サロンと異なり、独自の二市場集客体系を構築。閑散期も強く、繁忙期はさらに強く。</p>
-        <p class="fc-card-body lang-cn">不同于传统沙龙依赖单一渠道，我们构建了一套完整的双市场获客体系，淡季不淡、旺季更旺。</p>
-      </div>
+<!-- Marquee: TODO 用户上传工作照后把 .marquee-item 换成 <img src="assets/marquee/xx.jpg"> -->
+<section class="marquee-section">
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <div class="marquee-item">01</div>
+      <div class="marquee-item">02</div>
+      <div class="marquee-item">03</div>
+      <div class="marquee-item">04</div>
+      <div class="marquee-item">05</div>
+      <div class="marquee-item">06</div>
+      <div class="marquee-item">07</div>
+      <div class="marquee-item">08</div>
+      <div class="marquee-item">01</div>
+      <div class="marquee-item">02</div>
+      <div class="marquee-item">03</div>
+      <div class="marquee-item">04</div>
+      <div class="marquee-item">05</div>
+      <div class="marquee-item">06</div>
+      <div class="marquee-item">07</div>
+      <div class="marquee-item">08</div>
     </div>
-
-    <h3 class="fc-sub-title on-dark lang-ja">プロ運営チーム、データドリブン経営</h3>
-    <h3 class="fc-sub-title on-dark lang-cn">专业运营团队，数据驱动经营</h3>
-    <ul class="fc-bullet on-dark">
-      <li class="lang-ja">中日両国SNSのアルゴリズムと運営ロジックに精通</li>
-      <li class="lang-cn">熟悉中日两国社交媒体算法和运营逻辑</li>
-      <li class="lang-ja">データドリブンで広告投下を最適化、一円もムダにしない</li>
-      <li class="lang-cn">用数据指导营销投放，每一分推广费用都花在刀刃上</li>
-      <li class="lang-ja">オンライン予約から店舗施術まで、全工程を標準化</li>
-      <li class="lang-cn">从线上预约到线下服务，全流程标准化管理</li>
-    </ul>
   </div>
 </section>
 
-<!-- Section 2: 美发师以外的人也可以加盟 -->
+<!-- Section 1: SHUKR 的特点和优势 (3 subsections stacked) -->
 <section>
-  <div class="container">
-    <p class="section-label">WHO CAN JOIN</p>
-    <h2 class="section-title lang-ja">美容師以外の方も加盟可能</h2>
-    <h2 class="section-title lang-cn">美发师以外的人也可以加盟</h2>
+  <div class="container" style="max-width: 1080px;">
+    <p class="section-label">OUR STRENGTH</p>
+    <h2 class="section-title lang-ja">SHUKRの特徴と優位性</h2>
+    <h2 class="section-title lang-cn">SHUKR 的特点和优势</h2>
     <div class="section-divider"></div>
-    <h3 class="fc-sub-title lang-ja">業種不問、起業マインドがあれば</h3>
-    <h3 class="fc-sub-title lang-cn">不限行业背景，只要你有创业心</h3>
-    <p class="fc-lead lang-ja" style="text-align:center;max-width:820px;margin:0 auto 40px;color:var(--fg-muted);">SHUKRの加盟には美容師資格は必須ではありません。様々な業界から、美容業界に情熱を持つ起業家の参加を歓迎します。</p>
-    <p class="fc-lead lang-cn" style="text-align:center;max-width:820px;margin:0 auto 40px;color:var(--fg-muted);">加盟 SHUKR，不要求你必须是美发师出身。我们欢迎来自各行各业、对美发行业有热情的创业者加入。</p>
 
-    <div class="fc-grid">
-      <div class="fc-card">
-        <span class="fc-num">01</span>
-        <h3 class="fc-card-title lang-ja">経営経験がある方</h3>
-        <h3 class="fc-card-title lang-cn">有经营管理经验？</h3>
-        <p class="fc-card-body lang-ja">ぜひ！店舗運営はそのまま活かせます。</p>
-        <p class="fc-card-body lang-cn">太好了，门店运营你直接上手。</p>
-      </div>
-      <div class="fc-card">
-        <span class="fc-num">02</span>
-        <h3 class="fc-card-title lang-ja">美容未経験の方</h3>
-        <h3 class="fc-card-title lang-cn">完全没有美发经验？</h3>
-        <p class="fc-card-body lang-ja">問題ありません。本部が技術研修と経営研修をフルサポート。</p>
-        <p class="fc-card-body lang-cn">没问题，总部提供全套技术培训和管理培训。</p>
-      </div>
-      <div class="fc-card">
-        <span class="fc-num">03</span>
-        <h3 class="fc-card-title lang-ja">第二の事業を広げたい方</h3>
-        <h3 class="fc-card-title lang-cn">想拓展第二事业？</h3>
-        <p class="fc-card-body lang-ja">直営FC一体化モデルなら、本業がある方でも安定経営が可能です。</p>
-        <p class="fc-card-body lang-cn">SHUKR 的直营加盟一体化模式，让你即使有其他工作也能稳步经营。</p>
-      </div>
-    </div>
-
-    <h3 class="fc-sub-title lang-ja" style="margin-top:70px;">志を同じくするパートナーを募集</h3>
-    <h3 class="fc-sub-title lang-cn" style="margin-top:70px;">我们找的是志同道合的伙伴</h3>
-    <ul class="fc-bullet">
-      <li class="lang-ja">SHUKRのブランド理念に共感できる方</li>
-      <li class="lang-cn">认同 SHUKR 的品牌理念</li>
-      <li class="lang-ja">長期的に投資し、共に事業を大きくしていきたい方</li>
-      <li class="lang-cn">愿意长期投入，共同做大</li>
-      <li class="lang-ja">基本的なビジネス感覚と学習意欲のある方</li>
-      <li class="lang-cn">有基本的商业意识和学习能力</li>
-    </ul>
-  </div>
-</section>
-
-<!-- Section 3: 直营加盟一体化 -->
-<section style="background:#f8f5f0;">
-  <div class="container" style="max-width: 1000px;">
-    <p class="section-label">INTEGRATED MODEL</p>
-    <h2 class="section-title lang-ja">直営・FC一体化運営</h2>
-    <h2 class="section-title lang-cn">直营加盟一体化运作</h2>
-    <div class="section-divider"></div>
-    <h3 class="fc-sub-title lang-ja">直営で検証、FCで複製、リスク低減</h3>
-    <h3 class="fc-sub-title lang-cn">直营打样，加盟复制，风险更低</h3>
-    <p class="fc-lead lang-ja" style="text-align:center;max-width:820px;margin:0 auto 30px;color:var(--fg-muted);">SHUKRは直営・FC一体化モデルを採用——本部が自ら店舗を開き、ビジネスモデルを検証し、標準化フローを磨き上げてから、検証済みの成功体験を加盟店に複製します。</p>
-    <p class="fc-lead lang-cn" style="text-align:center;max-width:820px;margin:0 auto 30px;color:var(--fg-muted);">SHUKR 采用直营加盟一体化运营模式——总部先自己开店验证商业模式，打磨标准化流程，再把经过市场检验的成功经验复制到加盟店。</p>
-
-    <div class="fc-two-col">
-      <div class="fc-col-box">
-        <h4 class="lang-ja">直営店の価値</h4>
-        <h4 class="lang-cn">直营店的价值</h4>
+    <!-- Block 1: 中日双市场获客 -->
+    <div class="fc-strength-block">
+      <div class="fc-strength-text">
+        <span class="fc-sub-label">01 — TWO MARKETS</span>
+        <h3 class="lang-ja">中日両市場での集客、<br>客足が途切れない</h3>
+        <h3 class="lang-cn">中日双市场获客，<br>客源不断档</h3>
+        <p class="lang-ja">SHUKRは日本と中国、両国のSNSを同時に深く運営し、安定かつ多様な集客を実現します。単一チャネル依存の従来型サロンとは異なる、独自の二市場集客体系を構築しています。</p>
+        <p class="lang-cn">同时深耕中日两国社交媒体平台，为门店带来稳定且多元的客源。不同于传统沙龙依赖单一渠道，我们构建了一套完整的双市场获客体系。</p>
         <ul>
-          <li class="lang-ja">運営フロー・集客方法・管理基準、すべて直営店で先行検証</li>
-          <li class="lang-cn">所有运营流程、获客方法、管理标准，直营店先行测试</li>
-          <li class="lang-ja">加盟店開業後は、直営で磨いたノウハウをそのまま複製可能</li>
-          <li class="lang-cn">加盟店开业后，可以直接复制直营店的成熟经验</li>
-          <li class="lang-ja">課題発生時、直営店が即座に解決策を提供</li>
-          <li class="lang-cn">遇到问题，直营店第一时间提供解决方案</li>
+          <li class="lang-ja">日本：Hot Pepper Beautyを本格運用、ローカル層を的確にカバー</li>
+          <li class="lang-cn">日本：深度运营 Hot Pepper Beauty，精准覆盖日本本地客群</li>
+          <li class="lang-ja">中国：小紅書・抖音・視頻号で在日中国人と訪日観光客を集客</li>
+          <li class="lang-cn">中国：精通小红书、抖音、视频号，吸引在日中国人及中国游客</li>
+          <li class="lang-ja">ダブルプラットフォーム連動：閑散期も強く、繁忙期はさらに強く</li>
+          <li class="lang-cn">双平台联动：淡季不淡、旺季更旺</li>
         </ul>
       </div>
-      <div class="fc-col-box">
-        <h4 class="lang-ja">加盟店の収益</h4>
-        <h4 class="lang-cn">加盟店的收益</h4>
+      <div class="fc-strength-img">01</div>
+    </div>
+
+    <!-- Block 2: 美发师以外也可以加盟 -->
+    <div class="fc-strength-block reverse">
+      <div class="fc-strength-text">
+        <span class="fc-sub-label">02 — OPEN TO ALL</span>
+        <h3 class="lang-ja">美容師以外の方も<br>加盟可能</h3>
+        <h3 class="lang-cn">美发师以外的人<br>也可以加盟</h3>
+        <p class="lang-ja">SHUKRの加盟には美容師資格は必須ではありません。業種不問、起業マインドがあれば、様々なバックグラウンドの方を歓迎します。</p>
+        <p class="lang-cn">加盟 SHUKR 不要求你必须是美发师出身。不限行业背景，只要你有创业心，欢迎来自各行各业的创业者加入。</p>
         <ul>
-          <li class="lang-ja">自己流で試行錯誤せず、遠回りを避けられる</li>
-          <li class="lang-cn">不用自己摸索，少走弯路</li>
-          <li class="lang-ja">本部が最適化済みの運営プランを継続的に提供</li>
-          <li class="lang-cn">总部持续输出优化后的运营方案</li>
+          <li class="lang-ja">経営経験者：店舗運営のノウハウをそのまま活かせる</li>
+          <li class="lang-cn">有经营经验：门店运营你直接上手</li>
+          <li class="lang-ja">美容未経験者：本部が技術研修・経営研修をフルサポート</li>
+          <li class="lang-cn">无美发经验：总部提供全套技术培训和管理培训</li>
+          <li class="lang-ja">副業として：本業がある方でも直営FC一体化で安定経営</li>
+          <li class="lang-cn">拓展第二事业：直营加盟一体化，有其他工作也能稳步经营</li>
+        </ul>
+      </div>
+      <div class="fc-strength-img">02</div>
+    </div>
+
+    <!-- Block 3: 直营加盟一体化 -->
+    <div class="fc-strength-block">
+      <div class="fc-strength-text">
+        <span class="fc-sub-label">03 — INTEGRATED MODEL</span>
+        <h3 class="lang-ja">直営・FC一体化運営、<br>リスク低減</h3>
+        <h3 class="lang-cn">直营加盟一体运作，<br>风险更低</h3>
+        <p class="lang-ja">本部が自ら店舗を開きビジネスモデルを検証、標準化フローを磨き上げてから加盟店に複製します。直営で打様、FCで複製——遠回りを避け、継続改善の成果を享受できます。</p>
+        <p class="lang-cn">总部先自己开店验证商业模式，打磨标准化流程，再把成功经验复制到加盟店。直营打样、加盟复制——少走弯路，共享优化后的运营方案。</p>
+        <ul>
+          <li class="lang-ja">全運営フローは直営店で先行検証、加盟店はそのまま複製可能</li>
+          <li class="lang-cn">所有运营流程直营店先行测试，加盟店直接复制成熟经验</li>
+          <li class="lang-ja">課題発生時、直営店が即座に解決策を提供</li>
+          <li class="lang-cn">遇到问题，直营店第一时间提供解决方案</li>
           <li class="lang-ja">直営・FCで集客チャネル・サプライチェーンを共有</li>
           <li class="lang-cn">直营和加盟共享获客渠道、供应链资源</li>
         </ul>
       </div>
+      <div class="fc-strength-img">03</div>
     </div>
   </div>
 </section>
@@ -292,31 +274,6 @@
       <tr><th class="lang-ja">仕入れ支援</th><th class="lang-cn">供应链支持</th><td class="lang-ja">薬剤・機材の調達ルート、本部一括仕入れでコストダウン</td><td class="lang-cn">美发产品、设备采购渠道，统一议价降低成本</td></tr>
       <tr><th class="lang-ja">継続改善</th><th class="lang-cn">持续优化</th><td class="lang-ja">定期訪問・経営診断・プラン改訂で継続黒字化を支援</td><td class="lang-cn">定期回访、经营诊断、方案迭代，确保门店持续盈利</td></tr>
     </table>
-  </div>
-</section>
-
-<!-- Marquee: TODO 用户上传工作照后替换下方 .marquee-item 为 <img src="assets/marquee/xx.jpg"> -->
-<section class="marquee-section">
-  <div class="marquee-wrap">
-    <div class="marquee-track">
-      <div class="marquee-item">01</div>
-      <div class="marquee-item">02</div>
-      <div class="marquee-item">03</div>
-      <div class="marquee-item">04</div>
-      <div class="marquee-item">05</div>
-      <div class="marquee-item">06</div>
-      <div class="marquee-item">07</div>
-      <div class="marquee-item">08</div>
-      <!-- 复制一份实现无缝循环 -->
-      <div class="marquee-item">01</div>
-      <div class="marquee-item">02</div>
-      <div class="marquee-item">03</div>
-      <div class="marquee-item">04</div>
-      <div class="marquee-item">05</div>
-      <div class="marquee-item">06</div>
-      <div class="marquee-item">07</div>
-      <div class="marquee-item">08</div>
-    </div>
   </div>
 </section>
 
@@ -394,7 +351,7 @@
     <p class="fc-lead lang-cn" style="text-align:center;color:var(--fg-muted);">从咨询到开业，约 4-6 个月</p>
 
     <ol class="fc-steps">
-      <li><span class="fc-step-num">01</span><div><h4 class="lang-ja">お問い合わせ</h4><h4 class="lang-cn">咨询了解</h4><p class="lang-ja">フォーム・電話で加盟ポリシーとブランド理念をご案内</p><p class="lang-cn">填写咨询表单或电话联系我们，了解 SHUKR 加盟政策和品牌理念</p></div></li>
+      <li><span class="fc-step-num">01</span><div><h4 class="lang-ja">お問い合わせ</h4><h4 class="lang-cn">咨询了解</h4><p class="lang-ja">フォーム・電話で加盟ポリシーとブランド理念をご案内</p><p class="lang-cn">填写咨询表单或电话联系我们，了解 SHUKR 加盟政策和品牌理念</p><a href="#fcForm" class="fc-step-btn lang-ja">相談フォームへ →</a><a href="#fcForm" class="fc-step-btn lang-cn">前往咨询表单 →</a></div></li>
       <li><span class="fc-step-num">02</span><div><h4 class="lang-ja">面談</h4><h4 class="lang-cn">面谈沟通</h4><p class="lang-ja">本部による1対1での加盟モデル・費用・支援体制のご説明</p><p class="lang-cn">总部安排一对一沟通，详细介绍加盟模式、费用、支持体系</p></div></li>
       <li><span class="fc-step-num">03</span><div><h4 class="lang-ja">契約締結</h4><h4 class="lang-cn">签订加盟合同</h4><p class="lang-ja">双方の合意を確認し、加盟契約を締結</p><p class="lang-cn">双方确认合作意向，签订加盟协议</p></div></li>
       <li><span class="fc-step-num">04</span><div><h4 class="lang-ja">立地評価</h4><h4 class="lang-cn">选址评估</h4><p class="lang-ja">本部が商圏・立地を評価、最適場所を確定</p><p class="lang-cn">总部协助评估商圈和选址，确定最优开店位置</p></div></li>
@@ -415,52 +372,36 @@
 
     <div class="fc-faq">
       <details>
-        <summary class="lang-ja">美容経験がなくても加盟できますか？</summary>
-        <summary class="lang-cn">没有美发经验可以加盟吗？</summary>
-        <div class="lang-ja">全く問題ありません。SHUKRは加盟パートナーに完全な技術研修と経営研修体系を提供します。基礎技術から店舗運営まで、段階的にサポートいたします。直営店での実地研修の場もご用意しています。</div>
-        <div class="lang-cn">完全可以。SHUKR 为加盟伙伴提供完整的技术培训和管理培训体系，从基础技术到门店运营，一步步带你上手。我们的直营店也会提供实操培训场地。</div>
+        <summary><span class="lang-ja">美容経験がなくても加盟できますか？</span><span class="lang-cn">没有美发经验可以加盟吗？</span></summary>
+        <div><span class="lang-ja">全く問題ありません。SHUKRは加盟パートナーに完全な技術研修と経営研修体系を提供します。基礎技術から店舗運営まで、段階的にサポートいたします。直営店での実地研修の場もご用意しています。</span><span class="lang-cn">完全可以。SHUKR 为加盟伙伴提供完整的技术培训和管理培训体系，从基础技术到门店运营，一步步带你上手。我们的直营店也会提供实操培训场地。</span></div>
       </details>
       <details>
-        <summary class="lang-ja">加盟金はいくらですか？</summary>
-        <summary class="lang-cn">加盟金是多少？</summary>
-        <div class="lang-ja">加盟金は200万円で、ブランド使用権と初期研修費を含みます。</div>
-        <div class="lang-cn">加盟金为 200 万日元，包含品牌使用权和初始培训费用。</div>
+        <summary><span class="lang-ja">加盟金はいくらですか？</span><span class="lang-cn">加盟金是多少？</span></summary>
+        <div><span class="lang-ja">加盟金は200万円で、ブランド使用権と初期研修費を含みます。</span><span class="lang-cn">加盟金为 200 万日元，包含品牌使用权和初始培训费用。</span></div>
       </details>
       <details>
-        <summary class="lang-ja">開業総額はどれくらい必要ですか？</summary>
-        <summary class="lang-cn">开店大概需要多少总资金？</summary>
-        <div class="lang-ja">店舗面積・立地により異なりますが、初期投資の目安は約XXX万円（加盟金200万含む）です。詳細なお見積もりはご相談時にお渡しします。</div>
-        <div class="lang-cn">根据店铺面积和选址不同，预估总投资约 XXX 万日元左右（含加盟金 200 万）。具体费用可在咨询后获取详细报价。</div>
+        <summary><span class="lang-ja">開業総額はどれくらい必要ですか？</span><span class="lang-cn">开店大概需要多少总资金？</span></summary>
+        <div><span class="lang-ja">店舗面積・立地により異なりますが、初期投資の目安は約XXX万円（加盟金200万含む）です。詳細なお見積もりはご相談時にお渡しします。</span><span class="lang-cn">根据店铺面积和选址不同，预估总投资约 XXX 万日元左右（含加盟金 200 万）。具体费用可在咨询后获取详细报价。</span></div>
       </details>
       <details>
-        <summary class="lang-ja">本部が店舗を探してくれますか？</summary>
-        <summary class="lang-cn">总部会帮我找店铺吗？</summary>
-        <div class="lang-ja">はい。本部が商圏・客流・競合を分析し、適切な立地をご提案します。最終的な賃貸契約は加盟店オーナー様ご自身で締結いただきます。</div>
-        <div class="lang-cn">是的。总部会协助评估商圈、分析客流和竞品情况，推荐合适的选址。最终的租赁合同由加盟商自行签订。</div>
+        <summary><span class="lang-ja">本部が店舗を探してくれますか？</span><span class="lang-cn">总部会帮我找店铺吗？</span></summary>
+        <div><span class="lang-ja">はい。本部が商圏・客流・競合を分析し、適切な立地をご提案します。最終的な賃貸契約は加盟店オーナー様ご自身で締結いただきます。</span><span class="lang-cn">是的。总部会协助评估商圈、分析客流和竞品情况，推荐合适的选址。最终的租赁合同由加盟商自行签订。</span></div>
       </details>
       <details>
-        <summary class="lang-ja">Hot Pepperや小紅書の運営は本部がやってくれますか？</summary>
-        <summary class="lang-cn">Hot Pepper 和小红书运营总部会管吗？</summary>
-        <div class="lang-ja">はい。SHUKRの核心的強みの一つが二大プラットフォームでの集客力です。本部がHot Pepperページ運営、小紅書/抖音コンテンツ企画、オンライン予約管理まで全方位でサポートし、安定した集客を確保します。</div>
-        <div class="lang-cn">会。SHUKR 的核心优势之一就是双平台获客能力。总部提供 Hot Pepper 页面运营、小红书/抖音内容策划、线上预约管理等全方位支持，确保门店客源稳定。</div>
+        <summary><span class="lang-ja">Hot Pepperや小紅書の運営は本部がやってくれますか？</span><span class="lang-cn">Hot Pepper 和小红书运营总部会管吗？</span></summary>
+        <div><span class="lang-ja">はい。SHUKRの核心的強みの一つが二大プラットフォームでの集客力です。本部がHot Pepperページ運営、小紅書/抖音コンテンツ企画、オンライン予約管理まで全方位でサポートし、安定した集客を確保します。</span><span class="lang-cn">会。SHUKR 的核心优势之一就是双平台获客能力。总部提供 Hot Pepper 页面运营、小红书/抖音内容策划、线上预约管理等全方位支持，确保门店客源稳定。</span></div>
       </details>
       <details>
-        <summary class="lang-ja">ロイヤリティは発生しますか？</summary>
-        <summary class="lang-cn">加盟店需要交特许权使用费吗？</summary>
-        <div class="lang-ja">はい、月間売上の5%をロイヤリティとして頂戴します。詳細な費用構造は加盟契約に明記されており、ご相談時に詳しくご説明いたします。</div>
-        <div class="lang-cn">是的，每月营业额提成为 5%。具体费用结构在加盟合同中有明确约定，咨询时我们会详细说明。</div>
+        <summary><span class="lang-ja">ロイヤリティは発生しますか？</span><span class="lang-cn">加盟店需要交特许权使用费吗？</span></summary>
+        <div><span class="lang-ja">はい、月間売上の5%をロイヤリティとして頂戴します。詳細な費用構造は加盟契約に明記されており、ご相談時に詳しくご説明いたします。</span><span class="lang-cn">是的，每月营业额提成为 5%。具体费用结构在加盟合同中有明确约定，咨询时我们会详细说明。</span></div>
       </details>
       <details>
-        <summary class="lang-ja">どのエリアで出店できますか？</summary>
-        <summary class="lang-cn">可以在哪些区域开店？</summary>
-        <div class="lang-ja">現在は関西エリア（大阪・京都・神戸等）を中心に募集しています。その他地域は市場状況を踏まえて個別に評価いたします。出店可能エリアの詳細は面談時にご相談ください。</div>
-        <div class="lang-cn">目前以日本关西地区（大阪、京都、神户等）为主，其他地区根据市场情况评估。具体可开店区域可在面谈时沟通。</div>
+        <summary><span class="lang-ja">どのエリアで出店できますか？</span><span class="lang-cn">可以在哪些区域开店？</span></summary>
+        <div><span class="lang-ja">現在は関西エリア（大阪・京都・神戸等）を中心に募集しています。その他地域は市場状況を踏まえて個別に評価いたします。出店可能エリアの詳細は面談時にご相談ください。</span><span class="lang-cn">目前以日本关西地区（大阪、京都、神户等）为主，其他地区根据市场情况评估。具体可开店区域可在面谈时沟通。</span></div>
       </details>
       <details>
-        <summary class="lang-ja">加盟後も本部のサポートは続きますか？</summary>
-        <summary class="lang-cn">加盟后总部还会持续支持吗？</summary>
-        <div class="lang-ja">もちろんです。開業はスタートに過ぎません。本部は運営指導、集客最適化、技術研修等を継続提供し、定期的に店舗運営状況を訪問確認、加盟店の持続的な黒字化を支援します。</div>
-        <div class="lang-cn">当然。开业只是开始，总部会持续提供运营指导、获客优化、技术培训等支持，定期回访门店经营状况，确保加盟店持续盈利。</div>
+        <summary><span class="lang-ja">加盟後も本部のサポートは続きますか？</span><span class="lang-cn">加盟后总部还会持续支持吗？</span></summary>
+        <div><span class="lang-ja">もちろんです。開業はスタートに過ぎません。本部は運営指導、集客最適化、技術研修等を継続提供し、定期的に店舗運営状況を訪問確認、加盟店の持続的な黒字化を支援します。</span><span class="lang-cn">当然。开业只是开始，总部会持续提供运营指导、获客优化、技术培训等支持，定期回访门店经营状况，确保加盟店持续盈利。</span></div>
       </details>
     </div>
   </div>
