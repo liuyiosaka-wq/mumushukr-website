@@ -38,3 +38,21 @@ CREATE INDEX IF NOT EXISTS idx_reservations_date
 
 CREATE INDEX IF NOT EXISTS idx_reservations_created_at
   ON reservations (created_at DESC);
+
+-- 加盟咨询表（FC 页表单提交数据）
+CREATE TABLE IF NOT EXISTS franchise_inquiries (
+  id         BIGSERIAL PRIMARY KEY,
+  name       TEXT NOT NULL,
+  phone      TEXT NOT NULL,
+  email      TEXT NOT NULL,
+  area       TEXT,
+  experience TEXT CHECK (experience IN ('beauty', 'management', 'none') OR experience IS NULL),
+  budget     TEXT CHECK (budget IN ('under500', '500-1000', 'over1000', 'tbd') OR budget IS NULL),
+  notes      TEXT,
+  lang       TEXT NOT NULL DEFAULT 'ja' CHECK (lang IN ('ja', 'zh')),
+  status     TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'contacted', 'closed')),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_franchise_inquiries_created_at
+  ON franchise_inquiries (created_at DESC);

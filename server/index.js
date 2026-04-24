@@ -13,6 +13,7 @@ app.use(express.static(path.join(__dirname, '..')));
 app.use('/api/chat', require('./routes/chat'));
 app.use('/api/availability', require('./routes/availability'));
 app.use('/api/reservations', require('./routes/reservations'));
+app.use('/api/franchise', require('./routes/franchise'));
 
 // 兜底：其他路由返回首页
 app.get('*', (req, res) => {
