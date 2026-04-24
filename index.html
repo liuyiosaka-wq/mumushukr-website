@@ -172,6 +172,20 @@
   .about-home-list dt { font-family: 'Noto Sans JP', sans-serif; font-size: 11px; letter-spacing: 0.2em; color: var(--gold); padding-top: 3px; }
   .about-home-list dd { font-family: 'Noto Sans JP', sans-serif; font-size: 13px; font-weight: 300; line-height: 1.9; letter-spacing: 0.05em; color: rgba(255,255,255,0.8); }
   @media(max-width:900px){ #about-home .container > div { grid-template-columns: 1fr !important; gap: 40px !important; } }
+
+  /* === 手机端适配 === */
+  @media(max-width:900px){
+    .concept-inner { grid-template-columns: 1fr; gap: 32px; }
+    .concept-img { aspect-ratio: 4/5; max-width: 100%; }
+    .concept-text { padding: 0; }
+    .services-grid { grid-template-columns: repeat(2, 1fr); gap: 2px; }
+    .service-card { padding: 28px 20px; }
+    .stylists-grid { grid-template-columns: 1fr; gap: 30px; max-width: 420px; }
+  }
+  @media(max-width:500px){
+    .services-grid { grid-template-columns: 1fr; }
+    .service-card { padding: 32px 24px; }
+  }
 </style>
 </head>
 <body>

@@ -171,9 +171,102 @@ async function submitReservation(event) {
   }
 }
 
+// ═══ 移动端汉堡菜单 ═══
+
+function initMobileMenu() {
+  const nav = document.getElementById('mainNav');
+  if (!nav) return;
+  const navRight = nav.querySelector('.nav-right');
+  const navLinks = nav.querySelector('.nav-links');
+  if (!navRight || !navLinks) return;
+
+  // 汉堡按钮
+  const burger = document.createElement('button');
+  burger.className = 'nav-hamburger';
+  burger.setAttribute('aria-label', 'Menu');
+  burger.innerHTML = '<span></span><span></span><span></span>';
+  navRight.appendChild(burger);
+
+  // 遮罩
+  const overlay = document.createElement('div');
+  overlay.className = 'mobile-menu-overlay';
+  document.body.appendChild(overlay);
+
+  // 抽屉（复制导航项）
+  const drawer = document.createElement('div');
+  drawer.className = 'mobile-menu';
+  const linksClone = navLinks.cloneNode(true);
+  linksClone.classList.remove('nav-links');
+  drawer.appendChild(linksClone);
+
+  // 语言切换
+  const isZh = document.body.classList.contains('zh');
+  const langDiv = document.createElement('div');
+  langDiv.className = 'lang-switch';
+  langDiv.innerHTML = `
+    <button class="lang-btn ${isZh ? 'active' : ''}" onclick="setLang('zh')">中文</button>
+    <button class="lang-btn ${isZh ? '' : 'active'}" onclick="setLang('ja')">日本語</button>
+  `;
+  drawer.appendChild(langDiv);
+
+  // 预约按钮
+  const reserveBtn = document.createElement('a');
+  reserveBtn.href = 'reserve.html';
+  reserveBtn.className = 'btn-reserve lang-ja';
+  reserveBtn.textContent = '予約する';
+  const reserveBtnCn = document.createElement('a');
+  reserveBtnCn.href = 'reserve.html';
+  reserveBtnCn.className = 'btn-reserve lang-cn';
+  reserveBtnCn.textContent = '立即预约';
+  drawer.appendChild(reserveBtn);
+  drawer.appendChild(reserveBtnCn);
+
+  document.body.appendChild(drawer);
+
+  const close = () => { burger.classList.remove('open'); drawer.classList.remove('open'); overlay.classList.remove('open'); };
+  const open = () => { burger.classList.add('open'); drawer.classList.add('open'); overlay.classList.add('open'); };
+  burger.addEventListener('click', () => {
+    drawer.classList.contains('open') ? close() : open();
+  });
+  overlay.addEventListener('click', close);
+  drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', close));
+}
+
+// ═══ AI 客服提示气泡 ═══
+
+function initChatTooltip() {
+  const btn = document.querySelector('.ai-chat-btn');
+  if (!btn) return;
+  if (localStorage.getItem('shukr-chat-tooltip-dismissed') === '1') return;
+
+  const tip = document.createElement('div');
+  tip.className = 'ai-chat-tooltip';
+  tip.innerHTML = `
+    <button class="ai-chat-tooltip-close" aria-label="close">×</button>
+    <span class="lang-ja">ご質問があればお気軽にどうぞ！</span>
+    <span class="lang-cn">有任何问题欢迎咨询我们的 AI 助理</span>
+  `;
+  document.body.appendChild(tip);
+
+  const dismiss = () => {
+    tip.classList.remove('show');
+    localStorage.setItem('shukr-chat-tooltip-dismissed', '1');
+    setTimeout(() => tip.remove(), 500);
+  };
+  tip.querySelector('.ai-chat-tooltip-close').addEventListener('click', (e) => { e.stopPropagation(); dismiss(); });
+  tip.addEventListener('click', () => { dismiss(); toggleChat(); });
+
+  setTimeout(() => tip.classList.add('show'), 3500);
+  setTimeout(() => {
+    if (localStorage.getItem('shukr-chat-tooltip-dismissed') !== '1') dismiss();
+  }, 12000);
+}
+
 // ═══ 初始化 ═══
 
 document.addEventListener('DOMContentLoaded', () => {
   const saved = localStorage.getItem('shukr-lang') || 'ja';
   setLang(saved);
+  initMobileMenu();
+  initChatTooltip();
 });
