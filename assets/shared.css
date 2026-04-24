@@ -125,19 +125,6 @@ section { padding: 100px 0; }
   width: 40px; height: 1px; background: var(--gold); margin-bottom: 32px;
 }
 
-/* BREADCRUMBS */
-.breadcrumb {
-  background: #fff;
-  padding: 16px 40px;
-  border-bottom: 1px solid var(--border);
-  font-family: 'Noto Sans JP', sans-serif;
-  font-size: 11px; letter-spacing: 0.1em;
-  color: var(--fg-muted);
-}
-.breadcrumb a { color: var(--fg-muted); text-decoration: none; transition: color 0.2s; }
-.breadcrumb a:hover { color: var(--gold); }
-.breadcrumb .sep { margin: 0 10px; color: var(--border); }
-
 /* FOOTER */
 footer {
   background: #0a0a0a; color: rgba(255,255,255,0.55);

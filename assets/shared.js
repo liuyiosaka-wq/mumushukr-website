@@ -248,18 +248,19 @@ function initChatTooltip() {
   `;
   document.body.appendChild(tip);
 
-  const dismiss = () => {
+  const fadeOut = () => {
     tip.classList.remove('show');
-    localStorage.setItem('shukr-chat-tooltip-dismissed', '1');
     setTimeout(() => tip.remove(), 500);
+  };
+  const dismiss = () => {
+    localStorage.setItem('shukr-chat-tooltip-dismissed', '1');
+    fadeOut();
   };
   tip.querySelector('.ai-chat-tooltip-close').addEventListener('click', (e) => { e.stopPropagation(); dismiss(); });
   tip.addEventListener('click', () => { dismiss(); toggleChat(); });
 
   setTimeout(() => tip.classList.add('show'), 3500);
-  setTimeout(() => {
-    if (localStorage.getItem('shukr-chat-tooltip-dismissed') !== '1') dismiss();
-  }, 12000);
+  setTimeout(fadeOut, 12000);
 }
 
 // ═══ 初始化 ═══
