@@ -55,8 +55,7 @@
 .marquee-wrap { overflow: hidden; width: 100%; }
 .marquee-track { display: flex; gap: 16px; width: max-content; animation: marquee-scroll 40s linear infinite; }
 .marquee-track:hover { animation-play-state: paused; }
-.marquee-item { height: 240px; width: 360px; flex-shrink: 0; background: linear-gradient(135deg, #f0ebe0 0%, #e4ddce 100%); border: 1px solid rgba(168,140,70,0.15); display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', serif; font-size: 48px; color: rgba(168,140,70,0.4); letter-spacing: 0.15em; }
-.marquee-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.marquee-item { height: 240px; width: 360px; flex-shrink: 0; object-fit: cover; display: block; background: #f0ebe0; border: 1px solid rgba(168,140,70,0.15); }
 @keyframes marquee-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 @media(max-width:700px){ .marquee-item { height: 160px; width: 240px; font-size: 32px; } }
 
@@ -165,22 +164,22 @@
 <section class="marquee-section">
   <div class="marquee-wrap">
     <div class="marquee-track">
-      <div class="marquee-item">01</div>
-      <div class="marquee-item">02</div>
-      <div class="marquee-item">03</div>
-      <div class="marquee-item">04</div>
-      <div class="marquee-item">05</div>
-      <div class="marquee-item">06</div>
-      <div class="marquee-item">07</div>
-      <div class="marquee-item">08</div>
-      <div class="marquee-item">01</div>
-      <div class="marquee-item">02</div>
-      <div class="marquee-item">03</div>
-      <div class="marquee-item">04</div>
-      <div class="marquee-item">05</div>
-      <div class="marquee-item">06</div>
-      <div class="marquee-item">07</div>
-      <div class="marquee-item">08</div>
+      <img class="marquee-item" src="assets/marquee/work-01.jpg" alt="">
+      <img class="marquee-item" src="assets/marquee/work-02.jpg" alt="">
+      <img class="marquee-item" src="assets/marquee/work-03.jpg" alt="">
+      <img class="marquee-item" src="assets/marquee/work-04.jpg" alt="">
+      <img class="marquee-item" src="assets/marquee/work-05.jpg" alt="">
+      <img class="marquee-item" src="assets/marquee/work-06.jpg" alt="">
+      <img class="marquee-item" src="assets/marquee/work-07.jpg" alt="">
+      <img class="marquee-item" src="assets/marquee/work-08.jpg" alt="">
+      <img class="marquee-item" src="assets/marquee/work-01.jpg" alt="" aria-hidden="true">
+      <img class="marquee-item" src="assets/marquee/work-02.jpg" alt="" aria-hidden="true">
+      <img class="marquee-item" src="assets/marquee/work-03.jpg" alt="" aria-hidden="true">
+      <img class="marquee-item" src="assets/marquee/work-04.jpg" alt="" aria-hidden="true">
+      <img class="marquee-item" src="assets/marquee/work-05.jpg" alt="" aria-hidden="true">
+      <img class="marquee-item" src="assets/marquee/work-06.jpg" alt="" aria-hidden="true">
+      <img class="marquee-item" src="assets/marquee/work-07.jpg" alt="" aria-hidden="true">
+      <img class="marquee-item" src="assets/marquee/work-08.jpg" alt="" aria-hidden="true">
     </div>
   </div>
 </section>
@@ -210,7 +209,7 @@
           <li class="lang-cn">双平台联动：淡季不淡、旺季更旺</li>
         </ul>
       </div>
-      <div class="fc-strength-img">01</div>
+      <div class="fc-strength-img"><img src="assets/fc-strength-01.jpg" alt="中日双市场获客"></div>
     </div>
 
     <!-- Block 2: 美发师以外也可以加盟 -->
