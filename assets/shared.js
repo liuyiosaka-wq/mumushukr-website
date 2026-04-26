@@ -237,7 +237,7 @@ function initMobileMenu() {
 function initChatTooltip() {
   const btn = document.querySelector('.ai-chat-btn');
   if (!btn) return;
-  if (localStorage.getItem('shukr-chat-tooltip-dismissed') === '1') return;
+  if (sessionStorage.getItem('shukr-chat-tooltip-dismissed') === '1') return;
 
   const tip = document.createElement('div');
   tip.className = 'ai-chat-tooltip';
@@ -253,7 +253,7 @@ function initChatTooltip() {
     setTimeout(() => tip.remove(), 500);
   };
   const dismiss = () => {
-    localStorage.setItem('shukr-chat-tooltip-dismissed', '1');
+    sessionStorage.setItem('shukr-chat-tooltip-dismissed', '1');
     fadeOut();
   };
   tip.querySelector('.ai-chat-tooltip-close').addEventListener('click', (e) => { e.stopPropagation(); dismiss(); });
