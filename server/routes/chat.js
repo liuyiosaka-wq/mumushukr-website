@@ -49,8 +49,8 @@ router.post('/', async (req, res) => {
     res.status(500).json({
       error: 'service_unavailable',
       reply: lang === 'zh'
-        ? '抱歉，AI客服暂时无法响应，请通过LINE或微信联系我们。'
-        : '申し訳ございません。しばらくお待ちいただくか、LINE・WeChatよりお問い合わせください。'
+        ? '抱歉，AI客服暂时无法响应，请通过 Hot Pepper、微信或电话联系我们。'
+        : '申し訳ございません。しばらくお待ちいただくか、Hot Pepper・WeChat・お電話よりお問い合わせください。'
     });
   }
 });
