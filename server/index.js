@@ -15,8 +15,12 @@ app.use('/api/availability', require('./routes/availability'));
 app.use('/api/reservations', require('./routes/reservations'));
 app.use('/api/franchise', require('./routes/franchise'));
 
-// 兜底：其他路由返回首页
+// 兜底：仅对无扩展名（SPA 风格）的路径返回首页；
+// 带扩展名（如 .md / .json / .jpg）找不到就老老实实 404，避免污染 fetch 结果
 app.get('*', (req, res) => {
+  if (path.extname(req.path)) {
+    return res.status(404).send('Not Found');
+  }
   res.sendFile(path.join(__dirname, '..', 'index.html'));
 });
 

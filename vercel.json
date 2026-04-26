@@ -8,7 +8,8 @@
         "includeFiles": [
           "*.html",
           "assets/**",
-          "uploads/**"
+          "uploads/**",
+          "articles/**"
         ]
       }
     }

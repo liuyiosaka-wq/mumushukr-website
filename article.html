@@ -18,7 +18,9 @@
 .art-meta { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; font-family: 'Noto Sans JP', sans-serif; font-size: 12px; letter-spacing: 0.08em; color: var(--fg-muted); margin-bottom: 40px; padding-bottom: 24px; border-bottom: 1px solid var(--border); }
 .art-meta .col-author::before { content: ""; width: 4px; height: 4px; border-radius: 50%; background: var(--gold); display: inline-block; margin-right: 6px; vertical-align: middle; }
 .art-meta .col-dept { color: var(--gold); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; }
-.art-cover { width: 100%; aspect-ratio: 16/9; background: #e8e4df; background-size: cover; background-position: center; margin-bottom: 48px; position: relative; overflow: hidden; }
+.art-cover { width: 100%; margin-bottom: 48px; background: #e8e4df; position: relative; overflow: hidden; text-align: center; }
+.art-cover img { display: block; width: 100%; height: auto; max-height: 720px; object-fit: contain; margin: 0 auto; }
+.art-cover.placeholder { aspect-ratio: 16/9; }
 .art-cover-stripe { position: absolute; inset: 0; background: repeating-linear-gradient(-45deg, transparent, transparent 12px, rgba(0,0,0,0.04) 12px, rgba(0,0,0,0.04) 13px); }
 
 .art-body { font-family: 'Noto Sans JP', sans-serif; font-size: 15px; line-height: 2.1; color: var(--fg); font-weight: 300; letter-spacing: 0.04em; }
@@ -170,7 +172,10 @@
   async function fetchText(path) {
     const r = await fetch(path, { cache: 'no-store' });
     if (!r.ok) return '';
-    return await r.text();
+    const text = await r.text();
+    // 防御：如果服务器误把 HTML（如首页兜底）当成 .md 返回，丢弃
+    if (/^\s*<(!doctype|html|head|body)\b/i.test(text)) return '';
+    return text;
   }
 
   fetch('assets/articles.json', { cache: 'no-store' })
@@ -196,8 +201,9 @@
       // 封面
       const cover = document.getElementById('artCover');
       if (a.cover) {
-        cover.style.backgroundImage = `url('${a.cover}')`;
+        cover.innerHTML = `<img src="${a.cover}" alt="${(a.title_ja || '').replace(/"/g, '&quot;')}">`;
       } else {
+        cover.classList.add('placeholder');
         cover.innerHTML = '<div class="art-cover-stripe"></div>';
       }
 
