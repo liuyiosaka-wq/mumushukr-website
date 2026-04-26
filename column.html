@@ -3,37 +3,56 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>コラム | SHUKR Hair Salon</title>
+<title>専欄 | ムム株式会社 - 美发・电商・AI</title>
+<meta name="description" content="ムム株式会社专栏 — 分享美发知识、行业趋势、跨境电商动态与 AI 技术应用。从 SHUKR 造型师到电商事业部，多元业务的真实故事。">
+<meta property="og:title" content="専欄 | ムム株式会社">
+<meta property="og:description" content="美发知识、行业趋势、公司最新动态。从专业造型师的经验到跨境电商的故事，带你了解ムム株式会社的多元业务。">
+<meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Noto+Serif+JP:wght@200;300;400;500&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/shared.css">
 <style>
+.col-intro { max-width: 720px; margin: 0 auto 60px; text-align: center; font-family: 'Noto Sans JP', sans-serif; font-size: 14px; line-height: 2.2; color: var(--fg-muted); font-weight: 300; letter-spacing: 0.08em; }
+
 .col-filters { display: flex; gap: 8px; margin-bottom: 60px; justify-content: center; flex-wrap: wrap; }
-.col-filter { background: none; border: 1px solid var(--border); padding: 8px 22px; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 13px; letter-spacing: 0.2em; color: var(--fg-muted); cursor: pointer; transition: all 0.2s; }
-.col-filter.active, .col-filter:hover { background: var(--charcoal); border-color: var(--charcoal); color: #fff; }
-.col-filter.active { background: var(--gold); border-color: var(--gold); }
+.col-filter { background: none; border: 1px solid var(--border); padding: 9px 22px; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 12px; letter-spacing: 0.18em; color: var(--fg-muted); cursor: pointer; transition: all 0.2s; line-height: 1.4; }
+.col-filter .lang-ja, .col-filter .lang-cn { display: block; font-family: 'Noto Sans JP', sans-serif; font-style: normal; font-size: 11px; letter-spacing: 0.1em; margin-top: 2px; }
+.col-filter:hover { background: var(--charcoal); border-color: var(--charcoal); color: #fff; }
+.col-filter.active { background: var(--gold); border-color: var(--gold); color: #fff; }
 
 .col-featured { display: grid; grid-template-columns: 1.2fr 1fr; gap: 60px; margin-bottom: 100px; align-items: center; }
 .col-feat-img { aspect-ratio: 4/3; background: #e8e4df; position: relative; overflow: hidden; }
 .col-img-stripe { position: absolute; inset: 0; background: repeating-linear-gradient(-45deg, transparent, transparent 12px, rgba(0,0,0,0.04) 12px, rgba(0,0,0,0.04) 13px); }
 .col-img-label { position: absolute; top: 20px; left: 20px; font-family: 'Cormorant Garamond', serif; font-size: 14px; letter-spacing: 0.3em; color: var(--gold); font-style: italic; }
 .col-feat-title { font-family: 'Noto Serif JP', serif; font-size: 28px; font-weight: 400; letter-spacing: 0.06em; line-height: 1.7; margin-bottom: 20px; }
-.col-feat-excerpt { font-family: 'Noto Sans JP', sans-serif; font-size: 13px; line-height: 2; color: var(--fg-muted); margin-bottom: 20px; font-weight: 300; letter-spacing: 0.04em; }
-.col-feat-meta { display: flex; gap: 20px; margin-bottom: 24px; font-family: 'Noto Sans JP', sans-serif; font-size: 11px; letter-spacing: 0.1em; color: var(--fg-muted); }
+.col-feat-excerpt { font-family: 'Noto Sans JP', sans-serif; font-size: 13px; line-height: 2; color: var(--fg-muted); margin-bottom: 24px; font-weight: 300; letter-spacing: 0.04em; }
+.col-feat-meta { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; font-family: 'Noto Sans JP', sans-serif; font-size: 11px; letter-spacing: 0.08em; color: var(--fg-muted); align-items: center; }
+.col-author { display: inline-flex; align-items: center; gap: 6px; }
+.col-author::before { content: ""; width: 4px; height: 4px; border-radius: 50%; background: var(--gold); display: inline-block; }
+.col-dept { color: var(--gold); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; }
 
-.col-tag { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 12px; letter-spacing: 0.3em; color: var(--gold); margin-bottom: 12px; }
+.col-tag { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 12px; letter-spacing: 0.3em; color: var(--gold); margin-bottom: 12px; text-transform: uppercase; }
 
-.col-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px 32px; }
-.col-card { cursor: pointer; transition: transform 0.3s; }
+.col-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 50px 32px; }
+.col-card { cursor: pointer; transition: transform 0.3s; display: flex; flex-direction: column; }
 .col-card:hover { transform: translateY(-6px); }
 .col-card:hover .col-card-title { color: var(--gold); }
 .col-card-img { aspect-ratio: 4/3; background: #e8e4df; position: relative; overflow: hidden; margin-bottom: 18px; }
 .col-card-body { padding: 0; }
-.col-card-title { font-family: 'Noto Serif JP', serif; font-size: 15px; font-weight: 400; letter-spacing: 0.06em; line-height: 1.8; margin-bottom: 12px; transition: color 0.2s; }
+.col-card-title { font-family: 'Noto Serif JP', serif; font-size: 16px; font-weight: 400; letter-spacing: 0.06em; line-height: 1.7; margin: 0 0 10px; transition: color 0.2s; }
+.col-card-excerpt { font-family: 'Noto Sans JP', sans-serif; font-size: 12px; line-height: 1.9; color: var(--fg-muted); font-weight: 300; letter-spacing: 0.04em; margin-bottom: 14px; }
+.col-card-meta { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; font-family: 'Noto Sans JP', sans-serif; font-size: 10px; letter-spacing: 0.1em; color: var(--fg-muted); }
 .col-date { font-family: 'Noto Sans JP', sans-serif; font-size: 10px; letter-spacing: 0.15em; color: var(--fg-muted); }
 
-@media(max-width:900px){ .col-featured { grid-template-columns: 1fr; } .col-grid { grid-template-columns: 1fr 1fr; } }
+.col-empty { text-align: center; padding: 80px 20px; font-family: 'Noto Sans JP', sans-serif; font-size: 14px; color: var(--fg-muted); letter-spacing: 0.1em; display: none; }
+
+@media(max-width:900px){
+  .col-featured { grid-template-columns: 1fr; gap: 32px; margin-bottom: 60px; }
+  .col-feat-title { font-size: 22px; }
+  .col-grid { grid-template-columns: 1fr; gap: 40px; }
+  .col-filter { padding: 7px 14px; font-size: 11px; }
+}
 </style>
 </head>
 <body>
@@ -64,127 +83,189 @@
   <p class="page-hero-label">COLUMN</p>
   <h1 class="page-hero-title-en">Journal</h1>
   <p class="page-hero-title-jp lang-ja">コラム</p>
-  <p class="page-hero-title-jp lang-cn">专栏文章</p>
+  <p class="page-hero-title-jp lang-cn">专栏</p>
 </section>
-
 
 
 <section>
   <div class="container">
+
+    <!-- Intro -->
+    <p class="col-intro lang-ja">
+      ヘアの知識、業界トレンド、会社の最新動向。<br>
+      プロのスタイリストの経験から越境 EC のストーリーまで、<br>
+      ムム株式会社の多角的な事業をお伝えします。
+    </p>
+    <p class="col-intro lang-cn">
+      分享美发知识、行业趋势、公司最新动态。<br>
+      从专业造型师的经验到跨境电商的故事，<br>
+      带你了解ムム株式会社的多元业务。
+    </p>
+
+    <!-- Filters -->
     <div class="col-filters">
-      <button class="col-filter active">ALL</button>
-      <button class="col-filter">HAIR CARE</button>
-      <button class="col-filter">TREND</button>
-      <button class="col-filter">STYLING</button>
-      <button class="col-filter">SALON</button>
+      <button class="col-filter active" data-cat="all">
+        ALL<span class="lang-ja">全て</span><span class="lang-cn">全部</span>
+      </button>
+      <button class="col-filter" data-cat="trend">
+        TREND<span class="lang-ja">ヘアトレンド</span><span class="lang-cn">美发趋势</span>
+      </button>
+      <button class="col-filter" data-cat="care">
+        CARE<span class="lang-ja">ヘアケア</span><span class="lang-cn">护理知识</span>
+      </button>
+      <button class="col-filter" data-cat="brand">
+        BRAND<span class="lang-ja">ブランド</span><span class="lang-cn">品牌故事</span>
+      </button>
+      <button class="col-filter" data-cat="company">
+        COMPANY<span class="lang-ja">会社動向</span><span class="lang-cn">公司动态</span>
+      </button>
+      <button class="col-filter" data-cat="ec">
+        EC<span class="lang-ja">越境 EC</span><span class="lang-cn">跨境电商</span>
+      </button>
+      <button class="col-filter" data-cat="ai">
+        AI<span class="lang-ja">AI 技術</span><span class="lang-cn">AI 技术</span>
+      </button>
     </div>
 
-    <article class="col-featured">
+    <!-- Featured -->
+    <article class="col-featured" data-cat="trend">
       <div class="col-feat-img"><span class="col-img-label">FEATURED</span><div class="col-img-stripe"></div></div>
       <div class="col-feat-body">
-        <p class="col-tag">FEATURED</p>
-        <h2 class="col-feat-title lang-ja">2026年春、大阪で人気のヘアカラートレンド5選</h2>
-        <h2 class="col-feat-title lang-cn">2026年春季大阪人气发色潮流5选</h2>
-        <p class="col-feat-excerpt lang-ja">春の訪れと共に、新しいヘアカラーに挑戦したい季節。在日中国人のお客様にも人気の、大阪で今一番選ばれているカラートレンドをSHUKRスタイリストが解説します。</p>
-        <p class="col-feat-excerpt lang-cn">春意盎然，正是尝试新发色的季节。本期由SHUKR造型师介绍大阪当下最受欢迎、在日中国客人也青睐的染发趋势。</p>
+        <p class="col-tag">FEATURED · TREND</p>
+        <h2 class="col-feat-title lang-ja">2026 年春、大阪で人気のヘアカラートレンド 5 選</h2>
+        <h2 class="col-feat-title lang-cn">2026 年春季大阪发色潮流 5 选</h2>
+        <p class="col-feat-excerpt lang-ja">春の訪れと共に、新しいヘアカラーに挑戦したい季節。在日中国人のお客様にも人気の、大阪で今一番選ばれているカラートレンドを SHUKR スタイリストが解説します。</p>
+        <p class="col-feat-excerpt lang-cn">春意盎然，正是尝试新发色的季节。本期由 SHUKR 造型师介绍大阪当下最受欢迎、在日中国客人也青睐的染发趋势。</p>
         <div class="col-feat-meta">
           <span class="col-date">2026.04.18</span>
-          <span class="col-author lang-ja">山田 健太</span>
-          <span class="col-author lang-cn">山田 健太</span>
+          <span class="col-author">
+            <span class="lang-ja">山田 健太</span><span class="lang-cn">山田 健太</span>
+          </span>
+          <span class="col-dept lang-ja">SHUKR スタイリスト</span>
+          <span class="col-dept lang-cn">SHUKR 造型师</span>
         </div>
         <a href="#" class="more-link lang-ja">続きを読む →</a>
         <a href="#" class="more-link lang-cn">阅读全文 →</a>
       </div>
     </article>
 
-    <div class="col-grid">
-      
-      <article class="col-card">
-        <div class="col-card-img"><div class="col-img-stripe"></div></div>
+    <!-- Article grid -->
+    <div class="col-grid" id="colGrid">
+
+      <article class="col-card" data-cat="care">
+        <div class="col-card-img"><span class="col-img-label">CARE</span><div class="col-img-stripe"></div></div>
         <div class="col-card-body">
-          <p class="col-tag">HAIR CARE</p>
-          <h3 class="col-card-title lang-ja">夏のダメージヘアをケアする5つの方法</h3>
-          <h3 class="col-card-title lang-cn">夏季受损发质的5种修护方法</h3>
-          <p class="col-date">2026.04.15</p>
+          <p class="col-tag">CARE</p>
+          <h3 class="col-card-title lang-ja">春のヘアケア完全ガイド</h3>
+          <h3 class="col-card-title lang-cn">春季护发完全指南</h3>
+          <p class="col-card-excerpt lang-ja">花粉や乾燥でダメージを受けやすい春。プロが教えるホームケアのポイント。</p>
+          <p class="col-card-excerpt lang-cn">花粉与干燥让头发更易受损，专业造型师分享春季居家护理要点。</p>
+          <div class="col-card-meta">
+            <span class="col-date">2026.04.12</span>
+            <span class="col-author"><span class="lang-ja">SHUKR スタイリスト</span><span class="lang-cn">SHUKR 造型师</span></span>
+          </div>
         </div>
       </article>
-      
-      <article class="col-card">
-        <div class="col-card-img"><div class="col-img-stripe"></div></div>
+
+      <article class="col-card" data-cat="care">
+        <div class="col-card-img"><span class="col-img-label">CARE</span><div class="col-img-stripe"></div></div>
         <div class="col-card-body">
-          <p class="col-tag">TREND</p>
-          <h3 class="col-card-title lang-ja">韓国風ヘアが大阪で流行中。その魅力とは</h3>
-          <h3 class="col-card-title lang-cn">大阪正流行韩系发型，其魅力何在</h3>
-          <p class="col-date">2026.04.10</p>
+          <p class="col-tag">CARE</p>
+          <h3 class="col-card-title lang-ja">カラーリング前後の注意点</h3>
+          <h3 class="col-card-title lang-cn">染发前后的注意事项</h3>
+          <p class="col-card-excerpt lang-ja">染める前の準備から染めた後のケアまで、色持ちを良くするコツを解説。</p>
+          <p class="col-card-excerpt lang-cn">从染前准备到染后护理，让发色更持久的实用要点。</p>
+          <div class="col-card-meta">
+            <span class="col-date">2026.04.05</span>
+            <span class="col-author"><span class="lang-ja">SHUKR スタイリスト</span><span class="lang-cn">SHUKR 造型师</span></span>
+          </div>
         </div>
       </article>
-      
-      <article class="col-card">
-        <div class="col-card-img"><div class="col-img-stripe"></div></div>
+
+      <article class="col-card" data-cat="brand">
+        <div class="col-card-img"><span class="col-img-label">BRAND</span><div class="col-img-stripe"></div></div>
         <div class="col-card-body">
-          <p class="col-tag">STYLING</p>
-          <h3 class="col-card-title lang-ja">縮毛矯正とストレートパーマの違い</h3>
-          <h3 class="col-card-title lang-cn">直发烫与普通直发烫的区别</h3>
-          <p class="col-date">2026.04.05</p>
+          <p class="col-tag">BRAND</p>
+          <h3 class="col-card-title lang-ja">SHUKR チーム紹介</h3>
+          <h3 class="col-card-title lang-cn">SHUKR 团队介绍</h3>
+          <p class="col-card-excerpt lang-ja">日中をまたぐ多文化チームが大切にしている、お客様への向き合い方とは。</p>
+          <p class="col-card-excerpt lang-cn">跨越中日的多文化团队，分享我们珍视的、与客人相处的方式。</p>
+          <div class="col-card-meta">
+            <span class="col-date">2026.03.28</span>
+            <span class="col-author"><span class="lang-ja">劉兿</span><span class="lang-cn">刘兿</span></span>
+          </div>
         </div>
       </article>
-      
-      <article class="col-card">
-        <div class="col-card-img"><div class="col-img-stripe"></div></div>
+
+      <article class="col-card" data-cat="brand">
+        <div class="col-card-img"><span class="col-img-label">BRAND</span><div class="col-img-stripe"></div></div>
         <div class="col-card-body">
-          <p class="col-tag">HAIR CARE</p>
-          <h3 class="col-card-title lang-ja">ブリーチ後のホームケア完全ガイド</h3>
-          <h3 class="col-card-title lang-cn">漂发后居家护理完全指南</h3>
-          <p class="col-date">2026.03.28</p>
+          <p class="col-tag">BRAND</p>
+          <h3 class="col-card-title lang-ja">SHUKR 創業ストーリー</h3>
+          <h3 class="col-card-title lang-cn">SHUKR 创立故事</h3>
+          <p class="col-card-excerpt lang-ja">成都から大阪へ。創業者が語る、SHUKR ブランド誕生までの想い。</p>
+          <p class="col-card-excerpt lang-cn">从成都到大阪，创始人讲述 SHUKR 品牌诞生的初心与故事。</p>
+          <div class="col-card-meta">
+            <span class="col-date">2026.03.15</span>
+            <span class="col-author"><span class="lang-ja">劉兿</span><span class="lang-cn">刘兿</span></span>
+          </div>
         </div>
       </article>
-      
-      <article class="col-card">
-        <div class="col-card-img"><div class="col-img-stripe"></div></div>
+
+      <article class="col-card" data-cat="company">
+        <div class="col-card-img"><span class="col-img-label">COMPANY</span><div class="col-img-stripe"></div></div>
         <div class="col-card-body">
-          <p class="col-tag">SALON</p>
-          <h3 class="col-card-title lang-ja">初めてのSHUKR、ご予約から仕上げまで</h3>
-          <h3 class="col-card-title lang-cn">初访SHUKR，从预约到完成的全流程</h3>
-          <p class="col-date">2026.03.20</p>
+          <p class="col-tag">COMPANY</p>
+          <h3 class="col-card-title lang-ja">心斎橋新店オープン計画</h3>
+          <h3 class="col-card-title lang-cn">心斋桥新店计划</h3>
+          <p class="col-card-excerpt lang-ja">大阪の中心商業エリアへ。準備中の心斎橋新店、コンセプトをお届けします。</p>
+          <p class="col-card-excerpt lang-cn">进军大阪核心商圈。筹备中的心斋桥新店概念抢先看。</p>
+          <div class="col-card-meta">
+            <span class="col-date">2026.03.02</span>
+            <span class="col-author"><span class="lang-ja">劉兿</span><span class="lang-cn">刘兿</span></span>
+          </div>
         </div>
       </article>
-      
-      <article class="col-card">
-        <div class="col-card-img"><div class="col-img-stripe"></div></div>
+
+      <article class="col-card" data-cat="ec">
+        <div class="col-card-img"><span class="col-img-label">EC</span><div class="col-img-stripe"></div></div>
         <div class="col-card-body">
-          <p class="col-tag">TREND</p>
-          <h3 class="col-card-title lang-ja">インナーカラーで差をつけるスタイリング</h3>
-          <h3 class="col-card-title lang-cn">内层染为造型增添亮点</h3>
-          <p class="col-date">2026.03.14</p>
+          <p class="col-tag">EC</p>
+          <h3 class="col-card-title lang-ja">日本商品セレクトの舞台裏</h3>
+          <h3 class="col-card-title lang-cn">日本商品选品心得</h3>
+          <p class="col-card-excerpt lang-ja">eBay 越境 EC で世界へ。私たちが選ぶ"本物の日本品質"の基準とは。</p>
+          <p class="col-card-excerpt lang-cn">通过 eBay 跨境电商走向世界，我们筛选"真正日本品质"的标准。</p>
+          <div class="col-card-meta">
+            <span class="col-date">2026.02.20</span>
+            <span class="col-author"><span class="lang-ja">周大琴</span><span class="lang-cn">周大琴</span></span>
+            <span class="col-dept lang-ja">EC 事業部</span>
+            <span class="col-dept lang-cn">电商事业部</span>
+          </div>
         </div>
       </article>
-      
-      <article class="col-card">
-        <div class="col-card-img"><div class="col-img-stripe"></div></div>
+
+      <article class="col-card" data-cat="ai">
+        <div class="col-card-img"><span class="col-img-label">AI</span><div class="col-img-stripe"></div></div>
         <div class="col-card-body">
-          <p class="col-tag">STYLING</p>
-          <h3 class="col-card-title lang-ja">朝5分で決まる、簡単ヘアアレンジ</h3>
-          <h3 class="col-card-title lang-cn">晨间5分钟搞定的简易发型</h3>
-          <p class="col-date">2026.03.08</p>
+          <p class="col-tag">AI</p>
+          <h3 class="col-card-title lang-ja">AI でヘアサロン業務を効率化する</h3>
+          <h3 class="col-card-title lang-cn">AI 在美发业务的应用实践</h3>
+          <p class="col-card-excerpt lang-ja">予約管理から接客サポートまで。サロン現場での AI 活用事例。</p>
+          <p class="col-card-excerpt lang-cn">从预约管理到客户服务，AI 在沙龙运营中的真实落地案例。</p>
+          <div class="col-card-meta">
+            <span class="col-date">2026.02.10</span>
+            <span class="col-author"><span class="lang-ja">技術チーム</span><span class="lang-cn">技术团队</span></span>
+          </div>
         </div>
       </article>
-      
-      <article class="col-card">
-        <div class="col-card-img"><div class="col-img-stripe"></div></div>
-        <div class="col-card-body">
-          <p class="col-tag">HAIR CARE</p>
-          <h3 class="col-card-title lang-ja">ヘッドスパの効果と、頻度の目安</h3>
-          <h3 class="col-card-title lang-cn">头皮SPA的效果与建议频率</h3>
-          <p class="col-date">2026.03.01</p>
-        </div>
-      </article>
-      
+
     </div>
 
-    <div style="text-align:center;margin-top:60px;">
-      <button class="btn-outline lang-ja">もっと読む</button>
-      <button class="btn-outline lang-cn">加载更多</button>
-    </div>
+    <p class="col-empty" id="colEmpty">
+      <span class="lang-ja">このカテゴリーの記事は準備中です。</span>
+      <span class="lang-cn">该分类暂无文章，敬请期待。</span>
+    </p>
+
   </div>
 </section>
 
@@ -199,7 +280,7 @@
     <li><a href="column.html" class="lang-ja">コラム</a><a href="column.html" class="lang-cn">专栏</a></li>
     <li><a href="fc.html" class="lang-ja">FC募集</a><a href="fc.html" class="lang-cn">加盟招募</a></li>
   </ul>
-  <p class="footer-copy">© 2026 SHUKR Hair Salon. All rights reserved.</p>
+  <p class="footer-copy">© 2026 ムム株式会社. All rights reserved.</p>
 </footer>
 
 
@@ -227,5 +308,35 @@
 </div>
 
 <script src="assets/shared.js"></script>
+<script>
+// 分类筛选
+(function(){
+  const filters = document.querySelectorAll('.col-filter');
+  const featured = document.querySelector('.col-featured');
+  const cards = document.querySelectorAll('.col-card');
+  const empty = document.getElementById('colEmpty');
+  filters.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filters.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const cat = btn.dataset.cat;
+      let visible = 0;
+      // featured
+      if (featured) {
+        const show = cat === 'all' || featured.dataset.cat === cat;
+        featured.style.display = show ? '' : 'none';
+        if (show) visible++;
+      }
+      // cards
+      cards.forEach(c => {
+        const show = cat === 'all' || c.dataset.cat === cat;
+        c.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      empty.style.display = visible === 0 ? 'block' : 'none';
+    });
+  });
+})();
+</script>
 </body>
 </html>
