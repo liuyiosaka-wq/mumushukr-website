@@ -128,19 +128,19 @@
     "url": ""
   },
   {
-    "id": "ai-in-hair-salon",
-    "category": "ai",
+    "id": "shukr-1st-anniversary-celebration",
+    "category": "brand",
     "featured": false,
-    "date": "2026-02-10",
-    "cover": "",
-    "title_ja": "AI でヘアサロン業務を効率化する",
-    "title_cn": "AI 在美发业务的应用实践",
-    "excerpt_ja": "予約管理から接客サポートまで。サロン現場での AI 活用事例。",
-    "excerpt_cn": "从预约管理到客户服务，AI 在沙龙运营中的真实落地案例。",
-    "author_ja": "技術チーム",
-    "author_cn": "技术团队",
-    "dept_ja": "",
-    "dept_cn": "",
+    "date": "2026-02-15",
+    "cover": "assets/articles/shukr-1st-anniversary-celebration.jpg",
+    "title_ja": "大阪で開いた華人ヘアサロンが 1 歳を迎えました！周年祭 🎁",
+    "title_cn": "我在大阪开的华人理发店满 1 岁啦！周年庆 🎁",
+    "excerpt_ja": "気づけば 1 周年。小路の小さなサロンを支えてくれたのは、神戸や堺市から駆けつけてくださった常連の皆さま。新しいスタイリストの加入、Switch2 大賞の抽選会、そして 2 年目への決意を綴ります。",
+    "excerpt_cn": "转眼 SHUKR 在大阪小路开店满一周年。从担心冷清到预约满满，撑起这家店的是从神户、堺市赶来的老客人们。新 Tony 加入团队、Switch2 大奖抽奖、第二年的展望，一起来聊聊。",
+    "author_ja": "劉兿",
+    "author_cn": "刘兿",
+    "dept_ja": "創業者ノート",
+    "dept_cn": "创始人手记",
     "url": ""
   }
 ]
