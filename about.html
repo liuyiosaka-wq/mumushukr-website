@@ -3,28 +3,69 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>会社概要 | SHUKR Hair Salon</title>
+<title>会社概要 | ムム株式会社</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Noto+Serif+JP:wght@200;300;400;500&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/shared.css">
 <style>
 .about-body { font-family: 'Noto Sans JP', sans-serif; font-size: 14px; line-height: 2.4; color: var(--fg-muted); font-weight: 300; letter-spacing: 0.08em; text-align: center; }
-.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; margin-top: 40px; }
-.info-map { aspect-ratio: 4/3; background: #e0dbd4; position: relative; overflow: hidden; }
-.info-map-stripe { position: absolute; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 30px, rgba(0,0,0,0.04) 30px, rgba(0,0,0,0.04) 31px); }
-.map-label { position: absolute; top: 20px; left: 20px; font-family: 'Cormorant Garamond', serif; font-size: 16px; letter-spacing: 0.3em; color: rgba(0,0,0,0.25); }
-.info-rows { margin: 0; }
-.info-row { display: grid; grid-template-columns: 120px 1fr; gap: 20px; padding: 18px 0; border-bottom: 1px solid var(--border); align-items: start; }
-.info-row:first-child { border-top: 1px solid var(--border); }
-.info-row dt { font-family: 'Noto Sans JP', sans-serif; font-size: 11px; letter-spacing: 0.15em; color: var(--fg-muted); padding-top: 2px; font-weight: 400; }
-.info-row dd { font-family: 'Noto Sans JP', sans-serif; font-size: 13px; font-weight: 300; line-height: 2; letter-spacing: 0.06em; }
-.info-row dd a { color: var(--gold); text-decoration: none; }
-.timeline { list-style: none; padding: 0; margin: 40px 0 0; max-width: 720px; }
-.timeline li { display: grid; grid-template-columns: 100px 1fr; gap: 40px; padding: 20px 0; border-bottom: 1px solid var(--border); }
+.about-body.left { text-align: left; }
+
+/* business cards */
+.biz-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-top: 40px; }
+.biz-card { border: 1px solid var(--border); padding: 40px 30px; background: #fff; transition: border-color .3s, transform .3s; }
+.biz-card:hover { border-color: var(--gold); transform: translateY(-4px); }
+.biz-num { font-family: 'Cormorant Garamond', serif; font-size: 32px; color: var(--gold); letter-spacing: 0.2em; display: block; margin-bottom: 18px; font-weight: 400; }
+.biz-title { font-family: 'Noto Serif JP', serif; font-size: 18px; letter-spacing: 0.15em; margin: 0 0 8px; font-weight: 400; }
+.biz-sub { font-family: 'Noto Sans JP', sans-serif; font-size: 11px; letter-spacing: 0.2em; color: var(--gold); margin-bottom: 20px; display: block; text-transform: uppercase; }
+.biz-desc { font-family: 'Noto Sans JP', sans-serif; font-size: 13px; line-height: 2; font-weight: 300; color: var(--fg-muted); letter-spacing: 0.06em; }
+
+/* timeline */
+.timeline { list-style: none; padding: 0; margin: 40px auto 0; max-width: 720px; }
+.timeline li { display: grid; grid-template-columns: 140px 1fr; gap: 40px; padding: 22px 0; border-bottom: 1px solid var(--border); }
 .tl-year { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: var(--gold); letter-spacing: 0.15em; }
 .tl-body { font-family: 'Noto Sans JP', sans-serif; font-size: 14px; line-height: 1.8; font-weight: 300; padding-top: 4px; }
-@media(max-width:900px){ .about-grid { grid-template-columns: 1fr; } .timeline li { grid-template-columns: 70px 1fr; gap: 16px; } }
+
+/* ceo message */
+.ceo-grid { display: grid; grid-template-columns: 2fr 3fr; gap: 60px; align-items: start; margin-top: 40px; }
+.ceo-photo { aspect-ratio: 4/5; background: #e0dbd4; position: relative; overflow: hidden; }
+.ceo-photo-stripe { position: absolute; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 30px, rgba(0,0,0,0.04) 30px, rgba(0,0,0,0.04) 31px); }
+.ceo-photo-label { position: absolute; top: 20px; left: 20px; font-family: 'Cormorant Garamond', serif; font-size: 14px; letter-spacing: 0.3em; color: rgba(0,0,0,0.25); }
+.ceo-quote { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 20px; line-height: 1.7; color: var(--gold); border-left: 2px solid var(--gold); padding: 4px 0 4px 24px; margin: 0 0 32px; letter-spacing: 0.04em; }
+.ceo-quote.jp { font-family: 'Noto Serif JP', serif; font-style: normal; font-size: 16px; line-height: 2; }
+.ceo-body { font-family: 'Noto Sans JP', sans-serif; font-size: 13px; line-height: 2.2; font-weight: 300; color: var(--fg-muted); letter-spacing: 0.06em; }
+.ceo-sign { margin-top: 32px; font-family: 'Noto Serif JP', serif; font-size: 13px; letter-spacing: 0.15em; line-height: 2; }
+.ceo-sign-name { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: var(--gold); letter-spacing: 0.2em; display: block; margin-top: 4px; }
+
+/* mission */
+.mission-block { text-align: center; max-width: 720px; margin: 0 auto 50px; }
+.mission-label { font-family: 'Cormorant Garamond', serif; font-size: 14px; letter-spacing: 0.4em; color: var(--gold); margin-bottom: 16px; text-transform: uppercase; }
+.mission-text { font-family: 'Noto Serif JP', serif; font-size: 22px; line-height: 1.9; font-weight: 300; letter-spacing: 0.1em; }
+.values-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; margin-top: 60px; }
+.value-item { text-align: center; padding: 30px 16px; border-top: 1px solid var(--border); }
+.value-item-en { font-family: 'Cormorant Garamond', serif; font-size: 13px; letter-spacing: 0.4em; color: var(--gold); display: block; margin-bottom: 12px; text-transform: uppercase; }
+.value-item-title { font-family: 'Noto Serif JP', serif; font-size: 16px; letter-spacing: 0.2em; margin: 0 0 12px; font-weight: 400; }
+.value-item-desc { font-family: 'Noto Sans JP', sans-serif; font-size: 12px; line-height: 1.9; font-weight: 300; color: var(--fg-muted); letter-spacing: 0.06em; }
+
+/* info table */
+.info-rows { margin: 40px auto 0; max-width: 820px; }
+.info-row { display: grid; grid-template-columns: 160px 1fr; gap: 24px; padding: 20px 0; border-bottom: 1px solid var(--border); align-items: start; }
+.info-row:first-child { border-top: 1px solid var(--border); }
+.info-row dt { font-family: 'Noto Sans JP', sans-serif; font-size: 11px; letter-spacing: 0.15em; color: var(--fg-muted); padding-top: 2px; font-weight: 400; }
+.info-row dd { font-family: 'Noto Sans JP', sans-serif; font-size: 13px; font-weight: 300; line-height: 2; letter-spacing: 0.06em; margin: 0; }
+.info-row dd a { color: var(--gold); text-decoration: none; }
+
+@media(max-width:900px){
+  .biz-grid { grid-template-columns: 1fr; gap: 24px; }
+  .ceo-grid { grid-template-columns: 1fr; gap: 32px; }
+  .ceo-photo { aspect-ratio: 4/3; max-height: 320px; }
+  .values-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .timeline li { grid-template-columns: 90px 1fr; gap: 16px; }
+  .info-row { grid-template-columns: 110px 1fr; gap: 16px; }
+  .mission-text { font-size: 17px; }
+  .ceo-quote { font-size: 17px; padding-left: 18px; }
+}
 </style>
 </head>
 <body>
@@ -53,111 +94,283 @@
 
 <section class="page-hero">
   <p class="page-hero-label">ABOUT</p>
-  <h1 class="page-hero-title-en">About SHUKR</h1>
+  <h1 class="page-hero-title-en">About MUMU</h1>
   <p class="page-hero-title-jp lang-ja">会社概要</p>
-  <p class="page-hero-title-jp lang-cn">关于SHUKR</p>
+  <p class="page-hero-title-jp lang-cn">公司概要</p>
 </section>
 
 
-
+<!-- 1. Positioning -->
 <section>
-  <div class="container" style="max-width: 840px;">
-    <p class="section-label" style="text-align:center;">ABOUT SHUKR</p>
-    <h2 class="section-title lang-ja" style="text-align:center;">日本と中国をつなぐ<br>プレミアムサロン</h2>
-    <h2 class="section-title lang-cn" style="text-align:center;">连接日本与中国的<br>高端美发沙龙</h2>
+  <div class="container" style="max-width: 880px;">
+    <p class="section-label" style="text-align:center;">CORPORATE IDENTITY</p>
+    <h2 class="section-title lang-ja" style="text-align:center;">「美」と「効率」を追求する<br>イノベーション企業</h2>
+    <h2 class="section-title lang-cn" style="text-align:center;">追求"美"与"效率"的<br>创新型企业</h2>
     <div class="section-divider" style="margin: 0 auto 40px;"></div>
     <p class="about-body lang-ja">
-      SHUKRは、大阪・梅田を拠点とするプレミアムヘアサロンです。<br>
-      日本の繊細な技術と、多文化に対応するホスピタリティを融合。<br>
-      在日中国人のお客様と日本のお客様、<br>どちらにも心地よい時間をお届けします。<br><br>
-      「髪を整えることは、心を整えること」<br>
-      SHUKRはあなたの日々に、少しの豊かさを添える場所でありたい。
+      ムム株式会社は、大阪を拠点に「美」と「効率」を追求するイノベーション企業です。<br>
+      美容サロン運営から跨境EC、AI活用まで、<br>多角的な事業で価値を創出します。
     </p>
     <p class="about-body lang-cn">
-      SHUKR是一家位于大阪梅田的高端美发沙龙。<br>
-      融合日式细腻的技术与多元文化的贴心服务，<br>
-      无论是在日中国客人还是日本本地客人，<br>都能在此享受到舒适惬意的时光。<br><br>
-      「整理头发，也是整理心情」<br>
-      希望SHUKR能为您的日常增添一份从容与优雅。
+      ムム株式会社是一家立足大阪、追求"美"与"效率"的创新型企业。<br>
+      从美容沙龙运营到跨境电商，再到 AI 技术应用，<br>我们以多元化业务创造价值。
     </p>
   </div>
 </section>
 
-<section style="background:#fff;">
-  <div class="container">
-    <p class="section-label">COMPANY INFO</p>
-    <h2 class="section-title lang-ja">会社概要</h2>
-    <h2 class="section-title lang-cn">公司概要</h2>
-    <div class="section-divider"></div>
 
-    <div class="about-grid">
-      <div class="info-map"><div class="info-map-stripe"></div><span class="map-label">MAP</span></div>
-      <dl class="info-rows">
-        <div class="info-row">
-          <dt class="lang-ja">会社名</dt><dt class="lang-cn">公司名称</dt>
-          <dd>株式会社 SHUKR / SHUKR Co., Ltd.</dd>
-        </div>
-        <div class="info-row">
-          <dt class="lang-ja">店舗名</dt><dt class="lang-cn">店铺名称</dt>
-          <dd>SHUKR Hair Salon</dd>
-        </div>
-        <div class="info-row">
-          <dt class="lang-ja">所在地</dt><dt class="lang-cn">地址</dt>
-          <dd class="lang-ja">〒530-0001<br>大阪府大阪市北区梅田1丁目</dd>
-          <dd class="lang-cn">〒530-0001<br>日本 大阪府大阪市北区梅田1丁目</dd>
-        </div>
-        <div class="info-row">
-          <dt class="lang-ja">電話</dt><dt class="lang-cn">电话</dt>
-          <dd><a href="tel:+81675093054">06-7509-3054</a></dd>
-        </div>
-        <div class="info-row">
-          <dt class="lang-ja">メール</dt><dt class="lang-cn">邮箱</dt>
-          <dd><a href="mailto:info@mumushukr.com">info@mumushukr.com</a></dd>
-        </div>
-        <div class="info-row">
-          <dt class="lang-ja">設立</dt><dt class="lang-cn">成立</dt>
-          <dd class="lang-ja">2020年4月</dd><dd class="lang-cn">2020年4月</dd>
-        </div>
-        <div class="info-row">
-          <dt class="lang-ja">代表</dt><dt class="lang-cn">代表</dt>
-          <dd class="lang-ja">山田 健太</dd><dd class="lang-cn">山田 健太</dd>
-        </div>
-        <div class="info-row">
-          <dt class="lang-ja">営業時間</dt><dt class="lang-cn">营业时间</dt>
-          <dd class="lang-ja">平日 10:00 – 20:00<br>土日祝 9:00 – 19:00</dd>
-          <dd class="lang-cn">工作日 10:00 – 20:00<br>周末节假日 9:00 – 19:00</dd>
-        </div>
-        <div class="info-row">
-          <dt class="lang-ja">定休日</dt><dt class="lang-cn">休息日</dt>
-          <dd class="lang-ja">毎週火曜日</dd><dd class="lang-cn">每周二</dd>
-        </div>
-        <div class="info-row">
-          <dt class="lang-ja">アクセス</dt><dt class="lang-cn">交通</dt>
-          <dd class="lang-ja">大阪メトロ 梅田駅より徒歩3分<br>JR大阪駅より徒歩5分</dd>
-          <dd class="lang-cn">大阪地铁 梅田站步行3分钟<br>JR大阪站步行5分钟</dd>
-        </div>
-        <div class="info-row">
-          <dt class="lang-ja">事業内容</dt><dt class="lang-cn">业务</dt>
-          <dd class="lang-ja">ヘアサロン運営 / フランチャイズ事業 / 美容教育</dd>
-          <dd class="lang-cn">美发沙龙运营 / 加盟连锁 / 美容教育</dd>
-        </div>
-      </dl>
+<!-- 2. Overview -->
+<section style="background:#fff;">
+  <div class="container" style="max-width: 880px;">
+    <p class="section-label" style="text-align:center;">COMPANY OVERVIEW</p>
+    <h2 class="section-title lang-ja" style="text-align:center;">ムム株式会社について</h2>
+    <h2 class="section-title lang-cn" style="text-align:center;">关于ムム株式会社</h2>
+    <div class="section-divider" style="margin: 0 auto 40px;"></div>
+    <p class="about-body left lang-ja">
+      2023 年 12 月、大阪で設立されたムム株式会社は、美容業界の専門知識と IT 技術を融合させた新しい形の企業です。設立からわずか数年で、美容サロン運営・跨境EC・AI 効率化の三つの事業を立ち上げ、着実に成長を続けています。若さを持て余すことなく、スピード感とクオリティの両立を実現しています。<br><br>
+      「ムム（MUMU）」という社名には、"もっと美しく、もっと便利に"という想いを込めています。伝統的な美容サービスと最新のテクノロジーを組み合わせ、お客様の生活に豊かな価値を提供し続けます。
+    </p>
+    <p class="about-body left lang-cn">
+      ムム株式会社于 2023 年 12 月在大阪成立，是一家将美容行业专业知识与 IT 技术融合的新型企业。成立短短几年内，我们已建立起美容沙龙运营、跨境电商、AI 效率化三大业务板块，稳步快速发展。年轻不是劣势，而是我们追求速度与品质并重的动力。<br><br>
+      "ムム（MUMU）"这个公司名称蕴含着"更加美好，更加便捷"的理念。我们将传统美容服务与最新科技相结合，持续为客户的生活提供丰富的价值。
+    </p>
+  </div>
+</section>
+
+
+<!-- 3. Business -->
+<section>
+  <div class="container">
+    <p class="section-label" style="text-align:center;">OUR BUSINESS</p>
+    <h2 class="section-title lang-ja" style="text-align:center;">事業紹介</h2>
+    <h2 class="section-title lang-cn" style="text-align:center;">业务介绍</h2>
+    <div class="section-divider" style="margin: 0 auto 0;"></div>
+
+    <div class="biz-grid">
+      <div class="biz-card">
+        <span class="biz-num">01</span>
+        <span class="biz-sub">Hair Salon</span>
+        <h3 class="biz-title lang-ja">SHUKR 理容部</h3>
+        <h3 class="biz-title lang-cn">SHUKR 理容部</h3>
+        <p class="biz-desc lang-ja">
+          高級ヘアサロン「SHUKR」は大阪・小路に位置するプレミアムサロン。日本の繊細な技術と多文化対応のホスピタリティを融合し、在日中国人のお客様と日本のお客様の双方に心地よい体験をお届けします。Hot Pepper Beauty との提携と SNS による情報発信で、地域の新しい美容拠点として成長を続けています。今年は心斎橋への新店出店を計画しており、今後も継続的な店舗展開を予定しています。
+        </p>
+        <p class="biz-desc lang-cn">
+          高端美发沙龙「SHUKR」位于大阪・小路。融合日式细腻技术与多元文化服务，为在日中国客人和日本本地客人都提供舒适的体验。通过与 Hot Pepper 集团合作获客，并利用 SNS 进行信息传播，作为区域性的新美容据点持续成长。今年我们正在计划开设心斋桥分店，未来还有持续开新店的计划。
+        </p>
+      </div>
+
+      <div class="biz-card">
+        <span class="biz-num">02</span>
+        <span class="biz-sub">Cross-border EC</span>
+        <h3 class="biz-title lang-ja">eBay 通販部</h3>
+        <h3 class="biz-title lang-cn">eBay 跨境电商</h3>
+        <p class="biz-desc lang-ja">
+          日本発・越境 EC「eBay 通販事業」は 2026 年に始動した新規事業。日本の優れた商品を厳選し、eBay の米国マーケットを通じて世界中のお客様にお届けします。独自のセレクト基準とサプライチェーン管理により、日本製品の品質と魅力を世界に発信します。
+        </p>
+        <p class="biz-desc lang-cn">
+          日本出发・跨境电商「eBay 通販事业」是 2026 年启动的新业务。精选日本优质商品，通过 eBay 美国市场将日本产品送达全球客户。凭借独特的选品标准和供应链管理，将日本产品的品质与魅力推向全球。
+        </p>
+      </div>
+
+      <div class="biz-card">
+        <span class="biz-num">03</span>
+        <span class="biz-sub">AI Efficiency</span>
+        <h3 class="biz-title lang-ja">AI 効率化</h3>
+        <h3 class="biz-title lang-cn">AI 效率化</h3>
+        <p class="biz-desc lang-ja">
+          AI 活用による業務効率化。全社業務領域に AI 技術を導入し、効率の大幅な向上を実現します。AI エージェントによる自動化からデータ分析に基づく意思決定まで、テクノロジーの力で業務の品質とスピードを両立。美容業界と IT の融合という独自の強みを活かし、業界のデジタルトランスフォーメーションを牽引します。現在、eBay 越境 EC の全面自動化を目指す AI 自動取引システムの開発も進めています。
+        </p>
+        <p class="biz-desc lang-cn">
+          AI 活用实现业务效率化。在公司业务全领域引入 AI 技术，实现效率的大幅提升。从 AI 智能体自动化到基于数据分析的决策，利用科技力量兼顾业务质量与速度。发挥美容行业与 IT 融合的独特优势，引领行业的数字化转型。目前我们正在开发 AI 自动化交易系统，实现 eBay 跨境电商的全面自动化目标。
+        </p>
+      </div>
     </div>
   </div>
 </section>
 
+
+<!-- 4. History -->
+<section style="background:#fff;">
+  <div class="container">
+    <p class="section-label" style="text-align:center;">HISTORY</p>
+    <h2 class="section-title lang-ja" style="text-align:center;">会社の歩み</h2>
+    <h2 class="section-title lang-cn" style="text-align:center;">公司发展历程</h2>
+    <div class="section-divider" style="margin: 0 auto 0;"></div>
+    <ol class="timeline">
+      <li>
+        <span class="tl-year">2023.12</span>
+        <span class="tl-body lang-ja">大阪にてムム株式会社を設立</span>
+        <span class="tl-body lang-cn">ムム株式会社在大阪成立</span>
+      </li>
+      <li>
+        <span class="tl-year">2025</span>
+        <span class="tl-body lang-ja">SHUKR 1号店をオープン</span>
+        <span class="tl-body lang-cn">SHUKR 初店开始营业</span>
+      </li>
+      <li>
+        <span class="tl-year">2026</span>
+        <span class="tl-body lang-ja">eBay 通販事業を始動</span>
+        <span class="tl-body lang-cn">启动 eBay 通販事业</span>
+      </li>
+      <li>
+        <span class="tl-year">2026</span>
+        <span class="tl-body lang-ja">AI による業務効率化を全社で本格推進</span>
+        <span class="tl-body lang-cn">全面推动 AI 业务效率化</span>
+      </li>
+      <li>
+        <span class="tl-year">2026</span>
+        <span class="tl-body lang-ja">多角的な事業展開により、新たな価値創造を追求</span>
+        <span class="tl-body lang-cn">多元化业务拓展，追求新的价值创造</span>
+      </li>
+    </ol>
+  </div>
+</section>
+
+
+<!-- 5. CEO Message -->
 <section>
   <div class="container">
-    <p class="section-label">HISTORY</p>
-    <h2 class="section-title lang-ja">沿革</h2>
-    <h2 class="section-title lang-cn">沿革</h2>
-    <div class="section-divider"></div>
-    <ol class="timeline">
-      <li><span class="tl-year">2020</span><span class="tl-body lang-ja">大阪・梅田にSHUKR 1号店をオープン</span><span class="tl-body lang-cn">于大阪梅田开设SHUKR 1号店</span></li>
-      <li><span class="tl-year">2022</span><span class="tl-body lang-ja">多言語対応スタッフを拡充、在日中国人向けサービスを本格化</span><span class="tl-body lang-cn">扩充多语言员工团队，正式推出面向在日中国客人的专属服务</span></li>
-      <li><span class="tl-year">2024</span><span class="tl-body lang-ja">教育プログラム「SHUKR ACADEMY」設立</span><span class="tl-body lang-cn">成立教育计划「SHUKR ACADEMY」</span></li>
-      <li><span class="tl-year">2026</span><span class="tl-body lang-ja">フランチャイズ事業を開始</span><span class="tl-body lang-cn">启动加盟连锁业务</span></li>
-    </ol>
+    <p class="section-label" style="text-align:center;">MESSAGE</p>
+    <h2 class="section-title lang-ja" style="text-align:center;">社長挨拶</h2>
+    <h2 class="section-title lang-cn" style="text-align:center;">社长致辞</h2>
+    <div class="section-divider" style="margin: 0 auto 0;"></div>
+
+    <div class="ceo-grid">
+      <div class="ceo-photo">
+        <div class="ceo-photo-stripe"></div>
+        <span class="ceo-photo-label">CEO PHOTO</span>
+      </div>
+      <div>
+        <p class="ceo-quote lang-ja jp">「美容とテクノロジーの力で、<br>大阪から世界へ新しい価値を創出する」</p>
+        <p class="ceo-quote lang-cn jp">"以美容与科技的力量，<br>从大阪走向世界，创造全新价值"</p>
+
+        <div class="ceo-body lang-ja">
+          <p>私はムム株式会社 代表取締役の LIU YI です。2023 年 12 月、私は成都から大阪へやって来て、ムム株式会社を創業しました。社名「ムム」には"もっと美しく、もっと便利に"という想いを込めています。</p>
+          <p>2025 年に SHUKR ヘアサロンを立ち上げ、日本の美容業界の専門人材を擁し、SHUKR では一人ひとりのお客様に丁寧なサービスを提供し、地域に根ざしたサロンとして成長を続けています。</p>
+          <p>しかし、私たちの挑戦はそこに留まりません。2026 年には eBay 越境 EC 事業を始動し、日本の優れた商品を世界中のお客様へお届けする取り組みを始めました。同時に、社内に積極的に AI 技術を導入し、業務効率化とサービス品質の向上を追求しています。</p>
+          <p>創業から二年余り、すでに三つの事業を立ち上げ、着実かつ迅速に成長しています。若さこそが私たちの最大の強みです。スピードと柔軟性で、既存の枠を超える新しい価値を生み出していきます。</p>
+          <p>私たちが大切にしているのは、ただ一つ——「お客様の日常を、より豊かに」。サロンで過ごす心地よい時間、日本から届く高品質な商品、AI による効率的なサービス。これらを組み合わせ、お客様に新しい体験をお届けします。</p>
+          <p>大阪から世界へ。伝統と革新を融合させた新しい価値を、これからも創造し続けます。皆様のご支援を心よりお願い申し上げます。</p>
+        </div>
+        <div class="ceo-body lang-cn">
+          <p>我是ムム株式会社代表取缔役 LIU YI。2023 年 12 月，我从成都来到大阪，创立了ムム株式会社。公司名称"ムム"蕴含着"更加美好，更加便捷"的理念。</p>
+          <p>2025 年我们创立了 SHUKR 美发品牌，拥有日本美发行业的专业人才。在 SHUKR，我们为每一位客户提供细致的服务，作为扎根社区的美容沙龙不断成长。</p>
+          <p>但我们的挑战不止于此。2026 年，我们启动了 eBay 跨境电商业务，开始将日本优质商品送达全球客户。同时，在公司内部积极引入 AI 技术，追求业务效率化和服务品质的提升。</p>
+          <p>成立两年多以来，我们已建立起三大业务板块，稳步快速发展。年轻是我们最大的优势，我们以速度和灵活性，创造突破传统框架的新价值。</p>
+          <p>通过这些多元化业务，我们珍视的只有一件事——"让客户的日常更加丰富"。在美容沙龙度过的舒适时光，从日本送达的高品质商品，以及 AI 实现的高效服务。通过组合这些价值，我们能够为客户提供全新的体验。</p>
+          <p>从大阪走向世界。我们将持续创造融合传统与革新的新价值。期待大家的支持，感谢！</p>
+        </div>
+
+        <div class="ceo-sign">
+          <span class="lang-ja">ムム株式会社 代表取締役</span>
+          <span class="lang-cn">ムム株式会社 代表董事</span>
+          <span class="ceo-sign-name">LIU YI</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- 6. Mission / Vision / Values -->
+<section style="background:#fff;">
+  <div class="container">
+    <p class="section-label" style="text-align:center;">OUR MISSION</p>
+    <h2 class="section-title lang-ja" style="text-align:center;">ミッション・ビジョン</h2>
+    <h2 class="section-title lang-cn" style="text-align:center;">使命与愿景</h2>
+    <div class="section-divider" style="margin: 0 auto 60px;"></div>
+
+    <div class="mission-block">
+      <p class="mission-label">MISSION</p>
+      <p class="mission-text lang-ja">美容とテクノロジーの力で、<br>人々の日常をより豊かに。</p>
+      <p class="mission-text lang-cn">用美容与科技的力量，<br>让人们的日常更加丰富。</p>
+    </div>
+
+    <div class="mission-block">
+      <p class="mission-label">VISION</p>
+      <p class="mission-text lang-ja">大阪から世界へ、<br>伝統と革新を融合した新しい価値を創造する。</p>
+      <p class="mission-text lang-cn">从大阪走向世界，<br>创造融合传统与革新的新价值。</p>
+    </div>
+
+    <div class="values-grid">
+      <div class="value-item">
+        <span class="value-item-en">Quality</span>
+        <h4 class="value-item-title lang-ja">品質</h4>
+        <h4 class="value-item-title lang-cn">品质</h4>
+        <p class="value-item-desc lang-ja">妥協のないサービスを提供する</p>
+        <p class="value-item-desc lang-cn">提供不妥协的服务</p>
+      </div>
+      <div class="value-item">
+        <span class="value-item-en">Innovation</span>
+        <h4 class="value-item-title lang-ja">革新</h4>
+        <h4 class="value-item-title lang-cn">革新</h4>
+        <p class="value-item-desc lang-ja">テクノロジーで可能性を広げる</p>
+        <p class="value-item-desc lang-cn">用科技拓展可能性</p>
+      </div>
+      <div class="value-item">
+        <span class="value-item-en">Trust</span>
+        <h4 class="value-item-title lang-ja">信頼</h4>
+        <h4 class="value-item-title lang-cn">信赖</h4>
+        <p class="value-item-desc lang-ja">一つひとつの関係を大切にする</p>
+        <p class="value-item-desc lang-cn">珍惜每一个关系</p>
+      </div>
+      <div class="value-item">
+        <span class="value-item-en">Challenge</span>
+        <h4 class="value-item-title lang-ja">挑戦</h4>
+        <h4 class="value-item-title lang-cn">挑战</h4>
+        <p class="value-item-desc lang-ja">常に新しいことに挑戦し続ける</p>
+        <p class="value-item-desc lang-cn">不断向新事物挑战</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- 7. Company Info Table -->
+<section>
+  <div class="container">
+    <p class="section-label" style="text-align:center;">COMPANY INFO</p>
+    <h2 class="section-title lang-ja" style="text-align:center;">会社概要</h2>
+    <h2 class="section-title lang-cn" style="text-align:center;">公司概要</h2>
+    <div class="section-divider" style="margin: 0 auto 0;"></div>
+
+    <dl class="info-rows">
+      <div class="info-row">
+        <dt class="lang-ja">会社名</dt><dt class="lang-cn">公司名称</dt>
+        <dd>ムム株式会社（MUMU Co., Ltd.）</dd>
+      </div>
+      <div class="info-row">
+        <dt class="lang-ja">設立</dt><dt class="lang-cn">成立</dt>
+        <dd class="lang-ja">2023 年 12 月</dd><dd class="lang-cn">2023 年 12 月</dd>
+      </div>
+      <div class="info-row">
+        <dt class="lang-ja">代表取締役</dt><dt class="lang-cn">代表董事</dt>
+        <dd>LIU YI</dd>
+      </div>
+      <div class="info-row">
+        <dt class="lang-ja">本社</dt><dt class="lang-cn">总部地址</dt>
+        <dd class="lang-ja">〒530-0042<br>大阪市北区天満橋 1-4-14 天満橋ビル 205</dd>
+        <dd class="lang-cn">〒530-0042<br>大阪市北区天满桥 1-4-14 天满桥大厦 205</dd>
+      </div>
+      <div class="info-row">
+        <dt class="lang-ja">電話</dt><dt class="lang-cn">电话</dt>
+        <dd><a href="tel:+81675093054">06-7509-3054</a></dd>
+      </div>
+      <div class="info-row">
+        <dt class="lang-ja">メール</dt><dt class="lang-cn">邮箱</dt>
+        <dd><a href="mailto:info@mumushukr.com">info@mumushukr.com</a></dd>
+      </div>
+      <div class="info-row">
+        <dt class="lang-ja">ウェブサイト</dt><dt class="lang-cn">网站</dt>
+        <dd><a href="https://www.mumushukr.com" target="_blank" rel="noopener">www.mumushukr.com</a></dd>
+      </div>
+      <div class="info-row">
+        <dt class="lang-ja">事業内容</dt><dt class="lang-cn">业务内容</dt>
+        <dd class="lang-ja">ヘアサロン運営 / 跨境 EC / AI 効率化支援</dd>
+        <dd class="lang-cn">美发沙龙运营 / 跨境电商 / AI 效率化支持</dd>
+      </div>
+    </dl>
   </div>
 </section>
 
@@ -172,7 +385,7 @@
     <li><a href="column.html" class="lang-ja">コラム</a><a href="column.html" class="lang-cn">专栏</a></li>
     <li><a href="fc.html" class="lang-ja">FC募集</a><a href="fc.html" class="lang-cn">加盟招募</a></li>
   </ul>
-  <p class="footer-copy">© 2026 SHUKR Hair Salon. All rights reserved.</p>
+  <p class="footer-copy">© 2026 ムム株式会社. All rights reserved.</p>
 </footer>
 
 
