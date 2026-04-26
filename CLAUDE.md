@@ -70,3 +70,21 @@ SYNC_TOKEN=...               # OpenClaw Webhook 验证 token
 | GET | `/api/availability` | 查询当前空档缓存 |
 | POST | `/api/availability/sync` | OpenClaw webhook，body: `{token, data}` |
 | POST | `/api/reservations` | 提交预约表单 |
+
+## 添加专栏文章
+
+`column.html` 由 `assets/articles.json` 数据驱动渲染，加文章无需改 HTML。
+
+1. （可选）把封面图放进 `assets/articles/`，文件名建议等于文章 `id`，例如 `assets/articles/spring-color-trends-2026.jpg`
+2. 在 `assets/articles.json` 数组末尾追加一段（复制现有任意条改字段即可）
+3. `git add . && git commit -m "post: <title>" && git push`
+
+字段说明：
+- `id` — kebab-case slug（详情页 URL 预留 key）
+- `category` — `trend / care / brand / company / ec / ai`，必须与 column 页筛选按钮 `data-cat` 对齐
+- `featured` — boolean。整个数组只允许一条为 `true`（钉到顶部大卡）
+- `date` — `YYYY-MM-DD`，渲染时自动转成 `2026.04.18`，未 featured 的文章按日期降序排
+- `cover` — 封面图相对路径；留空则显示条纹占位 + 大写分类标签
+- `title_ja/cn`、`excerpt_ja/cn`、`author_ja/cn` — 必填双语
+- `dept_ja/cn` — 选填部门标签（如「电商事业部」），两边都为空时不渲染
+- `url` — 详情页地址，留空则点击不跳转
