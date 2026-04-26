@@ -30,8 +30,7 @@
 /* ceo message */
 .ceo-grid { display: grid; grid-template-columns: 2fr 3fr; gap: 60px; align-items: start; margin-top: 40px; }
 .ceo-photo { aspect-ratio: 4/5; background: #e0dbd4; position: relative; overflow: hidden; }
-.ceo-photo-stripe { position: absolute; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 30px, rgba(0,0,0,0.04) 30px, rgba(0,0,0,0.04) 31px); }
-.ceo-photo-label { position: absolute; top: 20px; left: 20px; font-family: 'Cormorant Garamond', serif; font-size: 14px; letter-spacing: 0.3em; color: rgba(0,0,0,0.25); }
+.ceo-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .ceo-quote { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 20px; line-height: 1.7; color: var(--gold); border-left: 2px solid var(--gold); padding: 4px 0 4px 24px; margin: 0 0 32px; letter-spacing: 0.04em; }
 .ceo-quote.jp { font-family: 'Noto Serif JP', serif; font-style: normal; font-size: 16px; line-height: 2; }
 .ceo-body { font-family: 'Noto Sans JP', sans-serif; font-size: 13px; line-height: 2.2; font-weight: 300; color: var(--fg-muted); letter-spacing: 0.06em; }
@@ -238,8 +237,7 @@
 
     <div class="ceo-grid">
       <div class="ceo-photo">
-        <div class="ceo-photo-stripe"></div>
-        <span class="ceo-photo-label">CEO PHOTO</span>
+        <img src="assets/ceo-liuyi.jpg" alt="LIU YI - 代表取締役">
       </div>
       <div>
         <p class="ceo-quote lang-ja jp">「美容とテクノロジーの力で、<br>大阪から世界へ新しい価値を創出する」</p>
