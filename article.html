@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="docTitle">記事 | ムム株式会社</title>
+<meta id="metaDesc" name="description" content="ムム株式会社专栏文章">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Noto+Serif+JP:wght@200;300;400;500&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/shared.css">
+<style>
+.art-wrap { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+.art-back { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 13px; letter-spacing: 0.2em; color: var(--fg-muted); text-decoration: none; display: inline-block; margin-bottom: 32px; }
+.art-back:hover { color: var(--gold); }
+.art-tag { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 12px; letter-spacing: 0.3em; color: var(--gold); text-transform: uppercase; margin-bottom: 12px; }
+.art-title { font-family: 'Noto Serif JP', serif; font-size: 32px; font-weight: 400; line-height: 1.6; letter-spacing: 0.04em; margin: 0 0 24px; }
+.art-meta { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; font-family: 'Noto Sans JP', sans-serif; font-size: 12px; letter-spacing: 0.08em; color: var(--fg-muted); margin-bottom: 40px; padding-bottom: 24px; border-bottom: 1px solid var(--border); }
+.art-meta .col-author::before { content: ""; width: 4px; height: 4px; border-radius: 50%; background: var(--gold); display: inline-block; margin-right: 6px; vertical-align: middle; }
+.art-meta .col-dept { color: var(--gold); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; }
+.art-cover { width: 100%; aspect-ratio: 16/9; background: #e8e4df; background-size: cover; background-position: center; margin-bottom: 48px; position: relative; overflow: hidden; }
+.art-cover-stripe { position: absolute; inset: 0; background: repeating-linear-gradient(-45deg, transparent, transparent 12px, rgba(0,0,0,0.04) 12px, rgba(0,0,0,0.04) 13px); }
+
+.art-body { font-family: 'Noto Sans JP', sans-serif; font-size: 15px; line-height: 2.1; color: var(--fg); font-weight: 300; letter-spacing: 0.04em; }
+.art-body h2 { font-family: 'Noto Serif JP', serif; font-size: 22px; font-weight: 400; letter-spacing: 0.06em; line-height: 1.6; margin: 56px 0 20px; padding-left: 14px; border-left: 3px solid var(--gold); }
+.art-body h3 { font-family: 'Noto Serif JP', serif; font-size: 18px; font-weight: 400; letter-spacing: 0.06em; margin: 40px 0 16px; }
+.art-body p { margin: 0 0 22px; }
+.art-body ul, .art-body ol { margin: 0 0 22px; padding-left: 24px; }
+.art-body li { margin-bottom: 10px; }
+.art-body strong { font-weight: 500; color: var(--charcoal); }
+.art-body a { color: var(--gold); text-decoration: none; border-bottom: 1px solid var(--gold); }
+.art-body a:hover { opacity: 0.7; }
+.art-body img { max-width: 100%; height: auto; display: block; margin: 32px auto; }
+.art-body figure { margin: 32px 0; }
+.art-body figcaption { font-size: 12px; color: var(--fg-muted); text-align: center; margin-top: 8px; letter-spacing: 0.06em; }
+.art-body blockquote { border-left: 2px solid var(--border); padding: 4px 0 4px 20px; margin: 28px 0; color: var(--fg-muted); font-style: italic; }
+.art-body hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+.art-body code { background: #f5f1ea; padding: 2px 6px; font-size: 13px; }
+
+.art-footer { margin: 80px 0 0; padding: 40px 0; border-top: 1px solid var(--border); text-align: center; }
+.art-loading { text-align: center; padding: 100px 20px; font-family: 'Noto Sans JP', sans-serif; color: var(--fg-muted); letter-spacing: 0.1em; }
+.art-error { text-align: center; padding: 100px 20px; }
+.art-error h2 { font-family: 'Cormorant Garamond', serif; font-size: 32px; color: var(--gold); margin-bottom: 16px; }
+
+@media(max-width:640px){
+  .art-title { font-size: 24px; }
+  .art-body { font-size: 14px; line-height: 2; }
+  .art-body h2 { font-size: 19px; margin-top: 40px; }
+}
+</style>
+</head>
+<body>
+
+<nav id="mainNav">
+  <a href="index.html" class="nav-logo"><img src="assets/shukr-logo.png" alt="SHUKR"></a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="index.html" class=" lang-ja">ホーム</a><a href="index.html" class=" lang-cn">首页</a></li>
+      <li><a href="stylists.html" class=" lang-ja">スタイリスト</a><a href="stylists.html" class=" lang-cn">造型师</a></li>
+      <li><a href="services.html" class=" lang-ja">サービス紹介</a><a href="services.html" class=" lang-cn">服务介绍</a></li>
+      <li><a href="fc.html" class=" lang-ja">FC募集</a><a href="fc.html" class=" lang-cn">加盟招募</a></li>
+      <li><a href="about.html" class=" lang-ja">会社概要</a><a href="about.html" class=" lang-cn">公司概要</a></li>
+      <li><a href="column.html" class="active lang-ja">コラム</a><a href="column.html" class="active lang-cn">专栏</a></li>
+    </ul>
+    <div class="lang-switch">
+      <button class="lang-btn" id="btnZh" onclick="setLang('zh')">中文</button>
+      <button class="lang-btn active" id="btnJa" onclick="setLang('ja')">日本語</button>
+    </div>
+    <div class="nav-divider"></div>
+    <a href="reserve.html" class="btn-reserve lang-ja">予約する</a>
+    <a href="reserve.html" class="btn-reserve lang-cn">立即予约</a>
+  </div>
+</nav>
+
+<section style="padding-top:140px;">
+  <div class="art-wrap">
+    <a href="column.html" class="art-back">← <span class="lang-ja">コラム一覧へ戻る</span><span class="lang-cn">返回专栏</span></a>
+
+    <div id="artLoading" class="art-loading">
+      <span class="lang-ja">読み込み中…</span>
+      <span class="lang-cn">加载中…</span>
+    </div>
+
+    <div id="artError" class="art-error" style="display:none;">
+      <h2>404</h2>
+      <p class="lang-ja">記事が見つかりませんでした。</p>
+      <p class="lang-cn">未找到该文章。</p>
+    </div>
+
+    <div id="artContent" style="display:none;">
+      <p class="art-tag" id="artTag"></p>
+      <h1 class="art-title lang-ja" id="artTitleJa"></h1>
+      <h1 class="art-title lang-cn" id="artTitleCn"></h1>
+      <div class="art-meta">
+        <span class="col-date" id="artDate"></span>
+        <span class="col-author">
+          <span class="lang-ja" id="artAuthorJa"></span><span class="lang-cn" id="artAuthorCn"></span>
+        </span>
+        <span class="col-dept lang-ja" id="artDeptJa"></span>
+        <span class="col-dept lang-cn" id="artDeptCn"></span>
+      </div>
+      <div class="art-cover" id="artCover"></div>
+      <div class="art-body lang-ja" id="artBodyJa"></div>
+      <div class="art-body lang-cn" id="artBodyCn"></div>
+      <div class="art-footer">
+        <a href="column.html" class="art-back">← <span class="lang-ja">コラム一覧へ戻る</span><span class="lang-cn">返回专栏</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<footer>
+  <div class="footer-logo"><img src="assets/shukr-logo.png" alt="SHUKR"></div>
+  <ul class="footer-links">
+    <li><a href="index.html" class="lang-ja">ホーム</a><a href="index.html" class="lang-cn">首页</a></li>
+    <li><a href="services.html" class="lang-ja">サービス紹介</a><a href="services.html" class="lang-cn">服务介绍</a></li>
+    <li><a href="stylists.html" class="lang-ja">スタイリスト</a><a href="stylists.html" class="lang-cn">造型师</a></li>
+    <li><a href="about.html" class="lang-ja">会社概要</a><a href="about.html" class="lang-cn">公司概要</a></li>
+    <li><a href="column.html" class="lang-ja">コラム</a><a href="column.html" class="lang-cn">专栏</a></li>
+    <li><a href="fc.html" class="lang-ja">FC募集</a><a href="fc.html" class="lang-cn">加盟招募</a></li>
+  </ul>
+  <p class="footer-copy">© 2026 ムム株式会社. All rights reserved.</p>
+</footer>
+
+
+<button class="ai-chat-btn" onclick="toggleChat()">
+  <svg viewBox="0 0 24 24" fill="none"><path d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 9H16M8 13H13" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+</button>
+<div class="chat-modal" id="chatModal">
+  <div class="chat-header">
+    <div class="chat-header-dot"></div>
+    <span class="chat-header-title lang-ja">SHUKRアシスタント</span>
+    <span class="chat-header-title lang-cn">SHUKR AI客服</span>
+    <button class="chat-close" onclick="toggleChat()">×</button>
+  </div>
+  <div class="chat-messages" id="chatMessages">
+    <div class="chat-bubble bot lang-ja">こんにちは！ご予約・サービスについてお気軽にご質問ください。</div>
+    <div class="chat-bubble bot lang-cn">您好！有关预约或服务的任何问题请告诉我。</div>
+  </div>
+  <div class="chat-input-row">
+    <input type="text" class="chat-input" id="chatInput" placeholder="メッセージを入力…" onkeydown="if(event.key==='Enter') sendChat()">
+    <input type="text" class="chat-input" id="chatInputCn" placeholder="请输入消息…" style="display:none" onkeydown="if(event.key==='Enter') sendChat()">
+    <button class="chat-send" onclick="sendChat()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</div>
+
+<script src="assets/shared.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+<script>
+(function(){
+  const params = new URLSearchParams(location.search);
+  const id = params.get('id');
+  const loading = document.getElementById('artLoading');
+  const errorEl = document.getElementById('artError');
+  const content = document.getElementById('artContent');
+
+  function showError() {
+    loading.style.display = 'none';
+    content.style.display = 'none';
+    errorEl.style.display = 'block';
+  }
+
+  if (!id || !/^[a-z0-9-]+$/i.test(id)) { showError(); return; }
+
+  function fmtDate(d) { return (d || '').replace(/-/g, '.'); }
+
+  async function fetchText(path) {
+    const r = await fetch(path, { cache: 'no-store' });
+    if (!r.ok) return '';
+    return await r.text();
+  }
+
+  fetch('assets/articles.json', { cache: 'no-store' })
+    .then(r => r.json())
+    .then(async list => {
+      const a = list.find(x => x.id === id);
+      if (!a) { showError(); return; }
+
+      // 标题/meta
+      document.getElementById('docTitle').textContent = `${a.title_ja} | ムム株式会社`;
+      document.getElementById('metaDesc').setAttribute('content', a.excerpt_cn || a.excerpt_ja || '');
+      document.getElementById('artTag').textContent = (a.category || '').toUpperCase();
+      document.getElementById('artTitleJa').textContent = a.title_ja || '';
+      document.getElementById('artTitleCn').textContent = a.title_cn || '';
+      document.getElementById('artDate').textContent = fmtDate(a.date);
+      document.getElementById('artAuthorJa').textContent = a.author_ja || '';
+      document.getElementById('artAuthorCn').textContent = a.author_cn || '';
+      const deptJa = document.getElementById('artDeptJa');
+      const deptCn = document.getElementById('artDeptCn');
+      if (a.dept_ja) deptJa.textContent = a.dept_ja; else deptJa.style.display = 'none';
+      if (a.dept_cn) deptCn.textContent = a.dept_cn; else deptCn.style.display = 'none';
+
+      // 封面
+      const cover = document.getElementById('artCover');
+      if (a.cover) {
+        cover.style.backgroundImage = `url('${a.cover}')`;
+      } else {
+        cover.innerHTML = '<div class="art-cover-stripe"></div>';
+      }
+
+      // 正文：并行拉取中日 markdown
+      const [mdJa, mdCn] = await Promise.all([
+        fetchText(`articles/${id}.ja.md`),
+        fetchText(`articles/${id}.cn.md`),
+      ]);
+
+      const fallbackJa = `<p>${a.excerpt_ja || ''}</p><p style="color:#999;font-size:13px;">※ 本文準備中です。</p>`;
+      const fallbackCn = `<p>${a.excerpt_cn || ''}</p><p style="color:#999;font-size:13px;">※ 正文准备中。</p>`;
+
+      document.getElementById('artBodyJa').innerHTML = mdJa ? marked.parse(mdJa) : fallbackJa;
+      document.getElementById('artBodyCn').innerHTML = mdCn ? marked.parse(mdCn) : fallbackCn;
+
+      loading.style.display = 'none';
+      content.style.display = 'block';
+
+      // 应用当前语言
+      const saved = localStorage.getItem('shukr-lang') || 'ja';
+      if (typeof setLang === 'function') setLang(saved);
+    })
+    .catch(err => { console.error(err); showError(); });
+})();
+</script>
+</body>
+</html>

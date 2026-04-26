@@ -73,18 +73,30 @@ SYNC_TOKEN=...               # OpenClaw Webhook 验证 token
 
 ## 添加专栏文章
 
-`column.html` 由 `assets/articles.json` 数据驱动渲染，加文章无需改 HTML。
+`column.html` 由 `assets/articles.json` 数据驱动渲染列表，`article.html` 是通用详情页（marked.js 渲染 markdown）。
 
-1. （可选）把封面图放进 `assets/articles/`，文件名建议等于文章 `id`，例如 `assets/articles/spring-color-trends-2026.jpg`
-2. 在 `assets/articles.json` 数组末尾追加一段（复制现有任意条改字段即可）
-3. `git add . && git commit -m "post: <title>" && git push`
+**完整流程（含正文 + 配图）：**
 
-字段说明：
-- `id` — kebab-case slug（详情页 URL 预留 key）
+1. 想清楚一个 `id`（kebab-case 英文 slug，如 `shukr-1st-anniversary-lottery`），后续所有文件名都用它
+2. 封面图放 `assets/articles/<id>.jpg`
+3. 正文配图放 `assets/articles/<id>/img-1.jpg` 等（每篇一个子文件夹避免撞名）
+4. 写两个正文 markdown：
+   - `articles/<id>.ja.md`（日文）
+   - `articles/<id>.cn.md`（中文）
+   - md 里插图用 `![说明](assets/articles/<id>/img-1.jpg)`
+5. 在 `assets/articles.json` 数组末尾追加一条记录（复制现有任意条改字段）
+6. `git add . && git commit -m "post: <title>" && git push`
+
+完成后 `column.html` 的列表卡片自动出现，点击跳转 `article.html?id=<id>` 显示完整正文。
+
+**只想做卡片不写正文**：跳过第 3-4 步，详情页会显示卡片摘要 + "正文准备中" 提示。如果文章本身托管在外部（Hot Pepper、SNS 等），把 `url` 字段填外部链接即可，卡片点击会新窗口打开外链。
+
+**字段说明：**
+- `id` — kebab-case slug，对应 markdown 文件名 + 详情页 URL key
 - `category` — `trend / care / brand / company / ec / ai`，必须与 column 页筛选按钮 `data-cat` 对齐
 - `featured` — boolean。整个数组只允许一条为 `true`（钉到顶部大卡）
 - `date` — `YYYY-MM-DD`，渲染时自动转成 `2026.04.18`，未 featured 的文章按日期降序排
 - `cover` — 封面图相对路径；留空则显示条纹占位 + 大写分类标签
 - `title_ja/cn`、`excerpt_ja/cn`、`author_ja/cn` — 必填双语
 - `dept_ja/cn` — 选填部门标签（如「电商事业部」），两边都为空时不渲染
-- `url` — 详情页地址，留空则点击不跳转
+- `url` — **空** = 跳本站 `article.html?id=<id>`；**填 http(s)://...** = 新窗口打开外链

@@ -219,10 +219,12 @@
   }
 
   function moreLink(a) {
-    const href = a.url ? esc(a.url) : '#';
+    const isExternal = a.url && /^https?:\/\//i.test(a.url);
+    const href = a.url ? esc(a.url) : `article.html?id=${esc(a.id)}`;
+    const attrs = isExternal ? ' target="_blank" rel="noopener"' : '';
     return `
-      <a href="${href}" class="more-link lang-ja">続きを読む →</a>
-      <a href="${href}" class="more-link lang-cn">阅读全文 →</a>`;
+      <a href="${href}"${attrs} class="more-link lang-ja">続きを読む →</a>
+      <a href="${href}"${attrs} class="more-link lang-cn">阅读全文 →</a>`;
   }
 
   function renderFeatured(a) {
@@ -249,24 +251,29 @@
   }
 
   function renderCard(a) {
+    const isExternal = a.url && /^https?:\/\//i.test(a.url);
+    const href = a.url ? esc(a.url) : `article.html?id=${esc(a.id)}`;
+    const attrs = isExternal ? ' target="_blank" rel="noopener"' : '';
     return `
-      <article class="col-card" data-cat="${esc(a.category)}">
-        ${coverHtml(a, a.category.toUpperCase())}
-        <div class="col-card-body">
-          <p class="col-tag">${esc(a.category.toUpperCase())}</p>
-          <h3 class="col-card-title lang-ja">${esc(a.title_ja)}</h3>
-          <h3 class="col-card-title lang-cn">${esc(a.title_cn)}</h3>
-          <p class="col-card-excerpt lang-ja">${esc(a.excerpt_ja)}</p>
-          <p class="col-card-excerpt lang-cn">${esc(a.excerpt_cn)}</p>
-          <div class="col-card-meta">
-            <span class="col-date">${esc(fmtDate(a.date))}</span>
-            <span class="col-author">
-              <span class="lang-ja">${esc(a.author_ja)}</span><span class="lang-cn">${esc(a.author_cn)}</span>
-            </span>
-            ${deptHtml(a)}
+      <a href="${href}"${attrs} class="col-card-link" data-cat="${esc(a.category)}" style="text-decoration:none;color:inherit;display:block;">
+        <article class="col-card">
+          ${coverHtml(a, a.category.toUpperCase())}
+          <div class="col-card-body">
+            <p class="col-tag">${esc(a.category.toUpperCase())}</p>
+            <h3 class="col-card-title lang-ja">${esc(a.title_ja)}</h3>
+            <h3 class="col-card-title lang-cn">${esc(a.title_cn)}</h3>
+            <p class="col-card-excerpt lang-ja">${esc(a.excerpt_ja)}</p>
+            <p class="col-card-excerpt lang-cn">${esc(a.excerpt_cn)}</p>
+            <div class="col-card-meta">
+              <span class="col-date">${esc(fmtDate(a.date))}</span>
+              <span class="col-author">
+                <span class="lang-ja">${esc(a.author_ja)}</span><span class="lang-cn">${esc(a.author_cn)}</span>
+              </span>
+              ${deptHtml(a)}
+            </div>
           </div>
-        </div>
-      </article>`;
+        </article>
+      </a>`;
   }
 
   function bindFilters() {
@@ -282,7 +289,7 @@
           featEl.style.display = show ? '' : 'none';
           if (show) visible++;
         }
-        grid.querySelectorAll('.col-card').forEach(c => {
+        grid.querySelectorAll('.col-card-link').forEach(c => {
           const show = cat === 'all' || c.dataset.cat === cat;
           c.style.display = show ? '' : 'none';
           if (show) visible++;
