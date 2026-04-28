@@ -53,7 +53,7 @@ SYNC_TOKEN=...               # OpenClaw Webhook 验证 token
 
 **AI 客服**：前端 `chatHistory[]` 保存对话历史（页面刷新后重置），每次发送最近10条给后端。后端每次请求都从 Supabase 读取最新空档数据，动态注入系统提示词，完全无状态。AI 使用千问 `qwen-plus`，通过 OpenAI 兼容格式接入（`openai` npm包，baseURL 指向 DashScope）。
 
-**空档数据流**：OpenClaw 每2小时抓取 Hot Pepper Beauty 页面 → `POST /api/availability/sync`（需 SYNC_TOKEN 验证）→ 写入 Supabase `availability_cache` 表 → AI 聊天时读取最新一条注入提示词。无缓存数据时 AI 降级回复，引导顾客通过 LINE/微信确认。
+**空档数据流**：GitHub Actions 每小时跑 `scripts/scrape.js`（调用 `server/scrapers/hotpepper.js`）抓 Hot Pepper Beauty 日历 → `POST /api/availability/sync`（需 SYNC_TOKEN 验证）→ 写入 Supabase `availability_cache` 表 → AI 聊天时读取最新一条注入提示词。Hot Pepper 抓取是 cookie session 驱动的 3 步链：店铺首页 → `/CSP/bt/reserve/?stylistId=X` → `/CSP/bt/reserve/afterCoupon?menuId=MN00000005987868&stylistId=X`，最后一页 `<a class="icnOpen">` 的 href 直接带 `rsvRequestDate1` / `rsvRequestTime1` 参数。无缓存数据时 AI 降级回复，引导顾客通过 Hot Pepper / 微信 / 电话确认。
 
 **预约表单**：`reserve.html` 表单提交调用 `submitReservation()`（在 `shared.js`），POST 到 `/api/reservations` 保存至 Supabase，不做冲突检测（最终确认通过 Hot Pepper/LINE/微信完成）。
 

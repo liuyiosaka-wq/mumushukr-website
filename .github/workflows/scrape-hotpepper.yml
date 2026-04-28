@@ -1,0 +1,31 @@
+name: Hot Pepper Availability Scrape
+
+on:
+  schedule:
+    # 每小时整点跑（UTC）。GitHub Actions cron 不保证准时，可能延迟 5-15 分钟
+    - cron: '0 * * * *'
+  workflow_dispatch: # 允许手动触发用于调试
+
+concurrency:
+  group: scrape-hotpepper
+  cancel-in-progress: false
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - run: npm ci --omit=dev --include=prod
+
+      - name: Scrape and push
+        env:
+          SYNC_URL: ${{ secrets.SYNC_URL }}
+          SYNC_TOKEN: ${{ secrets.SYNC_TOKEN }}
+        run: node scripts/scrape.js
