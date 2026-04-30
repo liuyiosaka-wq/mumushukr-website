@@ -122,19 +122,24 @@ function buildSystemPrompt(lang, availabilityData) {
     // 每个日期独立成块，用空行清晰分隔，避免 AI 把相邻日期的时间串过去
     const blocks = Object.entries(availabilityData)
       .sort(([a], [b]) => a.localeCompare(b))
-      .map(([date, stylists]) => {
+      .map(([date, info]) => {
         const d = new Date(date + 'T00:00:00+09:00');
         const month = d.getMonth() + 1;
         const day = d.getDate();
         const dow = weekdays[d.getDay()];
-        const header = isZh
-          ? `■ ${date}（${month}月${day}日 ${dow}）`
-          : `■ ${date}（${month}月${day}日 ${dow}）`;
+        const header = `■ ${date}（${month}月${day}日 ${dow}）`;
 
-        const stylistLines = Object.entries(stylists).map(([key, slots]) => {
+        // 整店休業
+        if (info.closed) {
+          return `${header}：${isZh ? '休業日（定休日）' : '休業日（定休日）'}`;
+        }
+
+        // 营业日。每位造型师：有空档 → 列时间；无空档 → 全天满档/不在班
+        const stylistLines = ['yuna', 'yu'].map((key) => {
+          const slots = (info[key] || []);
           const name = stylistNames[key] || key;
           if (slots.length === 0) {
-            return `  - ${name}：${isZh ? '全天满员' : '満席'}`;
+            return `  - ${name}：${isZh ? '当天无空档' : '空きなし'}`;
           }
           return `  - ${name}：${compressSlots(slots)}`;
         });
@@ -155,18 +160,22 @@ function buildSystemPrompt(lang, availabilityData) {
   // === 第4层：行为规则 ===
   const rules = isZh
     ? `\n【行为规则】
-- 回答空档时，严格只用【近期可预约时间】里对应日期那一行的数据，绝对不要把别的日期的时间挪过来；用户问哪天就只答哪天
-- 如果用户问的日期不在数据中，明确说"那天暂无系统数据，建议直接 Hot Pepper 或微信确认"，不要编造时间
-- 表示"全天满员"的造型师，不要给出任何具体时间
+- 回答空档时，严格只用【近期可预约时间】里对应日期那一块的数据，绝对不要把别的日期的时间挪过来；用户问哪天就只答哪天
+- 数据状态有三种，回答时务必区分：
+  ① 该日整块标"休業日（定休日）" → 告知顾客"那天我们休息"，不要给时间
+  ② 某位造型师标"当天无空档" → 告知"那天该造型师已约满"，不要编造时间
+  ③ 用户问的日期完全不在【近期可预约时间】里 → 说"那天暂无系统数据，建议直接 Hot Pepper 或微信确认"
 - 不可直接确认或创建预约，引导顾客通过 Hot Pepper / 微信 / 电话完成预约
 - 价格均以"起"为准，详情请顾客到店与造型师确认
 - 超出服务范围的问题（医疗、法律等）礼貌告知无法回答
 - 每次回复控制在3～5句，简洁清晰
 - 表情符号最多使用1～2个`
     : `\n【対応ルール】
-- 空き状況を回答する際は、必ず【直近の空き状況】の該当日付の行のデータのみを使い、他の日付の時間を混ぜないこと。お客様が尋ねた日付の情報のみを答える
-- 尋ねられた日付がデータに無い場合は「その日のデータが無い」と明示し、Hot Pepper／WeChat での確認を案内する。時間を捏造しないこと
-- 「満席」のスタイリストには具体的な時間を提示しない
+- 空き状況を回答する際は、必ず【直近の空き状況】の該当日付ブロックのデータのみを使い、他の日付の時間を混ぜないこと
+- データには3つの状態があり、必ず区別すること：
+  ① 当日が「休業日（定休日）」と表示 → 「その日は定休日です」と案内し、時間は出さない
+  ② 特定スタイリストが「空きなし」 → 「その日は◯◯スタイリストは満席です」と案内し、時間を捏造しない
+  ③ 尋ねられた日付がデータに全く無い → 「データが無いので Hot Pepper／WeChat でご確認ください」と案内
 - 予約の最終確定は行わず、Hot Pepper・WeChat・お電話へご案内する
 - 料金は「〜」付きで案内し、詳細はスタイリストとの相談を促す
 - サービス範囲外の質問は丁寧に対応不可とお伝えする
