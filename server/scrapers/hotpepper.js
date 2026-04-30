@@ -98,8 +98,8 @@ async function scrapeStylist(stylistId) {
   return slots;
 }
 
-// 主入口：抓两位造型师，合并、限制为今后 7 天
-async function scrapeAvailability({ days = 7 } = {}) {
+// 主入口：抓两位造型师，合并、限制为今后 14 天（Hot Pepper afterCoupon 页面自然窗口）
+async function scrapeAvailability({ days = 14 } = {}) {
   const todayJST = new Date(Date.now() + 9 * 3600 * 1000).toISOString().slice(0, 10);
   const cutoff = new Date(todayJST + 'T00:00:00Z');
   cutoff.setUTCDate(cutoff.getUTCDate() + days);
