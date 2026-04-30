@@ -47,17 +47,25 @@ function toggleChat() {
 }
 
 // 把 AI 回复里的 URL 渲染为可点击链接，同时保留换行
-// 先 HTML 转义防 XSS，再用正则把 http(s) URL 包成 <a target="_blank">
+// 先 HTML 转义防 XSS，再处理 markdown 链接 [text](url) 和裸 URL，最后换行转 <br>
 function renderReply(text) {
-  const escaped = text
+  let s = text
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
-  const linkified = escaped.replace(
-    /(https?:\/\/[^\s<]+[^\s<.,;:!?)】」'"])/g,
-    '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>'
+
+  // 一次扫描同时匹配 markdown [label](url) 和裸 URL，避免两遍替换互相吞标签
+  // 裸 URL 限定为 ASCII URL 安全字符，避免吞掉后面的中文/全角标点
+  s = s.replace(
+    /\[([^\]]+)\]\((https?:\/\/[A-Za-z0-9\-._~:/?#@!$&'*+;=%]+)\)|(https?:\/\/[A-Za-z0-9\-._~:/?#@!$&'*+;=%]+)/g,
+    (_, label, mdUrl, bareUrl) => {
+      const url = mdUrl || bareUrl;
+      const text = mdUrl ? label : bareUrl;
+      return `<a href="${url}" target="_blank" rel="noopener noreferrer">${text}</a>`;
+    }
   );
-  return linkified.replace(/\n/g, '<br>');
+
+  return s.replace(/\n/g, '<br>');
 }
 
 async function sendChat() {

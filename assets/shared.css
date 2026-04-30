@@ -298,3 +298,15 @@ body.zh .lang-ja { display: none !important; }
 .ai-chat-tooltip-close { position: absolute; top: 4px; right: 6px; background: none; border: none; color: rgba(255,255,255,0.6); font-size: 16px; cursor: pointer; padding: 2px 6px; line-height: 1; }
 .ai-chat-tooltip-close:hover { color: #fff; }
 @media(max-width:700px){ .ai-chat-tooltip { right: 20px; bottom: 92px; max-width: 200px; font-size: 12px; } }
+
+/* 移动端聊天面板：左右各留 12px、自适应宽度，消息区随屏高拉伸 */
+@media (max-width: 700px) {
+  .chat-modal {
+    right: 12px; left: 12px; bottom: 92px;
+    width: auto; transform-origin: bottom center;
+  }
+  .chat-messages {
+    max-height: calc(100vh - 260px);
+    min-height: 200px;
+  }
+}
