@@ -46,6 +46,20 @@ function toggleChat() {
   }
 }
 
+// 把 AI 回复里的 URL 渲染为可点击链接，同时保留换行
+// 先 HTML 转义防 XSS，再用正则把 http(s) URL 包成 <a target="_blank">
+function renderReply(text) {
+  const escaped = text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+  const linkified = escaped.replace(
+    /(https?:\/\/[^\s<]+[^\s<.,;:!?)】」'"])/g,
+    '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>'
+  );
+  return linkified.replace(/\n/g, '<br>');
+}
+
 async function sendChat() {
   const isZh = document.body.classList.contains('zh');
   const inputEl = document.getElementById(isZh ? 'chatInputCn' : 'chatInput');
@@ -86,12 +100,12 @@ async function sendChat() {
     const data = await res.json();
     const reply = data.reply;
 
-    loadBubble.textContent = reply;
+    loadBubble.innerHTML = renderReply(reply);
     chatHistory.push({ role: 'assistant', content: reply });
   } catch (e) {
     loadBubble.textContent = isZh
-      ? '抱歉，AI客服暂时无法响应，请通过LINE或微信联系我们。'
-      : '申し訳ございません。LINE・WeChatよりお問い合わせください。';
+      ? '抱歉，AI客服暂时无法响应，请通过 Hot Pepper、微信或电话联系我们。'
+      : '申し訳ございません。Hot Pepper・WeChat・お電話よりお問い合わせください。';
     chatHistory.pop(); // 失败时移除，方便用户重试
   }
 
