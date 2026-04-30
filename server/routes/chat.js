@@ -34,7 +34,7 @@ router.post('/', async (req, res) => {
 
   try {
     const response = await qwen.chat.completions.create({
-      model: 'qwen-plus',
+      model: 'qwen-max',
       messages: [
         { role: 'system', content: systemPrompt },
         ...messages.slice(-10)

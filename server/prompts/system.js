@@ -119,24 +119,29 @@ function buildSystemPrompt(lang, availabilityData) {
       ? ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
       : ['日', '月', '火', '水', '木', '金', '土'];
 
-    const lines = Object.entries(availabilityData)
+    // 每个日期独立成块，用空行清晰分隔，避免 AI 把相邻日期的时间串过去
+    const blocks = Object.entries(availabilityData)
       .sort(([a], [b]) => a.localeCompare(b))
       .map(([date, stylists]) => {
         const d = new Date(date + 'T00:00:00+09:00');
         const month = d.getMonth() + 1;
         const day = d.getDate();
         const dow = weekdays[d.getDay()];
-        const dateLabel = isZh ? `${month}/${day}（${dow}）` : `${month}/${day}（${dow}）`;
+        const header = isZh
+          ? `■ ${date}（${month}月${day}日 ${dow}）`
+          : `■ ${date}（${month}月${day}日 ${dow}）`;
 
-        const parts = Object.entries(stylists).map(([key, slots]) => {
+        const stylistLines = Object.entries(stylists).map(([key, slots]) => {
           const name = stylistNames[key] || key;
-          return slots.length > 0
-            ? `${name} ${compressSlots(slots)}`
-            : (isZh ? `${name} 全天满员` : `${name} 満席`);
+          if (slots.length === 0) {
+            return `  - ${name}：${isZh ? '全天满员' : '満席'}`;
+          }
+          return `  - ${name}：${compressSlots(slots)}`;
         });
 
-        return `${dateLabel}：${parts.join(' / ')}`;
+        return [header, ...stylistLines].join('\n');
       });
+    const lines = [blocks.join('\n\n')];
 
     availabilitySection = isZh
       ? `\n【近期可预约时间（今日：${today}）】\n${lines.join('\n')}\n\n顾客询问空档时，请根据以上信息进行说明。`
