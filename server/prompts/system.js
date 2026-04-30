@@ -1,3 +1,28 @@
+// 把 ["12:30","13:00","13:30",...,"18:00","20:00"] 压成 "12:30〜18:00, 20:00"
+// 30 分钟内连续视为同一段，避免 AI 看到平铺长串后跨日期串话
+function compressSlots(slots) {
+  if (!slots || slots.length === 0) return '';
+  const toMin = (t) => {
+    const [h, m] = t.split(':').map(Number);
+    return h * 60 + m;
+  };
+  const sorted = [...slots].sort((a, b) => toMin(a) - toMin(b));
+  const groups = [];
+  let start = sorted[0];
+  let prev = sorted[0];
+  for (let i = 1; i < sorted.length; i++) {
+    if (toMin(sorted[i]) - toMin(prev) === 30) {
+      prev = sorted[i];
+    } else {
+      groups.push(start === prev ? start : `${start}〜${prev}`);
+      start = sorted[i];
+      prev = sorted[i];
+    }
+  }
+  groups.push(start === prev ? start : `${start}〜${prev}`);
+  return groups.join(', ');
+}
+
 /**
  * 根据语言和实时空档数据动态构建系统提示词
  * @param {string} lang - 'zh' | 'ja'
@@ -106,7 +131,7 @@ function buildSystemPrompt(lang, availabilityData) {
         const parts = Object.entries(stylists).map(([key, slots]) => {
           const name = stylistNames[key] || key;
           return slots.length > 0
-            ? `${name} ${slots.join(' ')}`
+            ? `${name} ${compressSlots(slots)}`
             : (isZh ? `${name} 全天满员` : `${name} 満席`);
         });
 
@@ -125,12 +150,18 @@ function buildSystemPrompt(lang, availabilityData) {
   // === 第4层：行为规则 ===
   const rules = isZh
     ? `\n【行为规则】
+- 回答空档时，严格只用【近期可预约时间】里对应日期那一行的数据，绝对不要把别的日期的时间挪过来；用户问哪天就只答哪天
+- 如果用户问的日期不在数据中，明确说"那天暂无系统数据，建议直接 Hot Pepper 或微信确认"，不要编造时间
+- 表示"全天满员"的造型师，不要给出任何具体时间
 - 不可直接确认或创建预约，引导顾客通过 Hot Pepper / 微信 / 电话完成预约
 - 价格均以"起"为准，详情请顾客到店与造型师确认
 - 超出服务范围的问题（医疗、法律等）礼貌告知无法回答
 - 每次回复控制在3～5句，简洁清晰
 - 表情符号最多使用1～2个`
     : `\n【対応ルール】
+- 空き状況を回答する際は、必ず【直近の空き状況】の該当日付の行のデータのみを使い、他の日付の時間を混ぜないこと。お客様が尋ねた日付の情報のみを答える
+- 尋ねられた日付がデータに無い場合は「その日のデータが無い」と明示し、Hot Pepper／WeChat での確認を案内する。時間を捏造しないこと
+- 「満席」のスタイリストには具体的な時間を提示しない
 - 予約の最終確定は行わず、Hot Pepper・WeChat・お電話へご案内する
 - 料金は「〜」付きで案内し、詳細はスタイリストとの相談を促す
 - サービス範囲外の質問は丁寧に対応不可とお伝えする
