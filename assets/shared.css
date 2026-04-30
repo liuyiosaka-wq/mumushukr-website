@@ -218,7 +218,8 @@ footer {
 .chat-input {
   flex: 1; border: none; outline: none; padding: 14px 16px;
   font-family: 'Noto Sans JP', sans-serif;
-  font-size: 13px; background: #fff; color: var(--fg); letter-spacing: 0.04em;
+  /* 必须 ≥16px，否则 iOS Safari/Chrome 点击时会自动放大整页 */
+  font-size: 16px; background: #fff; color: var(--fg); letter-spacing: 0.04em;
 }
 .chat-send {
   background: var(--charcoal); border: none; color: #fff;

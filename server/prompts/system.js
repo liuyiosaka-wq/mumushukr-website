@@ -105,10 +105,25 @@ function buildSystemPrompt(lang, availabilityData) {
 
   // === 第3层：实时空档注入 ===
   let availabilitySection = '';
-  const today = new Date().toLocaleDateString(isZh ? 'zh-CN' : 'ja-JP', {
-    timeZone: 'Asia/Tokyo',
-    year: 'numeric', month: '2-digit', day: '2-digit'
-  });
+  // 用 JST 计算今日 ISO 日期（YYYY-MM-DD），后续逐日打"今日/明日/後日"标签
+  const todayIso = new Date(Date.now() + 9 * 3600 * 1000).toISOString().slice(0, 10);
+  const today = todayIso.replace(/-/g, '/');
+  // 给某个 ISO 日期算出相对今日的偏移：0=今日，1=明日，2=後日，>=3 返回空字符串
+  function relLabel(iso) {
+    const a = new Date(todayIso + 'T00:00:00Z');
+    const b = new Date(iso + 'T00:00:00Z');
+    const diff = Math.round((b - a) / 86400000);
+    if (isZh) {
+      if (diff === 0) return '今日';
+      if (diff === 1) return '明日（明天）';
+      if (diff === 2) return '後日（后天）';
+    } else {
+      if (diff === 0) return '本日';
+      if (diff === 1) return '明日';
+      if (diff === 2) return '明後日';
+    }
+    return '';
+  }
 
   if (availabilityData && Object.keys(availabilityData).length > 0) {
     const stylistNames = isZh
@@ -127,7 +142,10 @@ function buildSystemPrompt(lang, availabilityData) {
         const month = d.getMonth() + 1;
         const day = d.getDate();
         const dow = weekdays[d.getDay()];
-        const header = `■ ${date}（${month}月${day}日 ${dow}）`;
+        const rel = relLabel(date);
+        const header = rel
+          ? `■ ${date}（${rel} ${month}月${day}日 ${dow}）`
+          : `■ ${date}（${month}月${day}日 ${dow}）`;
 
         // 整店休業
         if (info.closed) {
