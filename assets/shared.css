@@ -299,14 +299,22 @@ body.zh .lang-ja { display: none !important; }
 .ai-chat-tooltip-close:hover { color: #fff; }
 @media(max-width:700px){ .ai-chat-tooltip { right: 20px; bottom: 92px; max-width: 200px; font-size: 12px; } }
 
-/* 移动端聊天面板：左右各留 12px、自适应宽度，消息区随屏高拉伸 */
+/* 移动端聊天面板 */
 @media (max-width: 700px) {
   .chat-modal {
     right: 12px; left: 12px; bottom: 92px;
     width: auto; transform-origin: bottom center;
+    /* 用 dvh 而非 vh，键盘弹起时 iOS Safari 会动态缩小，避免面板被推出可视区 */
+    max-height: calc(100dvh - 110px);
   }
   .chat-messages {
-    max-height: calc(100vh - 260px);
-    min-height: 200px;
+    min-height: 160px;
+    max-height: none; /* flex:1 自适应填充剩余空间 */
+  }
+  /* flex 子项在窄屏下必须显式允许压缩 */
+  .chat-input { min-width: 0; }
+  .chat-send {
+    flex-shrink: 0; padding: 0 16px;
+    min-width: 48px; /* 保证按钮始终可见 */
   }
 }
