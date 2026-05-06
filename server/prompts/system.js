@@ -105,25 +105,31 @@ function buildSystemPrompt(lang, availabilityData) {
 
   // === 第3层：实时空档注入 ===
   let availabilitySection = '';
-  // 用 JST 计算今日 ISO 日期（YYYY-MM-DD），后续逐日打"今日/明日/後日"标签
+  // 用 JST 计算今日 ISO 日期（YYYY-MM-DD）
   const todayIso = new Date(Date.now() + 9 * 3600 * 1000).toISOString().slice(0, 10);
-  const today = todayIso.replace(/-/g, '/');
-  // 给某个 ISO 日期算出相对今日的偏移：0=今日，1=明日，2=後日，>=3 返回空字符串
-  function relLabel(iso) {
-    const a = new Date(todayIso + 'T00:00:00Z');
-    const b = new Date(iso + 'T00:00:00Z');
-    const diff = Math.round((b - a) / 86400000);
-    if (isZh) {
-      if (diff === 0) return '今日';
-      if (diff === 1) return '明日（明天）';
-      if (diff === 2) return '後日（后天）';
-    } else {
-      if (diff === 0) return '本日';
-      if (diff === 1) return '明日';
-      if (diff === 2) return '明後日';
+
+  // 生成"今日 / 明日 / 后天 / 大后天"的日期对照
+  // 独立成块放在数据前面，避免 AI 在日期数据块里把相对标签和实际日期错位
+  const refTable = (() => {
+    const base = new Date(todayIso + 'T00:00:00Z');
+    const weekdaysCn = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+    const weekdaysJa = ['日', '月', '火', '水', '木', '金', '土'];
+    const wk = isZh ? weekdaysCn : weekdaysJa;
+    const labelsZh = ['今日（今天）', '明日（明天）', '后天', '大后天'];
+    const labelsJa = ['本日（今日）', '明日（あした）', '明後日（あさって）', '3日後'];
+    const labels = isZh ? labelsZh : labelsJa;
+    const lines = [];
+    for (let i = 0; i < 4; i++) {
+      const d = new Date(base);
+      d.setUTCDate(d.getUTCDate() + i);
+      const iso = d.toISOString().slice(0, 10);
+      const m = d.getUTCMonth() + 1;
+      const day = d.getUTCDate();
+      const w = wk[d.getUTCDay()];
+      lines.push(`- ${labels[i]} = ${iso}（${m}月${day}日 ${w}）`);
     }
-    return '';
-  }
+    return lines.join('\n');
+  })();
 
   if (availabilityData && Object.keys(availabilityData).length > 0) {
     const stylistNames = isZh
@@ -142,10 +148,7 @@ function buildSystemPrompt(lang, availabilityData) {
         const month = d.getMonth() + 1;
         const day = d.getDate();
         const dow = weekdays[d.getDay()];
-        const rel = relLabel(date);
-        const header = rel
-          ? `■ ${date}（${rel} ${month}月${day}日 ${dow}）`
-          : `■ ${date}（${month}月${day}日 ${dow}）`;
+        const header = `■ ${date}（${month}月${day}日 ${dow}）`;
 
         // 整店休業
         if (info.closed) {
@@ -166,9 +169,12 @@ function buildSystemPrompt(lang, availabilityData) {
       });
     const lines = [blocks.join('\n\n')];
 
-    availabilitySection = isZh
-      ? `\n【近期可预约时间（今日：${today}）】\n${lines.join('\n')}\n\n顾客询问空档时，请根据以上信息进行说明。`
-      : `\n【直近の空き状況（本日：${today}）】\n${lines.join('\n')}\n\nお客様から空き状況を聞かれた場合、上記をもとにご案内ください。`;
+    const refHeader = isZh ? '【日期对照（务必参照）】' : '【日付早見表（必ず参照）】';
+    const dataHeader = isZh ? '【近期可预约时间】' : '【直近の空き状況】';
+    const tail = isZh
+      ? '回答顾客"今天/明天/后天"等相对日期时，先在【日期对照】里查到实际日期（YYYY-MM-DD），再到【近期可预约时间】对应的日期块取数据。绝对不要把别的日期的数据挂在错误的相对名称上。'
+      : 'お客様が「今日／明日／明後日」など相対日付で尋ねた場合、まず【日付早見表】で実際の日付（YYYY-MM-DD）を特定し、その上で【直近の空き状況】の該当ブロックからデータを取ること。別日のデータを誤った相対名に紐付けないこと。';
+    availabilitySection = `\n${refHeader}\n${refTable}\n\n${dataHeader}\n${lines.join('\n')}\n\n${tail}`;
   } else {
     availabilitySection = isZh
       ? '\n【空档信息】\n当前暂无实时空档数据。请告知顾客通过 Hot Pepper、微信或电话确认最新空档。'
