@@ -14,6 +14,7 @@ app.use('/api/chat', require('./routes/chat'));
 app.use('/api/availability', require('./routes/availability'));
 app.use('/api/reservations', require('./routes/reservations'));
 app.use('/api/franchise', require('./routes/franchise'));
+app.use('/api/recruit', require('./routes/recruit'));
 
 // 兜底：仅对无扩展名（SPA 风格）的路径返回首页；
 // 带扩展名（如 .md / .json / .jpg）找不到就老老实实 404，避免污染 fetch 结果

@@ -56,3 +56,20 @@ CREATE TABLE IF NOT EXISTS franchise_inquiries (
 
 CREATE INDEX IF NOT EXISTS idx_franchise_inquiries_created_at
   ON franchise_inquiries (created_at DESC);
+
+-- 招聘表单（应聘 / 推荐合表，用 kind 区分）
+-- 字段差异较大，整体 payload 存 JSONB
+CREATE TABLE IF NOT EXISTS recruit_submissions (
+  id         BIGSERIAL PRIMARY KEY,
+  kind       TEXT NOT NULL CHECK (kind IN ('apply', 'refer')),
+  payload    JSONB NOT NULL,
+  lang       TEXT NOT NULL DEFAULT 'ja' CHECK (lang IN ('ja', 'zh')),
+  status     TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'contacted', 'closed')),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_recruit_submissions_created_at
+  ON recruit_submissions (created_at DESC);
+
+CREATE INDEX IF NOT EXISTS idx_recruit_submissions_kind
+  ON recruit_submissions (kind);

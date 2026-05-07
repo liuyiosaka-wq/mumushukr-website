@@ -408,11 +408,40 @@ document.addEventListener('change', (e) => {
   }
 });
 
-function submitForm(e, kind) {
+async function submitForm(e, kind) {
   e.preventDefault();
-  document.getElementById('rcMain').style.display = 'none';
-  document.getElementById('rcSuccess').classList.add('show');
-  window.scrollTo({ top: document.getElementById('rcSuccess').offsetTop - 100, behavior: 'smooth' });
+  const form = e.target;
+  const isZh = document.body.classList.contains('zh');
+
+  // 收集字段；多选 checkbox（specialties / languages）合成数组
+  const fd = new FormData(form);
+  const payload = { kind, lang: isZh ? 'zh' : 'ja' };
+  for (const [k] of fd.entries()) {
+    if (k in payload) continue; // 已聚合过的多选
+    const all = fd.getAll(k);
+    payload[k] = all.length > 1 ? all : all[0];
+  }
+
+  const btn = form.querySelector('button[type="submit"]');
+  const original = btn ? btn.innerHTML : '';
+  if (btn) { btn.disabled = true; btn.innerHTML = isZh ? '提交中…' : '送信中…'; }
+
+  try {
+    const res = await fetch('/api/recruit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    const json = await res.json();
+    if (!res.ok) throw new Error(json.message || (isZh ? '提交失败' : '送信失敗'));
+
+    document.getElementById('rcMain').style.display = 'none';
+    document.getElementById('rcSuccess').classList.add('show');
+    window.scrollTo({ top: document.getElementById('rcSuccess').offsetTop - 100, behavior: 'smooth' });
+  } catch (err) {
+    alert(err.message || (isZh ? '提交失败，请稍后再试。' : '送信に失敗しました。しばらくしてから再度お試しください。'));
+    if (btn) { btn.disabled = false; btn.innerHTML = original; }
+  }
 }
 </script>
 </body>

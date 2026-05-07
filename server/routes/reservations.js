@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const supabase = require('../db');
+const { notifyOwner } = require('../notifier');
 
 const SERVICE_MAP = {
   // 日文选项
@@ -96,6 +97,22 @@ router.post('/', async (req, res) => {
     if (error) throw error;
 
     const langKey = isZh ? 'zh' : 'ja';
+    const stylistDisp = STYLIST_LABEL[data.stylist] || (isZh ? '不指定' : '指名なし');
+    notifyOwner({
+      subject: `【SHUKR】新预约：${name.trim()}`,
+      lines: [
+        `姓名：${name.trim()}`,
+        `电话：${phone.trim()}`,
+        ...(email?.trim() ? [`邮箱：${email.trim()}`] : []),
+        `日期：${data.date}`,
+        `时间：${data.time}`,
+        `服务：${SERVICE_LABEL.zh[data.service] || data.service}`,
+        `造型师：${stylistDisp}`,
+        ...(notes?.trim() ? [`备注：${notes.trim()}`] : []),
+        `语言：${lang}`,
+      ],
+    });
+
     res.status(201).json({
       id: data.id,
       message: isZh

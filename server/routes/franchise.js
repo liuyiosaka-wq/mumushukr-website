@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const supabase = require('../db');
+const { notifyOwner } = require('../notifier');
+
+const EXPERIENCE_LABEL = { beauty: '美容业相关', management: '管理/经营经验', none: '无相关经验' };
+const BUDGET_LABEL = { under500: '500万円以下', '500-1000': '500–1000万円', over1000: '1000万円以上', tbd: '待定' };
 
 router.post('/', async (req, res) => {
   const { name, phone, email, area, experience, budget, notes, lang = 'ja' } = req.body;
@@ -38,6 +42,20 @@ router.post('/', async (req, res) => {
       .single();
 
     if (error) throw error;
+
+    notifyOwner({
+      subject: `【SHUKR】新加盟咨询：${name.trim()}`,
+      lines: [
+        `姓名：${name.trim()}`,
+        `电话：${phone.trim()}`,
+        `邮箱：${email.trim()}`,
+        ...(area?.trim() ? [`意向地区：${area.trim()}`] : []),
+        ...(experience ? [`经验：${EXPERIENCE_LABEL[experience] || experience}`] : []),
+        ...(budget ? [`预算：${BUDGET_LABEL[budget] || budget}`] : []),
+        ...(notes?.trim() ? [`备注：${notes.trim()}`] : []),
+        `语言：${lang}`,
+      ],
+    });
 
     res.status(201).json({
       id: data.id,
