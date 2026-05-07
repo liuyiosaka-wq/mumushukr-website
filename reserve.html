@@ -200,30 +200,15 @@
         <div class="rsv-field">
           <label class="lang-ja">ご希望日 <span>必須</span></label>
           <label class="lang-cn">希望日期 <span>必填</span></label>
-          <input type="date" name="date" required>
+          <select name="date" id="rsvDate" required>
+            <option value="" disabled selected class="lang-ja">日付を選択</option>
+          </select>
         </div>
         <div class="rsv-field">
           <label class="lang-ja">ご希望時間 <span>必須</span></label>
           <label class="lang-cn">希望时间 <span>必填</span></label>
-          <select name="time" required>
-            <option value="" disabled selected class="lang-ja">選択してください</option>
-            <option value="10:00">10:00</option>
-            <option value="10:30">10:30</option>
-            <option value="11:00">11:00</option>
-            <option value="11:30">11:30</option>
-            <option value="12:00">12:00</option>
-            <option value="12:30">12:30</option>
-            <option value="13:00">13:00</option>
-            <option value="13:30">13:30</option>
-            <option value="14:00">14:00</option>
-            <option value="14:30">14:30</option>
-            <option value="15:00">15:00</option>
-            <option value="15:30">15:30</option>
-            <option value="16:00">16:00</option>
-            <option value="16:30">16:30</option>
-            <option value="17:00">17:00</option>
-            <option value="17:30">17:30</option>
-            <option value="18:00">18:00</option>
+          <select name="time" id="rsvTime" required>
+            <option value="" disabled selected class="lang-ja">先に日付を選択</option>
           </select>
         </div>
       </div>
@@ -245,7 +230,7 @@
       <div class="rsv-field">
         <label class="lang-ja">ご担当スタイリスト</label>
         <label class="lang-cn">指定造型师</label>
-        <select name="stylist">
+        <select name="stylist" id="rsvStylist">
           <option value="">指名なし / 不指定</option>
           <option value="yuna">勝木 由奈 / Katuki Yuna</option>
           <option value="yu">于 常校 / Yu Changxiao</option>
@@ -337,5 +322,111 @@
 </div>
 
 <script src="assets/shared.js"></script>
+<script>
+// 从 /api/availability 拉空档数据，动态填充日期 + 时间下拉
+// 用户选择日期 / 造型师 → 时间下拉只显示当天对应造型师还有空档的时段
+let _availability = {};
+
+async function loadAvailability() {
+  try {
+    const res = await fetch('/api/availability');
+    const data = await res.json();
+    _availability = data && data.availability ? data.availability : {};
+  } catch (e) {
+    console.warn('availability fetch failed', e);
+    _availability = {};
+  }
+  fillDateOptions();
+  refreshTimeOptions();
+}
+
+function isZh() { return document.body.classList.contains('zh'); }
+
+function fillDateOptions() {
+  const sel = document.getElementById('rsvDate');
+  if (!sel) return;
+  const dates = Object.entries(_availability)
+    .filter(([_, info]) => !info.closed && ((info.yuna && info.yuna.length) || (info.yu && info.yu.length)))
+    .map(([d]) => d)
+    .sort();
+
+  // 重建 placeholder + 日期选项
+  sel.innerHTML = '';
+  const ph = document.createElement('option');
+  ph.value = ''; ph.disabled = true; ph.selected = true;
+  ph.textContent = isZh() ? '请选择日期' : '日付を選択';
+  sel.appendChild(ph);
+
+  if (dates.length === 0) {
+    const opt = document.createElement('option');
+    opt.value = ''; opt.disabled = true;
+    opt.textContent = isZh()
+      ? '近期暂无空档，请通过 Hot Pepper 或微信咨询'
+      : '空き枠なし。Hot Pepper / WeChat でご確認ください';
+    sel.appendChild(opt);
+    return;
+  }
+
+  const wkCn = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+  const wkJa = ['日', '月', '火', '水', '木', '金', '土'];
+  for (const date of dates) {
+    const d = new Date(date + 'T00:00:00+09:00');
+    const w = (isZh() ? wkCn : wkJa)[d.getDay()];
+    const opt = document.createElement('option');
+    opt.value = date;
+    opt.textContent = `${d.getMonth() + 1}/${d.getDate()} (${w})`;
+    sel.appendChild(opt);
+  }
+}
+
+function getSlots(date, stylist) {
+  const info = _availability[date];
+  if (!info || info.closed) return [];
+  if (!stylist) {
+    // 不指定造型师 → 取两位的并集
+    const all = new Set([...(info.yuna || []), ...(info.yu || [])]);
+    return [...all].sort();
+  }
+  return [...(info[stylist] || [])].sort();
+}
+
+function refreshTimeOptions() {
+  const sel = document.getElementById('rsvTime');
+  if (!sel) return;
+  const date = document.getElementById('rsvDate')?.value || '';
+  const stylist = document.getElementById('rsvStylist')?.value || '';
+
+  sel.innerHTML = '';
+  const ph = document.createElement('option');
+  ph.value = ''; ph.disabled = true; ph.selected = true;
+
+  if (!date) {
+    ph.textContent = isZh() ? '请先选择日期' : 'まず日付を選択';
+    sel.appendChild(ph);
+    return;
+  }
+
+  const slots = getSlots(date, stylist);
+  if (slots.length === 0) {
+    ph.textContent = isZh() ? '所选造型师当日无空档' : '指定スタイリストの空き枠なし';
+    sel.appendChild(ph);
+    return;
+  }
+
+  ph.textContent = isZh() ? '请选择时间' : '時間を選択';
+  sel.appendChild(ph);
+  for (const t of slots) {
+    const opt = document.createElement('option');
+    opt.value = t; opt.textContent = t;
+    sel.appendChild(opt);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('rsvDate')?.addEventListener('change', refreshTimeOptions);
+  document.getElementById('rsvStylist')?.addEventListener('change', refreshTimeOptions);
+  loadAvailability();
+});
+</script>
 </body>
 </html>
