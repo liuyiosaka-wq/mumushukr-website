@@ -17,7 +17,13 @@ CREATE INDEX IF NOT EXISTS idx_availability_cache_scraped_at
   ON availability_cache (scraped_at DESC);
 
 -- 网页预约表单申请表
--- 最终确认通过 Hot Pepper / LINE / 微信完成，此表仅作记录
+-- 最终确认通过 Hot Pepper / 微信 完成，此表仅作记录
+-- service 字段历史上限定 4 个 enum，2026-05 起扩展到 6 个细分项
+-- （cut / color / color_cut / perm_men / perm_women_long / treatment）
+-- 已建表数据库需执行迁移：
+--   ALTER TABLE reservations DROP CONSTRAINT IF EXISTS reservations_service_check;
+--   ALTER TABLE reservations ADD CONSTRAINT reservations_service_check
+--     CHECK (service IN ('cut', 'color', 'color_cut', 'perm_men', 'perm_women_long', 'treatment'));
 CREATE TABLE IF NOT EXISTS reservations (
   id         BIGSERIAL PRIMARY KEY,
   name       TEXT NOT NULL,
@@ -25,7 +31,7 @@ CREATE TABLE IF NOT EXISTS reservations (
   email      TEXT,
   date       DATE NOT NULL,
   time       TIME NOT NULL,
-  service    TEXT NOT NULL CHECK (service IN ('cut', 'color', 'perm', 'treatment')),
+  service    TEXT NOT NULL CHECK (service IN ('cut', 'color', 'color_cut', 'perm_men', 'perm_women_long', 'treatment')),
   stylist    TEXT CHECK (stylist IN ('yuna', 'yu')),
   notes      TEXT,
   lang       TEXT NOT NULL DEFAULT 'ja' CHECK (lang IN ('ja', 'zh')),

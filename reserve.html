@@ -51,6 +51,22 @@
   font-size: 13px; letter-spacing: 0.2em; cursor: pointer; transition: background 0.2s; margin-top: 12px;
 }
 .rsv-submit:hover { background: var(--gold); }
+.rsv-hint { font-family: 'Noto Sans JP', sans-serif; font-size: 11px; color: var(--gold); letter-spacing: 0.04em; margin-top: 8px; }
+.rsv-availability-box {
+  background: #fbf8f2; border: 1px solid var(--border); border-left: 3px solid var(--gold);
+  padding: 16px 20px; margin: 0 0 20px;
+}
+.rsv-availability-title {
+  font-family: 'Noto Sans JP', sans-serif; font-size: 12px; letter-spacing: 0.08em;
+  color: var(--charcoal); margin-bottom: 10px; font-weight: 500;
+}
+.rsv-availability-list {
+  font-family: 'Noto Sans JP', sans-serif; font-size: 12px; line-height: 1.9;
+  color: var(--fg); letter-spacing: 0.04em;
+}
+.rsv-availability-list .rsv-day { display: block; }
+.rsv-availability-list .rsv-day-date { color: var(--charcoal); margin-right: 8px; }
+.rsv-availability-list .rsv-day-slots { color: var(--fg-muted); }
 @media(max-width:900px){ .rsv-field-row { grid-template-columns: 1fr; } .rsv-form { padding: 28px; } }
 
 /* Access section */
@@ -180,11 +196,14 @@
       <h3 class="rsv-form-title lang-ja">WEB予約フォーム</h3>
       <h3 class="rsv-form-title lang-cn">网络预约表单</h3>
 
+      <!-- 1. 姓名 -->
       <div class="rsv-field">
         <label class="lang-ja">お名前 <span>必須</span></label>
         <label class="lang-cn">姓名 <span>必填</span></label>
         <input type="text" name="name" required>
       </div>
+
+      <!-- 2. 电话 + Email -->
       <div class="rsv-field-row">
         <div class="rsv-field">
           <label class="lang-ja">電話番号 <span>必須</span></label>
@@ -196,6 +215,48 @@
           <input type="email" name="email">
         </div>
       </div>
+
+      <!-- 3. 指定造型师 -->
+      <div class="rsv-field">
+        <label class="lang-ja">ご担当スタイリスト</label>
+        <label class="lang-cn">指定造型师</label>
+        <select name="stylist" id="rsvStylist">
+          <option value="">指名なし / 不指定</option>
+          <option value="yuna">勝木 由奈 / Katuki Yuna</option>
+          <option value="yu">于 常校 / Yu Changxiao</option>
+        </select>
+      </div>
+
+      <!-- 4. 服务项目（带时长提示） -->
+      <div class="rsv-field">
+        <label class="lang-ja">メニュー <span>必須</span></label>
+        <label class="lang-cn">服务项目 <span>必填</span></label>
+        <select name="service" id="rsvService" required>
+          <option value="" disabled selected class="lang-ja">選択してください</option>
+          <option value="cut" class="lang-ja">カット（約 1 時間）</option>
+          <option value="cut" class="lang-cn">剪发（約 1 小时）</option>
+          <option value="color" class="lang-ja">カラーのみ（約 1.5 時間）</option>
+          <option value="color" class="lang-cn">单染（約 1.5 小时）</option>
+          <option value="color_cut" class="lang-ja">カラー＋カット（約 2.5 時間）</option>
+          <option value="color_cut" class="lang-cn">染剪套餐（約 2.5 小时）</option>
+          <option value="perm_men" class="lang-ja">パーマ（メンズ・約 2 時間）</option>
+          <option value="perm_men" class="lang-cn">烫发-男士（約 2 小时）</option>
+          <option value="perm_women_long" class="lang-ja">パーマ（ロング・4 時間〜）</option>
+          <option value="perm_women_long" class="lang-cn">烫发-女士长发（約 4 小时起）</option>
+          <option value="treatment" class="lang-ja">トリートメント</option>
+          <option value="treatment" class="lang-cn">护发护理</option>
+        </select>
+        <p id="rsvDurationHint" class="rsv-hint" style="display:none;"></p>
+      </div>
+
+      <!-- 5. 近期空档提示框 -->
+      <div id="rsvAvailabilityBox" class="rsv-availability-box" style="display:none;">
+        <div class="rsv-availability-title lang-ja">💡 直近の空き状況</div>
+        <div class="rsv-availability-title lang-cn">💡 近期可约时段</div>
+        <div id="rsvAvailabilityList" class="rsv-availability-list"></div>
+      </div>
+
+      <!-- 6. 希望日期 + 时间 -->
       <div class="rsv-field-row">
         <div class="rsv-field">
           <label class="lang-ja">ご希望日 <span>必須</span></label>
@@ -212,35 +273,14 @@
           </select>
         </div>
       </div>
-      <div class="rsv-field">
-        <label class="lang-ja">メニュー <span>必須</span></label>
-        <label class="lang-cn">服务项目 <span>必填</span></label>
-        <select name="service" required>
-          <option value="" disabled selected class="lang-ja">選択してください</option>
-          <option value="cut" class="lang-ja">カット</option>
-          <option value="cut" class="lang-cn">剪发</option>
-          <option value="color" class="lang-ja">カラー</option>
-          <option value="color" class="lang-cn">染发</option>
-          <option value="perm" class="lang-ja">パーマ</option>
-          <option value="perm" class="lang-cn">烫发</option>
-          <option value="treatment" class="lang-ja">トリートメント</option>
-          <option value="treatment" class="lang-cn">护发护理</option>
-        </select>
-      </div>
-      <div class="rsv-field">
-        <label class="lang-ja">ご担当スタイリスト</label>
-        <label class="lang-cn">指定造型师</label>
-        <select name="stylist" id="rsvStylist">
-          <option value="">指名なし / 不指定</option>
-          <option value="yuna">勝木 由奈 / Katuki Yuna</option>
-          <option value="yu">于 常校 / Yu Changxiao</option>
-        </select>
-      </div>
+
+      <!-- 7. 备注 -->
       <div class="rsv-field">
         <label class="lang-ja">備考</label>
         <label class="lang-cn">备注</label>
         <textarea name="notes" rows="4"></textarea>
       </div>
+
       <button type="submit" class="rsv-submit lang-ja">予約を送信</button>
       <button type="submit" class="rsv-submit lang-cn">提交预约</button>
     </form>
@@ -338,6 +378,70 @@ async function loadAvailability() {
   }
   fillDateOptions();
   refreshTimeOptions();
+  renderAvailabilitySummary();
+}
+
+// 把数组里连续 30 分钟段压成 "10:00〜11:30" 形式
+function compressSlots(slots) {
+  if (!slots || slots.length === 0) return '';
+  const toMin = (t) => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
+  const sorted = [...slots].sort((a, b) => toMin(a) - toMin(b));
+  const groups = [];
+  let start = sorted[0], prev = sorted[0];
+  for (let i = 1; i < sorted.length; i++) {
+    if (toMin(sorted[i]) - toMin(prev) === 30) prev = sorted[i];
+    else { groups.push(start === prev ? start : `${start}〜${prev}`); start = sorted[i]; prev = sorted[i]; }
+  }
+  groups.push(start === prev ? start : `${start}〜${prev}`);
+  return groups.join(', ');
+}
+
+// 在表单中部渲染近期空档摘要（最多 5 天）
+function renderAvailabilitySummary() {
+  const box = document.getElementById('rsvAvailabilityBox');
+  const list = document.getElementById('rsvAvailabilityList');
+  if (!box || !list) return;
+  const days = Object.entries(_availability)
+    .filter(([_, info]) => !info.closed && ((info.yuna && info.yuna.length) || (info.yu && info.yu.length)))
+    .sort(([a], [b]) => a.localeCompare(b))
+    .slice(0, 5);
+  if (days.length === 0) { box.style.display = 'none'; return; }
+  const wkCn = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+  const wkJa = ['日', '月', '火', '水', '木', '金', '土'];
+  const wk = isZh() ? wkCn : wkJa;
+  list.innerHTML = days.map(([date, info]) => {
+    const d = new Date(date + 'T00:00:00+09:00');
+    const all = [...new Set([...(info.yuna || []), ...(info.yu || [])])];
+    const slots = compressSlots(all);
+    const dateLabel = `${d.getMonth() + 1}/${d.getDate()} (${wk[d.getDay()]})`;
+    return `<span class="rsv-day"><span class="rsv-day-date">${dateLabel}</span><span class="rsv-day-slots">${slots}</span></span>`;
+  }).join('');
+  box.style.display = 'block';
+}
+
+// 服务时长提示（小于做染/烫 +30 分钟）
+const SERVICE_DURATION = {
+  cut: { zh: '约 1 小时', ja: '約 1 時間' },
+  color: { zh: '约 1.5 小时', ja: '約 1.5 時間' },
+  color_cut: { zh: '约 2.5 小时', ja: '約 2.5 時間' },
+  perm_men: { zh: '约 2 小时', ja: '約 2 時間' },
+  perm_women_long: { zh: '约 4 小时起', ja: '約 4 時間〜' },
+  treatment: { zh: '约 1 小时', ja: '約 1 時間' },
+};
+function refreshDurationHint() {
+  const hint = document.getElementById('rsvDurationHint');
+  const svc = document.getElementById('rsvService')?.value || '';
+  const sty = document.getElementById('rsvStylist')?.value || '';
+  if (!hint) return;
+  const dur = SERVICE_DURATION[svc];
+  if (!dur) { hint.style.display = 'none'; return; }
+  const lang = isZh() ? 'zh' : 'ja';
+  const isPermOrColor = svc === 'color' || svc === 'color_cut' || svc === 'perm_men' || svc === 'perm_women_long';
+  const yuExtra = sty === 'yu' && isPermOrColor
+    ? (isZh() ? '；于常校老师约 +30 分钟' : '；于常校スタイリストは +30 分')
+    : '';
+  hint.textContent = isZh() ? `所需时间：${dur.zh}${yuExtra}` : `所要時間：${dur.ja}${yuExtra}`;
+  hint.style.display = 'block';
 }
 
 function isZh() { return document.body.classList.contains('zh'); }
@@ -424,7 +528,11 @@ function refreshTimeOptions() {
 
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('rsvDate')?.addEventListener('change', refreshTimeOptions);
-  document.getElementById('rsvStylist')?.addEventListener('change', refreshTimeOptions);
+  document.getElementById('rsvStylist')?.addEventListener('change', () => {
+    refreshTimeOptions();
+    refreshDurationHint();
+  });
+  document.getElementById('rsvService')?.addEventListener('change', refreshDurationHint);
   loadAvailability();
 });
 </script>

@@ -3,23 +3,25 @@ const router = express.Router();
 const supabase = require('../db');
 const { notifyOwner } = require('../notifier');
 
+// 6 个细分服务项目（6 个 enum 值），DB CHECK 约束需移除（见 supabase/schema.sql 注释）
 const SERVICE_MAP = {
-  // 日文选项
-  'カット': 'cut',
-  'カラー': 'color',
-  'パーマ': 'perm',
-  'トリートメント': 'treatment',
-  // 中文选项
-  '剪发': 'cut',
-  '染发': 'color',
-  '烫发': 'perm',
-  '护理': 'treatment',
-  '护发护理': 'treatment',
-  // 英文直传
-  'cut': 'cut',
-  'color': 'color',
-  'perm': 'perm',
-  'treatment': 'treatment'
+  cut: 'cut',
+  color: 'color',
+  color_cut: 'color_cut',
+  perm_men: 'perm_men',
+  perm_women_long: 'perm_women_long',
+  treatment: 'treatment',
+  // 兼容旧名称
+  perm: 'perm_men',
+  カット: 'cut',
+  カラー: 'color',
+  パーマ: 'perm_men',
+  トリートメント: 'treatment',
+  剪发: 'cut',
+  染发: 'color',
+  烫发: 'perm_men',
+  护理: 'treatment',
+  护发护理: 'treatment',
 };
 
 const STYLIST_MAP = {
@@ -32,8 +34,22 @@ const STYLIST_MAP = {
 };
 
 const SERVICE_LABEL = {
-  zh: { cut: '剪发', color: '染发', perm: '烫发', treatment: '护发护理' },
-  ja: { cut: 'カット', color: 'カラー', perm: 'パーマ', treatment: 'トリートメント' }
+  zh: {
+    cut: '剪发',
+    color: '单染',
+    color_cut: '染剪',
+    perm_men: '烫发-男士',
+    perm_women_long: '烫发-女士长发',
+    treatment: '护发护理',
+  },
+  ja: {
+    cut: 'カット',
+    color: 'カラーのみ',
+    color_cut: 'カラー＋カット',
+    perm_men: 'パーマ（メンズ）',
+    perm_women_long: 'パーマ（ロング）',
+    treatment: 'トリートメント',
+  },
 };
 
 const STYLIST_LABEL = {
