@@ -3,13 +3,15 @@
 // 流程：店铺首页 → 选造型师 → afterCoupon 拿到 14 天日历
 // afterCoupon 必须带前两步种下的 session cookie，否则返回错误页
 //
-// 输出：{ "YYYY-MM-DD": { yuna: ["10:00", "10:30", ...], yu: [...] } }
+// 输出：{ "YYYY-MM-DD": { <stylistId>: ["10:00", "10:30", ...], ... } }
+//   每位造型师以其 stylists.id 为键（如 yuna / yu / tanaka）
 
 const cheerio = require('cheerio');
 
 const STORE_ID = 'H000743235';
 const CUT_MENU_ID = 'MN00000005987868'; // カット ¥4,400
-const STYLISTS = {
+// 默认名册：未从数据库传入造型师名册时回退（保证向后兼容）
+const DEFAULT_STYLISTS = {
   yuna: 'T000997895', // 勝木 由奈
   yu:   'T001083659', // 于 常校
 };
@@ -124,41 +126,49 @@ async function scrapeStylist(stylistId) {
   return days;
 }
 
-// 主入口：抓两位造型师并合并
-// 返回 { 'YYYY-MM-DD': { yuna: [], yu: [], closed: bool } }
-//   closed=true → 休業日（两位都是 closeCol，整店关门）
-//   yuna/yu 数组为空 → 该造型师当天全满或不在班（仍属营业日）
-async function scrapeAvailability({ days = 14 } = {}) {
+// 主入口：抓名册内全部造型师并合并
+// @param {Array} [stylists] - [{id, hotpepper_id}]；为空则回退 DEFAULT_STYLISTS
+// 返回 { 'YYYY-MM-DD': { <id>: [], ..., closed: bool } }
+//   closed=true → 休業日（名册内所有造型师都是 closeCol，整店关门）
+//   某造型师数组为空 → 该造型师当天全满或不在班（仍属营业日）
+async function scrapeAvailability({ days = 14, stylists } = {}) {
   const todayJST = new Date(Date.now() + 9 * 3600 * 1000).toISOString().slice(0, 10);
   const cutoff = new Date(todayJST + 'T00:00:00Z');
   cutoff.setUTCDate(cutoff.getUTCDate() + days);
   const cutoffStr = cutoff.toISOString().slice(0, 10);
 
-  const perStylist = {};
-  for (const [key, stylistId] of Object.entries(STYLISTS)) {
-    perStylist[key] = await scrapeStylist(stylistId);
+  // 名册：传入 [{id, hotpepper_id}] 优先，过滤掉无 id / 无 hotpepper_id 的；为空则回退默认
+  let roster = (Array.isArray(stylists) ? stylists : [])
+    .map((s) => ({ id: s.id, hotpepperId: s.hotpepper_id }))
+    .filter((s) => s.id && s.hotpepperId);
+  if (roster.length === 0) {
+    roster = Object.entries(DEFAULT_STYLISTS).map(([id, hotpepperId]) => ({ id, hotpepperId }));
   }
 
-  const allDates = new Set([
-    ...Object.keys(perStylist.yuna || {}),
-    ...Object.keys(perStylist.yu || {}),
-  ]);
+  const perStylist = {};
+  for (const { id, hotpepperId } of roster) {
+    perStylist[id] = await scrapeStylist(hotpepperId);
+  }
+
+  const allDates = new Set();
+  for (const id of Object.keys(perStylist)) {
+    for (const d of Object.keys(perStylist[id] || {})) allDates.add(d);
+  }
 
   const result = {};
   for (const date of [...allDates].sort()) {
     if (date < todayJST || date >= cutoffStr) continue;
-    const ya = perStylist.yuna[date] || { closed: false, slots: [] };
-    const yu = perStylist.yu[date]   || { closed: false, slots: [] };
-    const obj = { yuna: [...ya.slots], yu: [...yu.slots] };
-    if (ya.closed && yu.closed) obj.closed = true;
+    const obj = {};
+    let allClosed = true;
+    for (const { id } of roster) {
+      const day = perStylist[id]?.[date] || { closed: false, slots: [] };
+      obj[id] = [...day.slots].sort();
+      if (!day.closed) allClosed = false;
+    }
+    if (allClosed) obj.closed = true;
     result[date] = obj;
-  }
-  // sort times
-  for (const day of Object.values(result)) {
-    day.yuna.sort();
-    day.yu.sort();
   }
   return result;
 }
 
-module.exports = { scrapeAvailability, scrapeStylist, STYLISTS };
+module.exports = { scrapeAvailability, scrapeStylist, DEFAULT_STYLISTS };

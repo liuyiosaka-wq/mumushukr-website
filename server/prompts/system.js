@@ -23,14 +23,40 @@ function compressSlots(slots) {
   return groups.join(', ');
 }
 
+// 根据造型师名单（已上线，按 sort）拼出提示词里的造型师/スタイリスト名单块
+function buildStylistRoster(stylists, isZh) {
+  const heading = isZh ? '【造型师】' : '【スタイリスト】';
+  const list = Array.isArray(stylists) ? stylists : [];
+  if (list.length === 0) {
+    return `${heading}\n${isZh ? '（暂无造型师信息，请引导顾客电话或微信咨询）' : '（スタイリスト情報なし。お電話・WeChatでご確認ください）'}`;
+  }
+  const specLabel = isZh ? '擅长' : '得意';
+  const langLabel = isZh ? '语言' : '言語';
+  const lines = list.map((s, i) => {
+    const num = String(i + 1).padStart(2, '0');
+    const name = isZh ? (s.name_cn || s.name_ja) : (s.name_ja || s.name_cn);
+    const en = s.name_en ? `（${s.name_en}）` : '';
+    const role = isZh ? (s.role_cn || s.role_en || '') : (s.role_ja || s.role_en || '');
+    const roleSeg = role ? ` — ${role}` : '';
+    const spec = isZh ? (s.specialty_cn || '') : (s.specialty_ja || '');
+    const parts = [`${num}. ${name}${en}${roleSeg}`];
+    if (spec) parts.push(`    ${specLabel}：${spec}`);
+    if (s.languages) parts.push(`    ${langLabel}：${s.languages}`);
+    return parts.join('\n');
+  });
+  return `${heading}\n${lines.join('\n')}`;
+}
+
 /**
  * 根据语言和实时空档数据动态构建系统提示词
  * @param {string} lang - 'zh' | 'ja'
  * @param {object|null} availabilityData - 从 Supabase 读取的最新空档 JSON
+ * @param {Array} stylists - 已上线造型师（按 sort），含 id、name、role、specialty、languages 等字段
  * @returns {string} 完整系统提示词
  */
-function buildSystemPrompt(lang, availabilityData) {
+function buildSystemPrompt(lang, availabilityData, stylists = []) {
   const isZh = lang === 'zh';
+  const stylistRoster = buildStylistRoster(stylists, isZh);
 
   // === 第1层：语言锁定 ===
   const langLock = isZh
@@ -46,13 +72,7 @@ function buildSystemPrompt(lang, availabilityData) {
 定休日：法定假日
 交通：最近的车站是地下铁千日前线小路站，从车站出来到沙龙大概需要走5分钟
 
-【造型师】
-01. 勝木 由奈（Katuki Yuna）— 店长
-    擅长：全能技术，适应各类顾客
-    语言：日语・中文
-02. 于 常校（Yu Changxiao）— 资深造型师
-    擅长：棕色系到高明度全系列染发、烫发
-    语言：日语・中文
+${stylistRoster}
 
 【服务价格】
 剪发：¥6,600起（学生 ¥5,500起 / 男士 ¥5,500起 / 儿童 ¥3,300起）
@@ -78,13 +98,7 @@ function buildSystemPrompt(lang, availabilityData) {
 定休日：法定祝日
 アクセス：地下鉄千日前線小路駅徒歩約5分
 
-【スタイリスト】
-01. 勝木 由奈（Katuki Yuna）— 店長
-    得意：オールマイティー技術、幅広い客層対応
-    言語：日本語・中文
-02. 于 常校（Yu Changxiao）— シニアスタイリスト
-    得意：ブラウン〜ハイトーン全カラー、パーマ
-    言語：日本語・中文
+${stylistRoster}
 
 【料金メニュー】
 カット：¥6,600〜（学生 ¥5,500〜 / 男性 ¥5,500〜 / キッズ ¥3,300〜）
@@ -132,9 +146,13 @@ function buildSystemPrompt(lang, availabilityData) {
   })();
 
   if (availabilityData && Object.keys(availabilityData).length > 0) {
-    const stylistNames = isZh
-      ? { yuna: '勝木由奈', yu: '于常校' }
-      : { yuna: '勝木由奈', yu: '于常校' };
+    // 动态造型师列表：优先用传入名单（按 sort）；为空时回退到空档数据里出现过的造型师键
+    const rosterForSlots = (Array.isArray(stylists) && stylists.length > 0)
+      ? stylists.map((s) => ({ id: s.id, name: isZh ? (s.name_cn || s.name_ja) : (s.name_ja || s.name_cn) }))
+      : [...new Set(
+          Object.values(availabilityData).flatMap((info) =>
+            Object.keys(info).filter((k) => k !== 'closed'))
+        )].map((id) => ({ id, name: id }));
 
     const weekdays = isZh
       ? ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
@@ -156,9 +174,8 @@ function buildSystemPrompt(lang, availabilityData) {
         }
 
         // 营业日。每位造型师：有空档 → 列时间；无空档 → 全天满档/不在班
-        const stylistLines = ['yuna', 'yu'].map((key) => {
-          const slots = (info[key] || []);
-          const name = stylistNames[key] || key;
+        const stylistLines = rosterForSlots.map(({ id, name }) => {
+          const slots = (info[id] || []);
           if (slots.length === 0) {
             return `  - ${name}：${isZh ? '当天无空档' : '空きなし'}`;
           }

@@ -18,6 +18,13 @@ const WRITABLE = [
   'author_ja', 'author_cn', 'dept_ja', 'dept_cn', 'body_ja', 'body_cn',
 ];
 
+// 造型师可写字段白名单
+const WRITABLE_STYLIST = [
+  'sort', 'published', 'name_en', 'name_ja', 'name_cn',
+  'role_en', 'role_ja', 'role_cn', 'photo', 'bio_ja', 'bio_cn',
+  'tags', 'specialty_ja', 'specialty_cn', 'languages', 'hotpepper_id', 'extra_minutes',
+];
+
 const multerUpload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 10 * 1024 * 1024 }, // 10MB，与 Storage 桶一致
@@ -39,6 +46,34 @@ function pickWritable(body) {
     if (body[k] !== undefined) out[k] = body[k];
   }
   return out;
+}
+
+// 造型师：挑白名单字段，并把 sort / extra_minutes 规整成整数
+function pickWritableStylist(body) {
+  const out = {};
+  for (const k of WRITABLE_STYLIST) {
+    if (body[k] !== undefined) out[k] = body[k];
+  }
+  if (out.sort !== undefined) out.sort = parseInt(out.sort, 10) || 0;
+  if (out.extra_minutes !== undefined) out.extra_minutes = parseInt(out.extra_minutes, 10) || 0;
+  return out;
+}
+
+// 校验造型师数据。create 时 requireId=true 且姓名必填；
+// update 为部分更新，只校验「被提交了的」字段不能为空（如单独切换上下线时不带姓名）
+function validateStylist(fields, { requireId, id } = {}) {
+  const errs = [];
+  if (requireId) {
+    if (!id || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(id)) {
+      errs.push('id 必须为小写字母/数字/连字符（kebab-case）');
+    }
+    if (!fields.name_ja?.trim()) errs.push('日文姓名必填');
+    if (!fields.name_cn?.trim()) errs.push('中文姓名必填');
+  } else {
+    if (fields.name_ja !== undefined && !fields.name_ja.trim()) errs.push('日文姓名不能为空');
+    if (fields.name_cn !== undefined && !fields.name_cn.trim()) errs.push('中文姓名不能为空');
+  }
+  return errs;
 }
 
 // 校验文章数据（create 时 requireId=true）
@@ -175,6 +210,101 @@ router.delete('/articles/:id', async (req, res) => {
     res.json({ id: data.id, message: '文章已删除' });
   } catch (err) {
     console.error('删除文章失败:', err.message);
+    res.status(500).json({ error: 'database_error', message: '删除失败' });
+  }
+});
+
+// ============ 造型师 CRUD ============
+
+// GET /api/admin/stylists —— 全部造型师（含下线），列表用
+router.get('/stylists', async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('stylists')
+      .select('id, sort, published, name_ja, name_cn, role_en, photo, hotpepper_id')
+      .order('sort', { ascending: true })
+      .order('created_at', { ascending: true });
+    if (error) throw error;
+    res.json(data || []);
+  } catch (err) {
+    console.error('admin 读取造型师列表失败:', err.message);
+    res.status(500).json({ error: 'database_error', message: '读取失败' });
+  }
+});
+
+// GET /api/admin/stylists/:id —— 单条完整数据（编辑表单回填）
+router.get('/stylists/:id', async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('stylists').select('*').eq('id', req.params.id).maybeSingle();
+    if (error) throw error;
+    if (!data) return res.status(404).json({ error: 'not_found', message: '造型师不存在' });
+    res.json(data);
+  } catch (err) {
+    console.error('admin 读取造型师失败:', err.message);
+    res.status(500).json({ error: 'database_error', message: '读取失败' });
+  }
+});
+
+// POST /api/admin/stylists —— 新建
+router.post('/stylists', async (req, res) => {
+  const id = (req.body?.id || '').trim();
+  const fields = pickWritableStylist(req.body || {});
+  const errs = validateStylist(fields, { requireId: true, id });
+  if (errs.length) return res.status(400).json({ error: 'validation_error', message: errs.join('；') });
+
+  try {
+    const { data, error } = await supabase
+      .from('stylists')
+      .insert({ id, ...fields })
+      .select('id')
+      .single();
+    if (error) {
+      if (error.code === '23505') {
+        return res.status(409).json({ error: 'duplicate_id', message: `造型师 id「${id}」已存在` });
+      }
+      throw error;
+    }
+    res.status(201).json({ id: data.id, message: '造型师已创建' });
+  } catch (err) {
+    console.error('新建造型师失败:', err.message);
+    res.status(500).json({ error: 'database_error', message: '保存失败：' + err.message });
+  }
+});
+
+// PUT /api/admin/stylists/:id —— 更新（id 不可改）
+router.put('/stylists/:id', async (req, res) => {
+  const id = req.params.id;
+  const fields = pickWritableStylist(req.body || {});
+  const errs = validateStylist(fields, { requireId: false });
+  if (errs.length) return res.status(400).json({ error: 'validation_error', message: errs.join('；') });
+
+  try {
+    const { data, error } = await supabase
+      .from('stylists')
+      .update({ ...fields, updated_at: new Date().toISOString() })
+      .eq('id', id)
+      .select('id')
+      .maybeSingle();
+    if (error) throw error;
+    if (!data) return res.status(404).json({ error: 'not_found', message: '造型师不存在' });
+    res.json({ id: data.id, message: '造型师已更新' });
+  } catch (err) {
+    console.error('更新造型师失败:', err.message);
+    res.status(500).json({ error: 'database_error', message: '保存失败：' + err.message });
+  }
+});
+
+// DELETE /api/admin/stylists/:id
+router.delete('/stylists/:id', async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('stylists').delete().eq('id', req.params.id).select('id').maybeSingle();
+    if (error) throw error;
+    if (!data) return res.status(404).json({ error: 'not_found', message: '造型师不存在' });
+    res.json({ id: data.id, message: '造型师已删除' });
+  } catch (err) {
+    console.error('删除造型师失败:', err.message);
     res.status(500).json({ error: 'database_error', message: '删除失败' });
   }
 });

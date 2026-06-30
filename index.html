@@ -259,26 +259,8 @@
     <h2 class="section-title lang-ja">スタイリスト</h2>
     <h2 class="section-title lang-cn">造型师团队</h2>
     <div class="section-divider"></div>
-    <div class="stylists-grid">
-      <a href="stylists.html#yamada" style="text-decoration:none;color:inherit;">
-        <div class="stylist-photo stylist-photo-01"></div>
-        <p class="stylist-role">ART DIRECTOR</p>
-        <h3 class="stylist-name-jp lang-ja">勝木 由奈</h3>
-        <h3 class="stylist-name-jp lang-cn">勝木 由奈</h3>
-        <p class="stylist-name-en">Katuki Yuna</p>
-        <p class="stylist-bio lang-ja">こんにちは！美容師歴10年のYunaです！東京・六本木のハリウッド美容専門学校を卒業後、関東圏の大手美容グループに入社し、入社2年目でスタイリストデビュー。オールマイティーな技術で幅広いお客様に愛される美容師を目指してきました。日本語・中国語どちらも対応可能ですので、海外からのお客様もどうぞ安心してご指名ください。^ ^</p>
-        <p class="stylist-bio lang-cn">大家好！我是从业10年的美发师 yuna！毕业于位于六本木的好莱坞美容专门学校，随后加入关东地区的知名美发集团，入职第二年即成为正式造型师。擅长多元全能的技术，致力于成为能被广泛客层喜爱的美发师！日语、中文都可以沟通。^ ^</p>
-      </a>
-      <a href="stylists.html#li" style="text-decoration:none;color:inherit;">
-        <div class="stylist-photo stylist-photo-02"></div>
-        <p class="stylist-role">SENIOR STYLIST</p>
-        <h3 class="stylist-name-jp lang-ja">于 常校</h3>
-        <h3 class="stylist-name-jp lang-cn">于 常校</h3>
-        <p class="stylist-name-en">Yu Changxiao</p>
-        <p class="stylist-bio lang-ja">はじめまして！大阪美容専門学校を卒業し、美容師として6年間働いてきました。カラーは暗めのブラウン系から鮮やかなハイトーンまで全てお任せください‼️ パーマはナチュラルから強めまで幅広く対応、「朝楽で再現性の高いパーマ」を得意としています。中国語でも対応可能で、お一人おひとりに心を込めて丁寧にサービスいたします。</p>
-        <p class="stylist-bio lang-cn">初次见面！毕业于大阪美容专门学校，从事美发师工作已有6年。从沉稳的棕色系到鲜明的亮色系，染发请全部放心交给我‼️ 日语、中文都可以沟通。</p>
-      </a>
-    </div>
+    <!-- 造型师预览：由 /api/stylists 动态渲染（前 4 位，按后台排序） -->
+    <div class="stylists-grid" id="homeStylistGrid"></div>
     <div class="more-link-wrap">
       <a href="stylists.html" class="more-link lang-ja">スタイリスト一覧 →</a>
       <a href="stylists.html" class="more-link lang-cn">查看全部造型师 →</a>
@@ -407,5 +389,34 @@
 </div>
 
 <script src="assets/shared.js"></script>
+<script>
+// 首页造型师预览：从 /api/stylists 拉取前 4 位渲染（与造型师介绍页同源）
+(function(){
+  function esc(s){ return (s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+  function preview(s){ const t=(s||'').replace(/\r?\n/g,' ').trim(); return t.length>96 ? t.slice(0,96)+'…' : t; }
+
+  function cardHtml(s){
+    const photo = s.photo ? ` style="background-image:url('${esc(s.photo)}')"` : '';
+    return `<a href="stylists.html#${esc(s.id)}" style="text-decoration:none;color:inherit;">
+      <div class="stylist-photo"${photo}></div>
+      ${s.role_en?`<p class="stylist-role">${esc(s.role_en)}</p>`:''}
+      <h3 class="stylist-name-jp lang-ja">${esc(s.name_ja)}</h3>
+      <h3 class="stylist-name-jp lang-cn">${esc(s.name_cn)}</h3>
+      ${s.name_en?`<p class="stylist-name-en">${esc(s.name_en)}</p>`:''}
+      ${s.bio_ja?`<p class="stylist-bio lang-ja">${esc(preview(s.bio_ja))}</p>`:''}
+      ${s.bio_cn?`<p class="stylist-bio lang-cn">${esc(preview(s.bio_cn))}</p>`:''}
+    </a>`;
+  }
+
+  fetch('/api/stylists')
+    .then(r=>r.json())
+    .then(list=>{
+      const grid = document.getElementById('homeStylistGrid');
+      if(!grid) return;
+      grid.innerHTML = (Array.isArray(list) ? list : []).slice(0,4).map(cardHtml).join('');
+    })
+    .catch(()=>{});
+})();
+</script>
 </body>
 </html>

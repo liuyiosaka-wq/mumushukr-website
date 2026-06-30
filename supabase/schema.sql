@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS reservations (
   date       DATE NOT NULL,
   time       TIME NOT NULL,
   service    TEXT NOT NULL CHECK (service IN ('cut', 'color', 'color_cut', 'perm_men', 'perm_women_long', 'treatment')),
-  stylist    TEXT CHECK (stylist IN ('yuna', 'yu')),
+  stylist    TEXT,  -- 取值为 stylists.id（动态），由应用层校验；不加 CHECK/外键以兼容历史记录与离职造型师
   notes      TEXT,
   lang       TEXT NOT NULL DEFAULT 'ja' CHECK (lang IN ('ja', 'zh')),
   status     TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'confirmed', 'cancelled')),
@@ -115,3 +115,38 @@ ALTER TABLE articles ENABLE ROW LEVEL SECURITY;
 -- VALUES ('article-images', 'article-images', true, 10485760,
 --   ARRAY['image/jpeg','image/png','image/webp','image/gif'])
 -- ON CONFLICT (id) DO NOTHING;
+
+-- 造型师表（CMS 后台管理，2026-06 起）
+-- 替代原 stylists.html / index.html / reserve.html 里写死的两位造型师
+-- id 同时作为 reservations.stylist 取值 + availability_cache 数据里每位造型师的键（如 yuna / yu / tanaka）
+-- 照片复用 article-images 桶（上传时 dir=stylists）；hotpepper_id 非空才参与 Hot Pepper 空档抓取
+CREATE TABLE IF NOT EXISTS stylists (
+  id            TEXT PRIMARY KEY,                 -- kebab-case slug
+  sort          INTEGER NOT NULL DEFAULT 0,       -- 站点展示顺序（升序）
+  published     BOOLEAN NOT NULL DEFAULT TRUE,    -- 下线 = 不出现在介绍页/首页/下拉/AI/抓取
+  name_en       TEXT DEFAULT '',                  -- Katuki Yuna
+  name_ja       TEXT NOT NULL,                    -- 勝木 由奈
+  name_cn       TEXT NOT NULL,                    -- 勝木 由奈
+  role_en       TEXT DEFAULT '',                  -- ART DIRECTOR
+  role_ja       TEXT DEFAULT '',                  -- 店長
+  role_cn       TEXT DEFAULT '',                  -- 店长
+  photo         TEXT DEFAULT '',                  -- Storage 公开 URL 或 assets/ 相对路径（3:4 竖图）
+  bio_ja        TEXT DEFAULT '',                  -- 简介（纯文本，换行 = 段落）
+  bio_cn        TEXT DEFAULT '',
+  tags          TEXT DEFAULT '',                  -- 逗号分隔，如 'CUT,COLOR,ALL-ROUND'
+  specialty_ja  TEXT DEFAULT '',                  -- 得意
+  specialty_cn  TEXT DEFAULT '',
+  languages     TEXT DEFAULT '',                  -- '日本語 / 中文'
+  hotpepper_id  TEXT DEFAULT '',                  -- Hot Pepper stylistId（如 T000997895）；空 = 不抓空档
+  extra_minutes INTEGER NOT NULL DEFAULT 0,       -- 染/烫额外时长（于常校=30），驱动 reserve.html 时长提示
+  created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_stylists_sort ON stylists (sort ASC);
+
+ALTER TABLE stylists ENABLE ROW LEVEL SECURITY;
+
+-- 造型师动态后，reservations.stylist 不再限定 yuna/yu，改为应用层（reservations.js）校验
+-- 已建库执行迁移：
+--   ALTER TABLE reservations DROP CONSTRAINT IF EXISTS reservations_stylist_check;

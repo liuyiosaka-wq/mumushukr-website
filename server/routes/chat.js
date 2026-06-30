@@ -30,7 +30,21 @@ router.post('/', async (req, res) => {
     // 无空档数据时降级处理，不中断请求
   }
 
-  const systemPrompt = buildSystemPrompt(lang, availabilityData);
+  // 读取已上线造型师名单（按 sort），动态注入提示词的造型师介绍与空档渲染
+  let stylists = [];
+  try {
+    const { data } = await supabase
+      .from('stylists')
+      .select('id, name_ja, name_cn, name_en, role_ja, role_cn, role_en, specialty_ja, specialty_cn, languages')
+      .eq('published', true)
+      .order('sort', { ascending: true })
+      .order('created_at', { ascending: true });
+    if (data) stylists = data;
+  } catch {
+    // 读取造型师失败时降级为空名单，不中断请求
+  }
+
+  const systemPrompt = buildSystemPrompt(lang, availabilityData, stylists);
 
   try {
     const response = await qwen.chat.completions.create({

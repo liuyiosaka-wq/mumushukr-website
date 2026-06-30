@@ -24,15 +24,6 @@ const SERVICE_MAP = {
   护发护理: 'treatment',
 };
 
-const STYLIST_MAP = {
-  '勝木 由奈 / Katuki Yuna': 'yuna',
-  '于 常校 / Yu Changxiao': 'yu',
-  '指名なし': null,
-  '不指定': null,
-  'yuna': 'yuna',
-  'yu': 'yu'
-};
-
 const SERVICE_LABEL = {
   zh: {
     cut: '剪发',
@@ -52,11 +43,24 @@ const SERVICE_LABEL = {
   },
 };
 
-const STYLIST_LABEL = {
-  yuna: '勝木 由奈',
-  yu: '于 常校',
-  null: ''
-};
+// 校验提交的造型师 id：空 → null；非空 → 查 stylists 表确认是已上线造型师，
+// 命中返回 {id, name_cn}，未命中返回 null（宽松处理，不报错）
+async function resolveStylist(input) {
+  const id = (input || '').toString().trim();
+  if (!id) return null;
+  try {
+    const { data } = await supabase
+      .from('stylists')
+      .select('id, name_cn, name_ja')
+      .eq('id', id)
+      .eq('published', true)
+      .maybeSingle();
+    if (!data) return null;
+    return { id: data.id, name: data.name_cn || data.name_ja || data.id };
+  } catch {
+    return null;
+  }
+}
 
 // POST /api/reservations
 router.post('/', async (req, res) => {
@@ -89,9 +93,8 @@ router.post('/', async (req, res) => {
     });
   }
 
-  const normalizedStylist = stylist !== undefined
-    ? (STYLIST_MAP[stylist] !== undefined ? STYLIST_MAP[stylist] : null)
-    : null;
+  const resolvedStylist = await resolveStylist(stylist);
+  const normalizedStylist = resolvedStylist ? resolvedStylist.id : null;
 
   try {
     const { data, error } = await supabase
@@ -113,7 +116,7 @@ router.post('/', async (req, res) => {
     if (error) throw error;
 
     const langKey = isZh ? 'zh' : 'ja';
-    const stylistDisp = STYLIST_LABEL[data.stylist] || (isZh ? '不指定' : '指名なし');
+    const stylistDisp = resolvedStylist ? resolvedStylist.name : (isZh ? '不指定' : '指名なし');
     notifyOwner({
       subject: `【SHUKR】新预约：${name.trim()}`,
       lines: [
@@ -138,7 +141,7 @@ router.post('/', async (req, res) => {
         date: data.date,
         time: data.time,
         service: SERVICE_LABEL[langKey][data.service] || data.service,
-        stylist: STYLIST_LABEL[data.stylist] || (isZh ? '不指定' : '指名なし')
+        stylist: stylistDisp
       }
     });
   } catch (err) {

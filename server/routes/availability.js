@@ -27,6 +27,30 @@ router.get('/', async (req, res) => {
   }
 });
 
+// GET /api/availability/roster — 抓取脚本用：返回需抓空档的造型师名册
+// 复用 SYNC_TOKEN 鉴权（与 /sync 同一套，无需给 GitHub 新增 secret）
+// 仅返回 published=true 且 hotpepper_id 非空的造型师
+router.get('/roster', async (req, res) => {
+  const token = req.query.token || req.headers['x-sync-token'];
+  if (!token || token !== process.env.SYNC_TOKEN) {
+    return res.status(401).json({ error: 'unauthorized' });
+  }
+  try {
+    const { data, error } = await supabase
+      .from('stylists')
+      .select('id, hotpepper_id, sort')
+      .eq('published', true)
+      .not('hotpepper_id', 'is', null)
+      .neq('hotpepper_id', '')
+      .order('sort', { ascending: true });
+    if (error) throw error;
+    res.json((data || []).map(({ id, hotpepper_id }) => ({ id, hotpepper_id })));
+  } catch (err) {
+    console.error('读取造型师名册失败:', err.message);
+    res.status(500).json({ error: 'database_error' });
+  }
+});
+
 // POST /api/availability/sync — OpenClaw Webhook，写入最新空档
 router.post('/sync', async (req, res) => {
   const { token, data: availData } = req.body;

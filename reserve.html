@@ -222,8 +222,6 @@
         <label class="lang-cn">指定造型师</label>
         <select name="stylist" id="rsvStylist">
           <option value="">指名なし / 不指定</option>
-          <option value="yuna">勝木 由奈 / Katuki Yuna</option>
-          <option value="yu">于 常校 / Yu Changxiao</option>
         </select>
       </div>
 
@@ -366,6 +364,48 @@
 // 从 /api/availability 拉空档数据，动态填充日期 + 时间下拉
 // 用户选择日期 / 造型师 → 时间下拉只显示当天对应造型师还有空档的时段
 let _availability = {};
+let _stylists = [];
+
+// 造型师名册（动态）。API 失败时回退到 yuna/yu，保证空档逻辑不挂
+function stylistIds() {
+  return _stylists.length ? _stylists.map(s => s.id) : ['yuna', 'yu'];
+}
+function hasAnySlots(info) {
+  return info && !info.closed && stylistIds().some(id => (info[id] || []).length);
+}
+function mergedSlots(info) {
+  if (!info || info.closed) return [];
+  const set = new Set();
+  for (const id of stylistIds()) for (const t of (info[id] || [])) set.add(t);
+  return [...set];
+}
+
+async function loadStylists() {
+  try {
+    const res = await fetch('/api/stylists');
+    const data = await res.json();
+    _stylists = Array.isArray(data) ? data : [];
+  } catch (e) {
+    console.warn('stylists fetch failed', e);
+    _stylists = [];
+  }
+  fillStylistOptions();
+}
+
+function fillStylistOptions() {
+  const sel = document.getElementById('rsvStylist');
+  if (!sel) return;
+  // 保留首项「指名なし / 不指定」，重建其余
+  sel.querySelectorAll('option:not([value=""])').forEach(o => o.remove());
+  for (const s of _stylists) {
+    const opt = document.createElement('option');
+    opt.value = s.id;
+    const ja = s.name_ja || s.name_en || s.id;
+    const en = s.name_en && s.name_en !== ja ? ' / ' + s.name_en : '';
+    opt.textContent = ja + en;
+    sel.appendChild(opt);
+  }
+}
 
 async function loadAvailability() {
   try {
@@ -402,7 +442,7 @@ function renderAvailabilitySummary() {
   const list = document.getElementById('rsvAvailabilityList');
   if (!box || !list) return;
   const days = Object.entries(_availability)
-    .filter(([_, info]) => !info.closed && ((info.yuna && info.yuna.length) || (info.yu && info.yu.length)))
+    .filter(([_, info]) => hasAnySlots(info))
     .sort(([a], [b]) => a.localeCompare(b))
     .slice(0, 5);
   if (days.length === 0) { box.style.display = 'none'; return; }
@@ -411,8 +451,7 @@ function renderAvailabilitySummary() {
   const wk = isZh() ? wkCn : wkJa;
   list.innerHTML = days.map(([date, info]) => {
     const d = new Date(date + 'T00:00:00+09:00');
-    const all = [...new Set([...(info.yuna || []), ...(info.yu || [])])];
-    const slots = compressSlots(all);
+    const slots = compressSlots(mergedSlots(info));
     const dateLabel = `${d.getMonth() + 1}/${d.getDate()} (${wk[d.getDay()]})`;
     return `<span class="rsv-day"><span class="rsv-day-date">${dateLabel}</span><span class="rsv-day-slots">${slots}</span></span>`;
   }).join('');
@@ -435,12 +474,13 @@ function refreshDurationHint() {
   if (!hint) return;
   const dur = SERVICE_DURATION[svc];
   if (!dur) { hint.style.display = 'none'; return; }
-  const lang = isZh() ? 'zh' : 'ja';
   const isPermOrColor = svc === 'color' || svc === 'color_cut' || svc === 'perm_men' || svc === 'perm_women_long';
-  const yuExtra = sty === 'yu' && isPermOrColor
-    ? (isZh() ? '；于常校老师约 +30 分钟' : '；于常校スタイリストは +30 分')
+  const stylist = _stylists.find(s => s.id === sty);
+  const extra = stylist && stylist.extra_minutes ? stylist.extra_minutes : 0;
+  const stylistExtra = (extra && isPermOrColor)
+    ? (isZh() ? `；${stylist.name_cn || stylist.name_ja}老师约 +${extra} 分钟` : `；${stylist.name_ja || stylist.name_cn}スタイリストは +${extra} 分`)
     : '';
-  hint.textContent = isZh() ? `所需时间：${dur.zh}${yuExtra}` : `所要時間：${dur.ja}${yuExtra}`;
+  hint.textContent = isZh() ? `所需时间：${dur.zh}${stylistExtra}` : `所要時間：${dur.ja}${stylistExtra}`;
   hint.style.display = 'block';
 }
 
@@ -450,7 +490,7 @@ function fillDateOptions() {
   const sel = document.getElementById('rsvDate');
   if (!sel) return;
   const dates = Object.entries(_availability)
-    .filter(([_, info]) => !info.closed && ((info.yuna && info.yuna.length) || (info.yu && info.yu.length)))
+    .filter(([_, info]) => hasAnySlots(info))
     .map(([d]) => d)
     .sort();
 
@@ -487,9 +527,8 @@ function getSlots(date, stylist) {
   const info = _availability[date];
   if (!info || info.closed) return [];
   if (!stylist) {
-    // 不指定造型师 → 取两位的并集
-    const all = new Set([...(info.yuna || []), ...(info.yu || [])]);
-    return [...all].sort();
+    // 不指定造型师 → 取全部在册造型师的并集
+    return mergedSlots(info).sort();
   }
   return [...(info[stylist] || [])].sort();
 }
@@ -526,13 +565,14 @@ function refreshTimeOptions() {
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('rsvDate')?.addEventListener('change', refreshTimeOptions);
   document.getElementById('rsvStylist')?.addEventListener('change', () => {
     refreshTimeOptions();
     refreshDurationHint();
   });
   document.getElementById('rsvService')?.addEventListener('change', refreshDurationHint);
+  await loadStylists();   // 先拿造型师名册，再渲染空档（空档合并依赖名册 id）
   loadAvailability();
 });
 </script>

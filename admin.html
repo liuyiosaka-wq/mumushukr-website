@@ -140,9 +140,9 @@
   // 导航模块：本期仅 articles 可用，其余占位
   const MODULES = [
     {key:'articles', label:'文章管理', ready:true},
+    {key:'stylists', label:'造型师',   ready:true},
     {key:'images',   label:'图片库',   ready:false},
     {key:'services', label:'服务价格', ready:false},
-    {key:'stylists', label:'造型师',   ready:false},
     {key:'reservations', label:'预约记录', ready:false},
   ];
 
@@ -227,6 +227,7 @@
   // ---------- 视图调度（新增模块只需在此加分支） ----------
   function renderView(key){
     if (key === 'articles') return renderArticleList();
+    if (key === 'stylists') return renderStylistList();
     const m = MODULES.find(x=>x.key===key);
     main.innerHTML = `<div class="placeholder-mod"><div class="big">🚧</div>
       <h2>${m.label}</h2><p>该模块将在后续阶段开放。</p></div>`;
@@ -421,6 +422,167 @@
         await api('/api/admin/articles', {method:'POST', body:payload});
       }
       toast('已保存'); renderArticleList();
+    }catch(ex){ toast(ex.message,true); }
+  }
+
+  // ================= 造型师管理 =================
+  async function renderStylistList(){
+    main.innerHTML = `<div class="page-head"><h2>造型师管理</h2><div class="spacer"></div>
+      <button class="btn btn-primary" id="newStyBtn">+ 新建造型师</button></div>
+      <div id="styListSlot"><div class="empty">加载中…</div></div>`;
+    $('#newStyBtn').addEventListener('click', ()=> renderStylistForm(null));
+    try{
+      const list = await api('/api/admin/stylists');
+      const slot = $('#styListSlot');
+      if(!list.length){ slot.innerHTML = '<div class="empty">还没有造型师，点击右上角「新建造型师」。</div>'; return; }
+      slot.innerHTML = `<table><thead><tr>
+        <th style="width:64px">照片</th><th>姓名</th><th>职位</th><th>排序</th><th>状态</th><th style="width:230px">操作</th>
+        </tr></thead><tbody>${list.map(styRowHtml).join('')}</tbody></table>`;
+      slot.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>renderStylistForm(b.dataset.edit));
+      slot.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>delStylist(b.dataset.del));
+      slot.querySelectorAll('[data-toggle]').forEach(b=>b.onclick=()=>toggleStylistPublish(b.dataset.toggle, b.dataset.pub==='1'));
+    }catch(ex){ toast(ex.message,true); }
+  }
+
+  function styRowHtml(s){
+    const photo = s.photo
+      ? `<div style="width:44px;height:58px;border-radius:4px;background:#eee center/cover no-repeat;background-image:url('${esc(s.photo)}')"></div>`
+      : `<div style="width:44px;height:58px;border-radius:4px;background:#f0f0f0;display:flex;align-items:center;justify-content:center;color:#bbb">—</div>`;
+    return `<tr>
+      <td>${photo}</td>
+      <td><strong>${esc(s.name_cn||s.name_ja)}</strong><br>
+          <span style="color:#aaa;font-size:12px">${esc(s.id)}</span>
+          ${!s.hotpepper_id?'<span class="badge off">无空档同步</span>':''}</td>
+      <td>${esc(s.role_en||'')}</td>
+      <td>${esc(String(s.sort))}</td>
+      <td>${s.published?'<span class="badge on">已上线</span>':'<span class="badge off">下线</span>'}</td>
+      <td><div class="actions">
+        <button class="btn btn-ghost btn-sm" data-edit="${esc(s.id)}">编辑</button>
+        <button class="btn btn-ghost btn-sm" data-toggle="${esc(s.id)}" data-pub="${s.published?1:0}">${s.published?'下线':'上线'}</button>
+        <button class="btn btn-danger btn-sm" data-del="${esc(s.id)}">删除</button>
+      </div></td></tr>`;
+  }
+
+  async function toggleStylistPublish(id, isPub){
+    try{ await api('/api/admin/stylists/'+id, {method:'PUT', body:{published:!isPub}});
+      toast(isPub?'已下线':'已上线'); renderStylistList();
+    }catch(ex){ toast(ex.message,true); }
+  }
+
+  async function delStylist(id){
+    if(!confirm('确定删除造型师「'+id+'」？此操作不可恢复。')) return;
+    try{ await api('/api/admin/stylists/'+id, {method:'DELETE'});
+      toast('已删除'); renderStylistList();
+    }catch(ex){ toast(ex.message,true); }
+  }
+
+  async function renderStylistForm(id){
+    const isEdit = !!id;
+    let s = {sort:0, published:true, name_ja:'',name_cn:'',name_en:'',
+             role_ja:'',role_cn:'',role_en:'',photo:'',bio_ja:'',bio_cn:'',
+             tags:'',specialty_ja:'',specialty_cn:'',languages:'日本語 / 中文',
+             hotpepper_id:'',extra_minutes:0};
+    if(isEdit){
+      try{ s = await api('/api/admin/stylists/'+id); }
+      catch(ex){ toast(ex.message,true); return; }
+    }
+    const f = name => esc(s[name]==null?'':s[name]);
+    main.innerHTML = `
+    <div class="page-head"><h2>${isEdit?'编辑造型师':'新建造型师'}</h2></div>
+    <div class="form-card">
+      <div class="grid2">
+        <div class="field">
+          <label>造型师 ID</label>
+          <input type="text" id="s_id" value="${f('id')}" ${isEdit?'disabled':''} placeholder="例：tanaka">
+          <div class="hint">小写字母/数字/连字符；新建后不可修改。预约记录与空档数据用它做标识</div>
+        </div>
+        <div class="field"><label>展示排序（小在前）</label><input type="text" id="s_sort" value="${f('sort')}" placeholder="1"></div>
+      </div>
+      <div class="field checks">
+        <label><input type="checkbox" id="s_published" ${s.published?'checked':''}> 已上线（取消勾选 = 不在网站显示）</label>
+      </div>
+
+      <div class="section-title">照片（3:4 竖图）</div>
+      <div class="cover-row">
+        <div class="cover-preview" id="styPhotoPreview" style="width:90px;height:120px;${s.photo?`background-image:url('${esc(s.photo)}')`:''}"></div>
+        <div style="flex:1">
+          <div class="field" style="margin-bottom:8px"><label>照片 URL</label>
+            <input type="text" id="s_photo" value="${f('photo')}" placeholder="可直接上传，或粘贴链接"></div>
+          <input type="file" id="styPhotoFile" accept="image/*">
+          <div class="hint">选择图片后自动上传到 Supabase，URL 会填入上方。</div>
+        </div>
+      </div>
+
+      <div class="section-title">姓名 / 职位（中日英）</div>
+      <div class="grid2">
+        <div class="field"><label>姓名（日文）*</label><input type="text" id="s_name_ja" value="${f('name_ja')}"></div>
+        <div class="field"><label>姓名（中文）*</label><input type="text" id="s_name_cn" value="${f('name_cn')}"></div>
+        <div class="field"><label>姓名（英文 / 罗马字）</label><input type="text" id="s_name_en" value="${f('name_en')}" placeholder="Katuki Yuna"></div>
+        <div class="field"><label>职位（英文，大写）</label><input type="text" id="s_role_en" value="${f('role_en')}" placeholder="ART DIRECTOR"></div>
+        <div class="field"><label>职位（日文）</label><input type="text" id="s_role_ja" value="${f('role_ja')}" placeholder="店長"></div>
+        <div class="field"><label>职位（中文）</label><input type="text" id="s_role_cn" value="${f('role_cn')}" placeholder="店长"></div>
+      </div>
+
+      <div class="section-title">擅长 / 语言 / 标签</div>
+      <div class="grid2">
+        <div class="field"><label>擅长（日文）</label><input type="text" id="s_specialty_ja" value="${f('specialty_ja')}" placeholder="オールマイティーな技術 / 幅広い客層対応"></div>
+        <div class="field"><label>擅长（中文）</label><input type="text" id="s_specialty_cn" value="${f('specialty_cn')}" placeholder="多元全能技术 / 全客层对应"></div>
+        <div class="field"><label>语言</label><input type="text" id="s_languages" value="${f('languages')}" placeholder="日本語 / 中文"></div>
+        <div class="field"><label>技能标签（逗号分隔）</label><input type="text" id="s_tags" value="${f('tags')}" placeholder="CUT,COLOR,ALL-ROUND"></div>
+      </div>
+
+      <div class="section-title">简介（中日双语）</div>
+      <div class="field"><label>简介（日文）</label><textarea id="s_bio_ja" style="min-height:130px">${f('bio_ja')}</textarea><div class="hint">直接换行即可，前台按段落显示</div></div>
+      <div class="field"><label>简介（中文）</label><textarea id="s_bio_cn" style="min-height:130px">${f('bio_cn')}</textarea></div>
+
+      <div class="section-title">预约 / 空档（高级，可留空）</div>
+      <div class="grid2">
+        <div class="field"><label>Hot Pepper stylistId</label><input type="text" id="s_hotpepper_id" value="${f('hotpepper_id')}" placeholder="例：T000997895">
+          <div class="hint">填了才会自动抓取该造型师的 Hot Pepper 空档；留空则预约页不显示其个人空档</div></div>
+        <div class="field"><label>染/烫额外时长（分钟）</label><input type="text" id="s_extra_minutes" value="${f('extra_minutes')}" placeholder="0">
+          <div class="hint">预约页选染/烫时，提示「+N 分钟」</div></div>
+      </div>
+
+      <div class="form-actions">
+        <button class="btn btn-primary" id="saveStyBtn">${isEdit?'保存修改':'创建造型师'}</button>
+        <button class="btn btn-ghost" id="cancelStyBtn">取消</button>
+      </div>
+    </div>`;
+
+    $('#cancelStyBtn').onclick = renderStylistList;
+    $('#styPhotoFile').onchange = async e=>{
+      const file = e.target.files[0]; if(!file) return;
+      try{
+        toast('照片上传中…');
+        const url = await uploadImage(file, 'stylists');
+        $('#s_photo').value = url;
+        $('#styPhotoPreview').style.backgroundImage = `url('${url}')`;
+        toast('照片已上传');
+      }catch(ex){ toast(ex.message,true); }
+    };
+    $('#saveStyBtn').onclick = ()=> saveStylist(isEdit, id);
+  }
+
+  async function saveStylist(isEdit, id){
+    const val = i => $('#'+i).value.trim();
+    const payload = {
+      sort: val('s_sort'), published: $('#s_published').checked,
+      name_ja:val('s_name_ja'), name_cn:val('s_name_cn'), name_en:val('s_name_en'),
+      role_ja:val('s_role_ja'), role_cn:val('s_role_cn'), role_en:val('s_role_en'),
+      photo:val('s_photo'),
+      specialty_ja:val('s_specialty_ja'), specialty_cn:val('s_specialty_cn'),
+      languages:val('s_languages'), tags:val('s_tags'),
+      bio_ja:$('#s_bio_ja').value, bio_cn:$('#s_bio_cn').value,
+      hotpepper_id:val('s_hotpepper_id'), extra_minutes:val('s_extra_minutes'),
+    };
+    try{
+      if(isEdit){
+        await api('/api/admin/stylists/'+id, {method:'PUT', body:payload});
+      }else{
+        payload.id = val('s_id');
+        await api('/api/admin/stylists', {method:'POST', body:payload});
+      }
+      toast('已保存'); renderStylistList();
     }catch(ex){ toast(ex.message,true); }
   }
 

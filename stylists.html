@@ -109,51 +109,11 @@
   <div class="container">
     <div class="st-list">
 
-      <article id="yamada" class="st-row">
-        <div class="st-photo st-photo-01"></div>
-        <div class="st-info">
-          <p class="st-role">ART DIRECTOR</p>
-          <h2 class="st-name-en">Katuki Yuna</h2>
-          <h3 class="st-name-jp lang-ja">勝木 由奈</h3>
-          <h3 class="st-name-jp lang-cn">勝木 由奈</h3>
-          <div class="section-divider"></div>
-          <p class="st-bio lang-ja">みなさん、こんにちは！美容師歴10年のYunaです！<br><br>東京・六本木のハリウッド美容専門学校を卒業後、関東圏の大手美容グループに入社し、入社2年目でスタイリストデビューしました。オールマイティーな技術で、幅広いお客様に愛される美容師を目指してやってきました！^ ^<br><br>中国語も話せますので、海外からお越しのお客様もどうぞ安心してご指名ください。<br><br>お一人おひとりと丁寧にカウンセリングしながら、より素敵なスタイルをご提案できる空間を大切にしています。どんなご希望もぜひお任せください！<br><br>SHUKRにお越しいただくすべてのお客様にご満足いただけるよう、日々改善を重ね全力で努めてまいります。ご来店を心よりお待ちしております(^^)</p>
-          <p class="st-bio lang-cn">大家好！我是 Yuna，一名拥有 10 年经验的美发师！<br><br>从东京六本木的好莱坞美容专门学校毕业后，我加入了关东地区的大型美发集团，并在入职第二年就成为了发型师。凭借全面的技术，我一直致力于成为能够服务各类客群、深受顾客喜爱的美发师！^ ^<br><br>我还能说中文，所以海外来的客人也可以放心找我哦。<br><br>我希望在能够与每位客人充分沟通的空间里，为大家打造更棒的发型。无论什么样的发型需求，都请交给我！<br><br>为了让每一位来到 SHUKR 的客人都能满意而归，我会不断寻找改进之处并全力以赴。期待你的光临！(^^)</p>
-          <ul class="st-tags">
-            <li>CUT</li><li>COLOR</li><li>ALL-ROUND</li>
-          </ul>
-          <dl class="st-meta">
-            <dt class="lang-ja">得意</dt><dt class="lang-cn">擅长</dt>
-            <dd class="lang-ja">オールマイティーな技術 / 幅広い客層対応</dd>
-            <dd class="lang-cn">多元全能技术 / 全客层对应</dd>
-            <dt class="lang-ja">言語</dt><dt class="lang-cn">语言</dt>
-            <dd>日本語 / 中文</dd>
-          </dl>
-        </div>
-      </article>
-
-      <article id="li" class="st-row reverse">
-        <div class="st-photo st-photo-02"></div>
-        <div class="st-info">
-          <p class="st-role">SENIOR STYLIST</p>
-          <h2 class="st-name-en">Yu Changxiao</h2>
-          <h3 class="st-name-jp lang-ja">于 常校</h3>
-          <h3 class="st-name-jp lang-cn">于 常校</h3>
-          <div class="section-divider"></div>
-          <p class="st-bio lang-ja">はじめまして！<br><br>大阪美容専門学校を卒業し、美容師として6年間働いてきました。<br><br>カラーは、暗めのブラウン系から鮮やかなハイトーンまで全てお任せください‼️<br><br>パーマはナチュラルから強めまで幅広く対応。<br>「朝楽で再現性の高いパーマ」を得意とし、ちょうどいい"おしゃれカジュアル"をお作りします。<br><br>「自分に似合うスタイルが分からない」「失敗したくない」という方も、ぜひ安心してお任せください‼️<br><br>中国語でも対応可能で、お一人おひとりに心を込めて丁寧にサービスいたします。<br>どうぞよろしくお願いいたします！</p>
-          <p class="st-bio lang-cn">初次见面！<br><br>我从大阪美容专门学校毕业，已经从事美发师工作 6 年了。<br><br>染发——从深色棕色系到鲜艳的高色调，全部交给我就对了！‼️<br><br>烫发——从自然款到强力款都能应对。<br>我擅长打造"早上好打理、可重现性高"的烫发，帮你拿捏"刚刚好的帅气感"。<br><br>"不知道自己适合什么发型""不想翻车"——这种朋友请放心交给我！‼️<br><br>我还能用中文交流，会用心为每位客人提供细致周到的服务。<br>请多多关照！</p>
-          <ul class="st-tags">
-            <li>COLOR</li><li>HIGHLIGHT</li><li>DESIGN</li>
-          </ul>
-          <dl class="st-meta">
-            <dt class="lang-ja">得意</dt><dt class="lang-cn">擅长</dt>
-            <dd class="lang-ja">ブラウン〜ハイトーンカラー全般</dd>
-            <dd class="lang-cn">棕色系至亮色系全系染发</dd>
-            <dt class="lang-ja">言語</dt><dt class="lang-cn">语言</dt>
-            <dd>日本語 / 中文</dd>
-          </dl>
-        </div>
-      </article>
+      <!-- 造型师卡片：由 /api/stylists 动态渲染（后台「造型师」模块管理） -->
+      <div id="stylistList" style="display:flex;flex-direction:column;gap:100px">
+        <div style="padding:40px 0;text-align:center;color:#aaa" class="lang-ja">読み込み中…</div>
+        <div style="padding:40px 0;text-align:center;color:#aaa" class="lang-cn">加载中…</div>
+      </div>
 
       <!-- Customer voices -->
       <div class="st-voices-wrap">
@@ -291,5 +251,53 @@
 </div>
 
 <script src="assets/shared.js"></script>
+<script>
+// 造型师介绍卡片：从 /api/stylists 拉取并渲染（顾客评价区保持静态）
+(function(){
+  function esc(s){ return (s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+  function nl2br(s){ return esc(s).replace(/\r?\n/g,'<br>'); }
+
+  function cardHtml(s, i){
+    const reverse = i % 2 === 1 ? ' reverse' : '';
+    const tags = (s.tags||'').split(',').map(t=>t.trim()).filter(Boolean)
+      .map(t=>`<li>${esc(t)}</li>`).join('');
+    const photo = s.photo
+      ? `background:#e8e4df center/cover no-repeat url('${esc(s.photo)}')`
+      : 'background:#e8e4df';
+    const meta = [];
+    if (s.specialty_ja || s.specialty_cn){
+      meta.push('<dt class="lang-ja">得意</dt><dt class="lang-cn">擅长</dt>');
+      meta.push(`<dd class="lang-ja">${esc(s.specialty_ja)}</dd><dd class="lang-cn">${esc(s.specialty_cn)}</dd>`);
+    }
+    if (s.languages){
+      meta.push('<dt class="lang-ja">言語</dt><dt class="lang-cn">语言</dt>');
+      meta.push(`<dd>${esc(s.languages)}</dd>`);
+    }
+    return `<article id="${esc(s.id)}" class="st-row${reverse}">
+      <div class="st-photo" style="${photo}"></div>
+      <div class="st-info">
+        ${s.role_en?`<p class="st-role">${esc(s.role_en)}</p>`:''}
+        ${s.name_en?`<h2 class="st-name-en">${esc(s.name_en)}</h2>`:''}
+        <h3 class="st-name-jp lang-ja">${esc(s.name_ja)}</h3>
+        <h3 class="st-name-jp lang-cn">${esc(s.name_cn)}</h3>
+        <div class="section-divider"></div>
+        ${s.bio_ja?`<p class="st-bio lang-ja">${nl2br(s.bio_ja)}</p>`:''}
+        ${s.bio_cn?`<p class="st-bio lang-cn">${nl2br(s.bio_cn)}</p>`:''}
+        ${tags?`<ul class="st-tags">${tags}</ul>`:''}
+        ${meta.length?`<dl class="st-meta">${meta.join('')}</dl>`:''}
+      </div>
+    </article>`;
+  }
+
+  fetch('/api/stylists')
+    .then(r=>r.json())
+    .then(list=>{
+      const box = document.getElementById('stylistList');
+      if(!box) return;
+      box.innerHTML = (Array.isArray(list) ? list : []).map(cardHtml).join('');
+    })
+    .catch(()=>{ const box=document.getElementById('stylistList'); if(box) box.innerHTML=''; });
+})();
+</script>
 </body>
 </html>
