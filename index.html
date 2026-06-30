@@ -197,6 +197,7 @@
       <li><a href="index.html" class="active lang-ja">ホーム</a><a href="index.html" class="active lang-cn">首页</a></li>
       <li><a href="stylists.html" class="lang-ja">スタイリスト</a><a href="stylists.html" class="lang-cn">造型师</a></li>
       <li><a href="services.html" class="lang-ja">サービス紹介</a><a href="services.html" class="lang-cn">服务介绍</a></li>
+      <li><a href="gallery.html" class="lang-ja">ギャラリー</a><a href="gallery.html" class="lang-cn">作品</a></li>
       <li><a href="fc.html" class="lang-ja">FC募集</a><a href="fc.html" class="lang-cn">加盟招募</a></li>
       <li><a href="about.html" class="lang-ja">会社概要</a><a href="about.html" class="lang-cn">公司概要</a></li>
       <li><a href="column.html" class="lang-ja">コラム</a><a href="column.html" class="lang-cn">专栏</a></li>
@@ -264,6 +265,27 @@
     <div class="more-link-wrap">
       <a href="stylists.html" class="more-link lang-ja">スタイリスト一覧 →</a>
       <a href="stylists.html" class="more-link lang-cn">查看全部造型师 →</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  #homeGalleryGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:50px}
+  #homeGalleryGrid a{position:relative;aspect-ratio:4/3;background:#e8e4df center/cover no-repeat;overflow:hidden;display:block;transition:transform .35s}
+  #homeGalleryGrid a:hover{transform:translateY(-4px)}
+  @media(max-width:900px){ #homeGalleryGrid{grid-template-columns:repeat(2,1fr)} }
+</style>
+<section id="gallery-preview" style="background:#fff;">
+  <div class="container">
+    <p class="section-label">GALLERY</p>
+    <h2 class="section-title lang-ja">作品ギャラリー</h2>
+    <h2 class="section-title lang-cn">精选作品</h2>
+    <div class="section-divider"></div>
+    <!-- 精选作品预览：由 /api/gallery 动态渲染（前 8 张，按后台排序） -->
+    <div id="homeGalleryGrid"></div>
+    <div class="more-link-wrap">
+      <a href="gallery.html" class="more-link lang-ja">作品一覧を見る →</a>
+      <a href="gallery.html" class="more-link lang-cn">查看全部作品 →</a>
     </div>
   </div>
 </section>
@@ -356,6 +378,7 @@
   <ul class="footer-links">
     <li><a href="index.html" class="lang-ja">ホーム</a><a href="index.html" class="lang-cn">首页</a></li>
     <li><a href="services.html" class="lang-ja">サービス紹介</a><a href="services.html" class="lang-cn">服务介绍</a></li>
+    <li><a href="gallery.html" class="lang-ja">ギャラリー</a><a href="gallery.html" class="lang-cn">作品</a></li>
     <li><a href="stylists.html" class="lang-ja">スタイリスト</a><a href="stylists.html" class="lang-cn">造型师</a></li>
     <li><a href="about.html" class="lang-ja">会社概要</a><a href="about.html" class="lang-cn">公司概要</a></li>
     <li><a href="column.html" class="lang-ja">コラム</a><a href="column.html" class="lang-cn">专栏</a></li>
@@ -416,6 +439,24 @@
       grid.innerHTML = (Array.isArray(list) ? list : []).slice(0,4).map(cardHtml).join('');
     })
     .catch(()=>{});
+})();
+</script>
+<script>
+// 首页精选作品预览：从 /api/gallery 拉取前 8 张（链到作品页）
+(function(){
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  fetch('/api/gallery', { cache: 'no-store' })
+    .then(r => r.json())
+    .then(list => {
+      const grid = document.getElementById('homeGalleryGrid');
+      if(!grid) return;
+      const items = (Array.isArray(list) ? list : []).slice(0, 8);
+      if(!items.length){ const sec = document.getElementById('gallery-preview'); if(sec) sec.style.display = 'none'; return; }
+      grid.innerHTML = items.map(g =>
+        `<a href="gallery.html" style="background-image:url('${esc(g.image)}')" aria-label="${esc(g.title_ja||g.title_cn||'作品')}"></a>`
+      ).join('');
+    })
+    .catch(()=>{ const sec = document.getElementById('gallery-preview'); if(sec) sec.style.display = 'none'; });
 })();
 </script>
 </body>

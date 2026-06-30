@@ -26,6 +26,10 @@
 .st-meta dt { font-family: 'Noto Sans JP', sans-serif; font-size: 10px; letter-spacing: 0.2em; color: var(--gold); padding-top: 4px; }
 .st-meta dd { font-family: 'Noto Sans JP', sans-serif; font-weight: 300; letter-spacing: 0.06em; color: var(--fg); line-height: 1.8; }
 @media(max-width:900px){ .st-row, .st-row.reverse { grid-template-columns: 1fr; direction: ltr; } }
+.st-works-label { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 12px; letter-spacing: 0.3em; color: var(--gold); margin: 28px 0 12px; }
+.st-works { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.st-work { aspect-ratio: 1/1; background: #e8e4df center/cover no-repeat; display: block; overflow: hidden; transition: opacity 0.25s; }
+.st-work:hover { opacity: 0.85; }
 
 .st-coming { margin-top: 40px; border-top: 1px solid var(--border); padding-top: 80px; text-align: center; }
 .st-coming-label { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 13px; letter-spacing: 0.4em; color: var(--gold); margin-bottom: 18px; }
@@ -81,6 +85,7 @@
       <li><a href="index.html" class=" lang-ja">ホーム</a><a href="index.html" class=" lang-cn">首页</a></li>
       <li><a href="stylists.html" class="active lang-ja">スタイリスト</a><a href="stylists.html" class="active lang-cn">造型师</a></li>
       <li><a href="services.html" class=" lang-ja">サービス紹介</a><a href="services.html" class=" lang-cn">服务介绍</a></li>
+      <li><a href="gallery.html" class=" lang-ja">ギャラリー</a><a href="gallery.html" class=" lang-cn">作品</a></li>
       <li><a href="fc.html" class=" lang-ja">FC募集</a><a href="fc.html" class=" lang-cn">加盟招募</a></li>
       <li><a href="about.html" class=" lang-ja">会社概要</a><a href="about.html" class=" lang-cn">公司概要</a></li>
       <li><a href="column.html" class=" lang-ja">コラム</a><a href="column.html" class=" lang-cn">专栏</a></li>
@@ -218,6 +223,7 @@
   <ul class="footer-links">
     <li><a href="index.html" class="lang-ja">ホーム</a><a href="index.html" class="lang-cn">首页</a></li>
     <li><a href="services.html" class="lang-ja">サービス紹介</a><a href="services.html" class="lang-cn">服务介绍</a></li>
+    <li><a href="gallery.html" class="lang-ja">ギャラリー</a><a href="gallery.html" class="lang-cn">作品</a></li>
     <li><a href="stylists.html" class="lang-ja">スタイリスト</a><a href="stylists.html" class="lang-cn">造型师</a></li>
     <li><a href="about.html" class="lang-ja">会社概要</a><a href="about.html" class="lang-cn">公司概要</a></li>
     <li><a href="column.html" class="lang-ja">コラム</a><a href="column.html" class="lang-cn">专栏</a></li>
@@ -257,7 +263,16 @@
   function esc(s){ return (s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
   function nl2br(s){ return esc(s).replace(/\r?\n/g,'<br>'); }
 
-  function cardHtml(s, i){
+  // 该造型师关联的作品缩略条（最多 6 张，点击跳作品页）
+  function worksHtml(works){
+    if(!works || !works.length) return '';
+    const items = works.slice(0, 6).map(g =>
+      `<a href="gallery.html" class="st-work" style="background-image:url('${esc(g.image)}')" aria-label="${esc(g.title_ja||g.title_cn||'作品')}"></a>`
+    ).join('');
+    return `<p class="st-works-label">WORKS</p><div class="st-works">${items}</div>`;
+  }
+
+  function cardHtml(s, i, works){
     const reverse = i % 2 === 1 ? ' reverse' : '';
     const tags = (s.tags||'').split(',').map(t=>t.trim()).filter(Boolean)
       .map(t=>`<li>${esc(t)}</li>`).join('');
@@ -285,16 +300,29 @@
         ${s.bio_cn?`<p class="st-bio lang-cn">${nl2br(s.bio_cn)}</p>`:''}
         ${tags?`<ul class="st-tags">${tags}</ul>`:''}
         ${meta.length?`<dl class="st-meta">${meta.join('')}</dl>`:''}
+        ${worksHtml(works)}
       </div>
     </article>`;
   }
 
-  fetch('/api/stylists')
-    .then(r=>r.json())
-    .then(list=>{
+  // 同时拉造型师与作品；作品按 stylist_id 分组注入各自卡片
+  Promise.all([
+    fetch('/api/stylists').then(r=>r.json()).catch(()=>[]),
+    fetch('/api/gallery').then(r=>r.json()).catch(()=>[]),
+  ])
+    .then(([stylists, gallery])=>{
       const box = document.getElementById('stylistList');
       if(!box) return;
-      box.innerHTML = (Array.isArray(list) ? list : []).map(cardHtml).join('');
+      const works = {};
+      (Array.isArray(gallery) ? gallery : []).forEach(g=>{
+        if(!g.stylist_id) return;
+        (works[g.stylist_id] = works[g.stylist_id] || []).push(g);
+      });
+      box.innerHTML = (Array.isArray(stylists) ? stylists : [])
+        .map((s, i)=>cardHtml(s, i, works[s.id])).join('');
+      // 重新应用语言，让新插入的 .lang-ja/.lang-cn 正确显示
+      const saved = localStorage.getItem('shukr-lang') || 'ja';
+      if (typeof setLang === 'function') setLang(saved);
     })
     .catch(()=>{ const box=document.getElementById('stylistList'); if(box) box.innerHTML=''; });
 })();

@@ -122,6 +122,7 @@
       <li><a href="index.html" class=" lang-ja">ホーム</a><a href="index.html" class=" lang-cn">首页</a></li>
       <li><a href="stylists.html" class=" lang-ja">スタイリスト</a><a href="stylists.html" class=" lang-cn">造型师</a></li>
       <li><a href="services.html" class=" lang-ja">サービス紹介</a><a href="services.html" class=" lang-cn">服务介绍</a></li>
+      <li><a href="gallery.html" class=" lang-ja">ギャラリー</a><a href="gallery.html" class=" lang-cn">作品</a></li>
       <li><a href="fc.html" class="active lang-ja">FC募集</a><a href="fc.html" class="active lang-cn">加盟招募</a></li>
       <li><a href="about.html" class=" lang-ja">会社概要</a><a href="about.html" class=" lang-cn">公司概要</a></li>
       <li><a href="column.html" class=" lang-ja">コラム</a><a href="column.html" class=" lang-cn">专栏</a></li>
@@ -152,29 +153,31 @@
   <p class="lang-cn">SHUKR 是ムム株式会社旗下专业美发品牌，总部位于日本大阪。作为全日本为数不多由中国人运营的美发品牌，我们有经验丰富的技术骨干，他们均来自日本美发专门学校，不仅技术过硬，更懂得如何培训新人、组建团队。相比其他日本品牌，我们同时熟悉中国和日本的美发市场规则、供应链体系、获客渠道。</p>
 </section>
 
-<!-- Marquee: TODO 用户上传工作照后把 .marquee-item 换成 <img src="assets/marquee/xx.jpg"> -->
-<section class="marquee-section">
+<!-- Marquee: 由 /api/gallery 动态渲染（后台「图片库」模块管理，上传即换；空/失败则隐藏） -->
+<section class="marquee-section" id="marqueeSection">
   <div class="marquee-wrap">
-    <div class="marquee-track">
-      <img class="marquee-item" src="assets/marquee/work-01.jpg" alt="">
-      <img class="marquee-item" src="assets/marquee/work-02.jpg" alt="">
-      <img class="marquee-item" src="assets/marquee/work-03.jpg" alt="">
-      <img class="marquee-item" src="assets/marquee/work-04.jpg" alt="">
-      <img class="marquee-item" src="assets/marquee/work-05.jpg" alt="">
-      <img class="marquee-item" src="assets/marquee/work-06.jpg" alt="">
-      <img class="marquee-item" src="assets/marquee/work-07.jpg" alt="">
-      <img class="marquee-item" src="assets/marquee/work-08.jpg" alt="">
-      <img class="marquee-item" src="assets/marquee/work-01.jpg" alt="" aria-hidden="true">
-      <img class="marquee-item" src="assets/marquee/work-02.jpg" alt="" aria-hidden="true">
-      <img class="marquee-item" src="assets/marquee/work-03.jpg" alt="" aria-hidden="true">
-      <img class="marquee-item" src="assets/marquee/work-04.jpg" alt="" aria-hidden="true">
-      <img class="marquee-item" src="assets/marquee/work-05.jpg" alt="" aria-hidden="true">
-      <img class="marquee-item" src="assets/marquee/work-06.jpg" alt="" aria-hidden="true">
-      <img class="marquee-item" src="assets/marquee/work-07.jpg" alt="" aria-hidden="true">
-      <img class="marquee-item" src="assets/marquee/work-08.jpg" alt="" aria-hidden="true">
-    </div>
+    <div class="marquee-track" id="marqueeTrack"></div>
   </div>
 </section>
+<script>
+// FC 横向滚动条：从 /api/gallery 拉取作品图，渲染两遍以配合 CSS 的 -50% 平移实现无缝循环
+(function(){
+  const track = document.getElementById('marqueeTrack');
+  const section = document.getElementById('marqueeSection');
+  if(!track) return;
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  fetch('/api/gallery', { cache: 'no-store' })
+    .then(r => { if(!r.ok) throw new Error('fetch failed'); return r.json(); })
+    .then(list => {
+      const imgs = (Array.isArray(list) ? list : []).filter(g => g.image);
+      if(!imgs.length){ if(section) section.style.display = 'none'; return; }
+      const once  = imgs.map(g => `<img class="marquee-item" src="${esc(g.image)}" alt="${esc(g.title_ja||g.title_cn||'')}">`).join('');
+      const twice = imgs.map(g => `<img class="marquee-item" src="${esc(g.image)}" alt="" aria-hidden="true">`).join('');
+      track.innerHTML = once + twice;
+    })
+    .catch(err => { console.error('marquee load error', err); if(section) section.style.display = 'none'; });
+})();
+</script>
 
 <!-- Section 1: SHUKR 的特点和优势 (3 subsections stacked) -->
 <section style="padding-bottom:40px;">
@@ -474,6 +477,7 @@
   <ul class="footer-links">
     <li><a href="index.html" class="lang-ja">ホーム</a><a href="index.html" class="lang-cn">首页</a></li>
     <li><a href="services.html" class="lang-ja">サービス紹介</a><a href="services.html" class="lang-cn">服务介绍</a></li>
+    <li><a href="gallery.html" class="lang-ja">ギャラリー</a><a href="gallery.html" class="lang-cn">作品</a></li>
     <li><a href="stylists.html" class="lang-ja">スタイリスト</a><a href="stylists.html" class="lang-cn">造型师</a></li>
     <li><a href="about.html" class="lang-ja">会社概要</a><a href="about.html" class="lang-cn">公司概要</a></li>
     <li><a href="column.html" class="lang-ja">コラム</a><a href="column.html" class="lang-cn">专栏</a></li>

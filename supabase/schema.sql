@@ -150,3 +150,23 @@ ALTER TABLE stylists ENABLE ROW LEVEL SECURITY;
 -- 造型师动态后，reservations.stylist 不再限定 yuna/yu，改为应用层（reservations.js）校验
 -- 已建库执行迁移：
 --   ALTER TABLE reservations DROP CONSTRAINT IF EXISTS reservations_stylist_check;
+
+-- 图片库 / 作品表（CMS 后台管理，2026-06 起）
+-- 后台「图片库」模块增删改，驱动全站作品展示：作品页 gallery.html、首页预览、
+-- FC 加盟页滚动条 marquee、造型师页各自作品区。图片复用 article-images 桶（上传时 dir=gallery）
+CREATE TABLE IF NOT EXISTS gallery (
+  id          TEXT PRIMARY KEY,                 -- kebab-case slug，建后不可改
+  sort        INTEGER NOT NULL DEFAULT 0,       -- 展示顺序（升序，小在前）
+  published   BOOLEAN NOT NULL DEFAULT TRUE,    -- 下线 = 不出现在任何前台
+  image       TEXT NOT NULL DEFAULT '',         -- 作品图：Storage 公开 URL 或 assets/ 相对路径
+  title_ja    TEXT DEFAULT '',                  -- 可选图注（日），灯箱/造型师区显示
+  title_cn    TEXT DEFAULT '',                  -- 可选图注（中）
+  category    TEXT DEFAULT '',                  -- 可选：cut/color/perm/treatment/style/other（作品页筛选标签）
+  stylist_id  TEXT DEFAULT '',                  -- 可选：关联 stylists.id（造型师页作品区）；空=不关联某人；不加外键以兼容离职造型师
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_gallery_sort ON gallery (sort ASC);
+
+ALTER TABLE gallery ENABLE ROW LEVEL SECURITY;

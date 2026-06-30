@@ -62,6 +62,7 @@ SYNC_TOKEN=...               # OpenClaw Webhook 验证 token
 - `availability_cache`：Hot Pepper 空档缓存，`data` 字段为 JSONB（格式：`{"2026-04-22": {"<stylistId>": ["10:00","11:00"], ...}}`，键为 `stylists.id`），只取最新一条使用
 - `reservations`：网页预约申请记录，service 枚举值为 `cut/color/color_cut/perm_men/perm_women_long/treatment`，stylist 存 `stylists.id`（无 CHECK 约束，由 `reservations.js` 应用层校验是否为已上线造型师）
 - `stylists`：造型师资料（CMS 后台管理），`id` 为 kebab-case slug，同时作为 `reservations.stylist` 取值与空档数据的造型师键。字段见 `supabase/schema.sql`
+- `gallery`：作品 / 图片库（CMS 后台管理），`id` 为 kebab-case slug，驱动作品页/首页预览/FC 滚动条/造型师页作品区。`stylist_id` 可选关联 `stylists.id`（不加外键）。字段见 `supabase/schema.sql`
 
 ## API 接口速查
 
@@ -75,9 +76,11 @@ SYNC_TOKEN=...               # OpenClaw Webhook 验证 token
 | GET | `/api/articles` | 公开文章列表（仅 published，不含正文） |
 | GET | `/api/articles/:id` | 公开文章详情（含 body_ja/body_cn） |
 | GET | `/api/stylists` | 公开造型师列表（仅 published，按 sort，不含 hotpepper_id） |
+| GET | `/api/gallery` | 公开作品列表（仅 published，按 sort） |
 | POST | `/api/admin/login` | 管理员登录，body: `{password}` → 返回 JWT |
 | GET/POST/PUT/DELETE | `/api/admin/articles[/:id]` | 文章增删改查（需 `Authorization: Bearer <jwt>`） |
 | GET/POST/PUT/DELETE | `/api/admin/stylists[/:id]` | 造型师增删改查（需 `Authorization: Bearer <jwt>`） |
+| GET/POST/PUT/DELETE | `/api/admin/gallery[/:id]` | 作品（图片库）增删改查（需 `Authorization: Bearer <jwt>`） |
 | POST | `/api/admin/upload` | 图片上传到 Supabase Storage（multipart，需鉴权） |
 
 ## 添加专栏文章（CMS 后台，2026-06 起）
@@ -120,3 +123,24 @@ SYNC_TOKEN=...               # OpenClaw Webhook 验证 token
 **前端读取**：`stylists.html` / `index.html` / `reserve.html` 均 `fetch('/api/stylists')` 动态渲染；`reserve.html` 用 `stylistIds()` 合并各造型师空档（API 失败回退 `yuna/yu`）。**顾客评价区**（`stylists.html` 的 `.st-voices-wrap`）本期仍是静态内容，未纳入后台。
 
 **迁移源头**：`scripts/migrate-stylists.js` 一次性把原写死的两位造型师导入（`npm run migrate:stylists`）。
+
+## 图片库 / 作品管理（CMS 后台，2026-06 起）
+
+作品照片统一进 **Supabase `gallery` 表**，后台「图片库」模块增删改后**全站即时同步**，一次上传驱动 4 处展示：
+
+1. **作品页 `gallery.html`**（新增页，已加入导航「ギャラリー / 作品」）——网格 + 点击放大灯箱（上一张/下一张/Esc）+ 按 `category` 生成筛选标签。
+2. **首页预览** `index.html` 的 `#gallery-preview`（取前 8 张）。
+3. **FC 加盟页滚动条** `fc.html` 的 `#marqueeTrack`（渲染两遍配合 CSS `-50%` 平移实现无缝循环，取代原写死的 8 张工作照）。
+4. **造型师页作品区** `stylists.html`——按 `stylist_id` 分组，注入各造型师卡片的 `WORKS` 缩略条。
+
+**日常流程：** `/admin.html` 登录 → 「图片库」→ 新建/编辑（上传作品图、双语图注、分类、关联造型师、排序、上线开关）→ 保存即时生效。后台列表为缩略图网格。
+
+**关键字段**（见 `supabase/schema.sql` 的 `gallery` 表）：
+- `id` — kebab-case slug（主键），建后不可改；`sort` — 展示顺序（升序）；`published` — 下线则全部前台隐藏
+- `image`（必填）— 作品图 Storage 公开 URL 或 `assets/` 相对路径（上传时 `dir=gallery`，复用 `article-images` 桶）
+- `title_ja/cn` — 可选图注（灯箱/造型师区显示）；`category` — 可选（`cut/color/perm/treatment/style/other`，驱动作品页筛选标签）
+- `stylist_id` — 可选关联 `stylists.id`（不加外键），填了才出现在造型师页对应造型师的作品区
+
+**前端读取**：4 处均 `fetch('/api/gallery')`，取不到/为空各自优雅降级（marquee、首页预览整块隐藏）。`/api/gallery` 仅返回 `published`、按 `sort`。
+
+**迁移源头**：`scripts/migrate-gallery.js` 一次性把 `fc.html` 原写死的 8 张 marquee 工作照导入（`npm run migrate:gallery`），迁移后视觉与原状一致。

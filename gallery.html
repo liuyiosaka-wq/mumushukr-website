@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>作品 | ムム株式会社 - SHUKR ヘアサロン</title>
+<meta name="description" content="SHUKR のスタイリストが手がけたヘアスタイル作品集。カット・カラー・パーマなど、技術とセンスの詰まった施術事例をご覧いただけます。">
+<meta property="og:title" content="作品 / ギャラリー | ムム株式会社">
+<meta property="og:description" content="SHUKR 造型师作品集 — 剪发、染发、烫发等施术事例。">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Noto+Serif+JP:wght@200;300;400;500&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/shared.css">
+<style>
+.gal-intro { max-width: 720px; margin: 0 auto 50px; text-align: center; font-family: 'Noto Sans JP', sans-serif; font-size: 14px; line-height: 2.2; color: var(--fg-muted); font-weight: 300; letter-spacing: 0.08em; }
+
+.gal-filters { display: flex; gap: 8px; margin-bottom: 50px; justify-content: center; flex-wrap: wrap; }
+.gal-filter { background: none; border: 1px solid var(--border); padding: 9px 22px; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 12px; letter-spacing: 0.18em; color: var(--fg-muted); cursor: pointer; transition: all 0.2s; line-height: 1.4; text-align: center; }
+.gal-filter .lang-ja, .gal-filter .lang-cn { display: block; font-family: 'Noto Sans JP', sans-serif; font-style: normal; font-size: 11px; letter-spacing: 0.1em; margin-top: 2px; }
+.gal-filter:hover { background: var(--charcoal); border-color: var(--charcoal); color: #fff; }
+.gal-filter.active { background: var(--gold); border-color: var(--gold); color: #fff; }
+
+.gal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.gal-item { position: relative; aspect-ratio: 4/3; background: #e8e4df; cursor: pointer; overflow: hidden; }
+.gal-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.45s ease; }
+.gal-item:hover img { transform: scale(1.05); }
+.gal-cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 16px 14px 12px; background: linear-gradient(transparent, rgba(0,0,0,0.6)); color: #fff; font-family: 'Noto Sans JP', sans-serif; font-size: 12px; letter-spacing: 0.08em; opacity: 0; transition: opacity 0.25s; }
+.gal-item:hover .gal-cap { opacity: 1; }
+
+.gal-empty, .gal-error { text-align: center; padding: 80px 20px; font-family: 'Noto Sans JP', sans-serif; font-size: 14px; color: var(--fg-muted); letter-spacing: 0.1em; display: none; }
+
+/* lightbox */
+.lb-overlay { position: fixed; inset: 0; background: rgba(20,18,16,0.93); display: none; align-items: center; justify-content: center; z-index: 1000; }
+.lb-overlay.open { display: flex; }
+.lb-img { max-width: 90vw; max-height: 82vh; object-fit: contain; box-shadow: 0 12px 48px rgba(0,0,0,0.5); }
+.lb-cap { position: absolute; bottom: 22px; left: 0; right: 0; text-align: center; color: #eee; font-family: 'Noto Sans JP', sans-serif; font-size: 13px; letter-spacing: 0.08em; padding: 0 60px; }
+.lb-btn { position: absolute; background: none; border: none; color: #fff; cursor: pointer; line-height: 1; opacity: 0.8; transition: opacity 0.2s; user-select: none; }
+.lb-btn:hover { opacity: 1; }
+.lb-close { top: 20px; right: 28px; font-size: 36px; }
+.lb-prev { left: 20px; top: 50%; transform: translateY(-50%); font-size: 44px; }
+.lb-next { right: 20px; top: 50%; transform: translateY(-50%); font-size: 44px; }
+
+@media(max-width:900px){
+  .gal-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .gal-filter { padding: 7px 14px; font-size: 11px; }
+  .lb-prev, .lb-next { font-size: 34px; }
+}
+@media(max-width:560px){
+  .gal-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav id="mainNav">
+  <a href="index.html" class="nav-logo"><img src="assets/shukr-logo.png" alt="SHUKR"></a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="index.html" class=" lang-ja">ホーム</a><a href="index.html" class=" lang-cn">首页</a></li>
+      <li><a href="stylists.html" class=" lang-ja">スタイリスト</a><a href="stylists.html" class=" lang-cn">造型师</a></li>
+      <li><a href="services.html" class=" lang-ja">サービス紹介</a><a href="services.html" class=" lang-cn">服务介绍</a></li>
+      <li><a href="gallery.html" class="active lang-ja">ギャラリー</a><a href="gallery.html" class="active lang-cn">作品</a></li>
+      <li><a href="fc.html" class=" lang-ja">FC募集</a><a href="fc.html" class=" lang-cn">加盟招募</a></li>
+      <li><a href="about.html" class=" lang-ja">会社概要</a><a href="about.html" class=" lang-cn">公司概要</a></li>
+      <li><a href="column.html" class=" lang-ja">コラム</a><a href="column.html" class=" lang-cn">专栏</a></li>
+    </ul>
+    <div class="lang-switch">
+      <button class="lang-btn" id="btnZh" onclick="setLang('zh')">中文</button>
+      <button class="lang-btn active" id="btnJa" onclick="setLang('ja')">日本語</button>
+    </div>
+    <div class="nav-divider"></div>
+    <a href="reserve.html" class="btn-reserve lang-ja">予約する</a>
+    <a href="reserve.html" class="btn-reserve lang-cn">立即预约</a>
+  </div>
+</nav>
+
+
+<section class="page-hero">
+  <p class="page-hero-label">GALLERY</p>
+  <h1 class="page-hero-title-en">Gallery</h1>
+  <p class="page-hero-title-jp lang-ja">ギャラリー</p>
+  <p class="page-hero-title-jp lang-cn">作品</p>
+</section>
+
+
+<section>
+  <div class="container">
+
+    <p class="gal-intro lang-ja">
+      SHUKR のスタイリストが手がけた作品をご紹介します。<br>
+      カット・カラー・パーマなど、技術とセンスの詰まった一枚一枚をご覧ください。
+    </p>
+    <p class="gal-intro lang-cn">
+      这里展示 SHUKR 造型师的部分作品。<br>
+      剪发、染发、烫发……每一张都凝聚着技术与审美，欢迎欣赏。
+    </p>
+
+    <!-- 筛选标签（按数据里出现过的分类动态生成） -->
+    <div class="gal-filters" id="galFilters"></div>
+
+    <!-- 作品网格（动态渲染） -->
+    <div class="gal-grid" id="galGrid"></div>
+
+    <p class="gal-empty" id="galEmpty">
+      <span class="lang-ja">作品は準備中です。しばらくお待ちください。</span>
+      <span class="lang-cn">作品正在准备中，敬请期待。</span>
+    </p>
+    <p class="gal-error" id="galError">
+      <span class="lang-ja">作品を読み込めませんでした。時間をおいて再度お試しください。</span>
+      <span class="lang-cn">作品加载失败，请稍后重试。</span>
+    </p>
+
+  </div>
+</section>
+
+
+<!-- 灯箱 -->
+<div class="lb-overlay" id="lightbox">
+  <button class="lb-btn lb-close" id="lbClose" aria-label="关闭">&times;</button>
+  <button class="lb-btn lb-prev" id="lbPrev" aria-label="上一张">&#8249;</button>
+  <img class="lb-img" id="lbImg" src="" alt="">
+  <button class="lb-btn lb-next" id="lbNext" aria-label="下一张">&#8250;</button>
+  <div class="lb-cap" id="lbCap"></div>
+</div>
+
+
+<footer>
+  <div class="footer-logo"><img src="assets/shukr-logo.png" alt="SHUKR"></div>
+  <ul class="footer-links">
+    <li><a href="index.html" class="lang-ja">ホーム</a><a href="index.html" class="lang-cn">首页</a></li>
+    <li><a href="services.html" class="lang-ja">サービス紹介</a><a href="services.html" class="lang-cn">服务介绍</a></li>
+    <li><a href="stylists.html" class="lang-ja">スタイリスト</a><a href="stylists.html" class="lang-cn">造型师</a></li>
+    <li><a href="gallery.html" class="lang-ja">ギャラリー</a><a href="gallery.html" class="lang-cn">作品</a></li>
+    <li><a href="about.html" class="lang-ja">会社概要</a><a href="about.html" class="lang-cn">公司概要</a></li>
+    <li><a href="column.html" class="lang-ja">コラム</a><a href="column.html" class="lang-cn">专栏</a></li>
+    <li><a href="fc.html" class="lang-ja">FC募集</a><a href="fc.html" class="lang-cn">加盟招募</a></li>
+  </ul>
+  <p class="footer-copy">© 2026 ムム株式会社. All rights reserved.</p>
+</footer>
+
+
+<button class="ai-chat-btn" onclick="toggleChat()">
+  <svg viewBox="0 0 24 24" fill="none"><path d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 9H16M8 13H13" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+</button>
+<div class="chat-modal" id="chatModal">
+  <div class="chat-header">
+    <div class="chat-header-dot"></div>
+    <span class="chat-header-title lang-ja">SHUKRアシスタント</span>
+    <span class="chat-header-title lang-cn">SHUKR AI客服</span>
+    <button class="chat-close" onclick="toggleChat()">×</button>
+  </div>
+  <div class="chat-messages" id="chatMessages">
+    <div class="chat-bubble bot lang-ja">こんにちは！ご予約・サービスについてお気軽にご質問ください。</div>
+    <div class="chat-bubble bot lang-cn">您好！有关预约或服务的任何问题请告诉我。</div>
+  </div>
+  <div class="chat-input-row">
+    <input type="text" class="chat-input" id="chatInput" placeholder="メッセージを入力…" onkeydown="if(event.key==='Enter') sendChat()">
+    <input type="text" class="chat-input" id="chatInputCn" placeholder="请输入消息…" style="display:none" onkeydown="if(event.key==='Enter') sendChat()">
+    <button class="chat-send" onclick="sendChat()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</div>
+
+<script src="assets/shared.js"></script>
+<script>
+// 作品库：/api/gallery 数据驱动 + 分类筛选 + 灯箱
+(function(){
+  const grid = document.getElementById('galGrid');
+  const filtersWrap = document.getElementById('galFilters');
+  const emptyEl = document.getElementById('galEmpty');
+  const errorEl = document.getElementById('galError');
+
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+  // 分类标签文案（与后台 GALLERY_CATS 对齐）
+  const CAT_LABELS = {
+    cut:       {en:'CUT',       ja:'カット',         cn:'剪发'},
+    color:     {en:'COLOR',     ja:'カラー',         cn:'染发'},
+    perm:      {en:'PERM',      ja:'パーマ',         cn:'烫发'},
+    treatment: {en:'TREATMENT', ja:'トリートメント', cn:'护理'},
+    style:     {en:'STYLE',     ja:'スタイリング',   cn:'造型'},
+    other:     {en:'OTHER',     ja:'その他',         cn:'其他'},
+  };
+  const CAT_ORDER = ['cut','color','perm','treatment','style','other'];
+
+  let items = [];
+  const lang = () => localStorage.getItem('shukr-lang') || 'ja';
+  const capOf = g => lang() === 'zh' ? (g.title_cn || g.title_ja || '') : (g.title_ja || g.title_cn || '');
+  const applyLang = () => { if (typeof setLang === 'function') setLang(lang()); };
+
+  // ---------- 灯箱 ----------
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lbImg');
+  const lbCap = document.getElementById('lbCap');
+  let curList = [], curIdx = 0;
+
+  function showLb(){ const g = curList[curIdx]; if(!g) return; lbImg.src = g.image; lbImg.alt = capOf(g); lbCap.textContent = capOf(g); }
+  function openLb(list, idx){ curList = list; curIdx = idx; showLb(); lb.classList.add('open'); document.body.style.overflow = 'hidden'; }
+  function closeLb(){ lb.classList.remove('open'); document.body.style.overflow = ''; }
+  function step(d){ if(!curList.length) return; curIdx = (curIdx + d + curList.length) % curList.length; showLb(); }
+
+  document.getElementById('lbClose').onclick = closeLb;
+  document.getElementById('lbPrev').onclick = () => step(-1);
+  document.getElementById('lbNext').onclick = () => step(1);
+  lb.addEventListener('click', e => { if (e.target === lb) closeLb(); });
+  document.addEventListener('keydown', e => {
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLb();
+    else if (e.key === 'ArrowLeft') step(-1);
+    else if (e.key === 'ArrowRight') step(1);
+  });
+
+  // ---------- 网格 ----------
+  function capHtml(g){
+    const ja = g.title_ja || g.title_cn || '';
+    const cn = g.title_cn || g.title_ja || '';
+    if (!ja && !cn) return '';
+    return `<div class="gal-cap"><span class="lang-ja">${esc(ja)}</span><span class="lang-cn">${esc(cn)}</span></div>`;
+  }
+
+  function renderGrid(cat){
+    const list = cat === 'all' ? items : items.filter(g => g.category === cat);
+    if (!list.length){ grid.innerHTML = ''; emptyEl.style.display = 'block'; return; }
+    emptyEl.style.display = 'none';
+    grid.innerHTML = list.map((g, i) => `
+      <div class="gal-item" data-idx="${i}">
+        <img src="${esc(g.image)}" alt="${esc(capOf(g))}" loading="lazy">
+        ${capHtml(g)}
+      </div>`).join('');
+    grid.querySelectorAll('.gal-item').forEach(el => {
+      el.onclick = () => openLb(list, parseInt(el.dataset.idx, 10));
+    });
+    applyLang();
+  }
+
+  function buildFilters(){
+    const cats = [...new Set(items.map(g => g.category).filter(Boolean))];
+    if (!cats.length){ filtersWrap.style.display = 'none'; return; }
+    cats.sort((a, b) => CAT_ORDER.indexOf(a) - CAT_ORDER.indexOf(b));
+    const allBtn = `<button class="gal-filter active" data-cat="all">ALL<span class="lang-ja">全て</span><span class="lang-cn">全部</span></button>`;
+    const catBtns = cats.map(c => {
+      const L = CAT_LABELS[c] || {en: c.toUpperCase(), ja: c, cn: c};
+      return `<button class="gal-filter" data-cat="${esc(c)}">${esc(L.en)}<span class="lang-ja">${esc(L.ja)}</span><span class="lang-cn">${esc(L.cn)}</span></button>`;
+    }).join('');
+    filtersWrap.innerHTML = allBtn + catBtns;
+    filtersWrap.querySelectorAll('.gal-filter').forEach(b => {
+      b.onclick = () => {
+        filtersWrap.querySelectorAll('.gal-filter').forEach(x => x.classList.remove('active'));
+        b.classList.add('active');
+        renderGrid(b.dataset.cat);
+      };
+    });
+  }
+
+  fetch('/api/gallery', { cache: 'no-store' })
+    .then(r => { if (!r.ok) throw new Error('fetch failed'); return r.json(); })
+    .then(list => {
+      items = Array.isArray(list) ? list : [];
+      if (!items.length){ filtersWrap.style.display = 'none'; emptyEl.style.display = 'block'; return; }
+      buildFilters();
+      renderGrid('all');
+    })
+    .catch(err => {
+      console.error('gallery load error', err);
+      filtersWrap.style.display = 'none';
+      grid.style.display = 'none';
+      emptyEl.style.display = 'none';
+      errorEl.style.display = 'block';
+    });
+})();
+</script>
+</body>
+</html>

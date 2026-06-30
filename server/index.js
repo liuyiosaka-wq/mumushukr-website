@@ -17,6 +17,7 @@ app.use('/api/franchise', require('./routes/franchise'));
 app.use('/api/recruit', require('./routes/recruit'));
 app.use('/api/articles', require('./routes/articles'));
 app.use('/api/stylists', require('./routes/stylists'));
+app.use('/api/gallery', require('./routes/gallery'));
 app.use('/api/admin', require('./routes/admin'));
 
 // 兜底：仅对无扩展名（SPA 风格）的路径返回首页；

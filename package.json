@@ -7,7 +7,8 @@
     "start": "node server/index.js",
     "dev": "node --watch server/index.js",
     "migrate:articles": "node scripts/migrate-articles.js",
-    "migrate:stylists": "node scripts/migrate-stylists.js"
+    "migrate:stylists": "node scripts/migrate-stylists.js",
+    "migrate:gallery": "node scripts/migrate-gallery.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.39.0",

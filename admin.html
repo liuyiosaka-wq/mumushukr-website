@@ -71,6 +71,17 @@
   .badge.off{background:#f0f0f0;color:#999}
   .badge.star{background:#fff4e0;color:var(--warn)}
 
+  /* ---------- 图片库网格 ---------- */
+  .img-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:18px}
+  .img-tile{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden;
+            box-shadow:0 1px 3px rgba(0,0,0,.06)}
+  .img-tile .thumb{width:100%;aspect-ratio:4/3;background:#f0ebe0 center/cover no-repeat;
+                   display:flex;align-items:center;justify-content:center;color:#bbb;font-size:13px}
+  .img-tile .body{padding:11px 13px}
+  .img-tile .body strong{font-size:13px}
+  .img-tile .meta{font-size:12px;color:#aaa;margin:7px 0 0;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  .img-tile .actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+
   /* ---------- 表单 ---------- */
   .form-card{background:#fff;border-radius:10px;padding:26px;box-shadow:0 1px 3px rgba(0,0,0,.06);max-width:920px}
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
@@ -136,12 +147,19 @@
     {v:'ec',label:'电商 ec'},{v:'ai',label:'AI ai'},
   ];
   const catLabel = v => (CATS.find(c=>c.v===v)||{}).label || v;
+  // 图片库 / 作品分类（对应作品页筛选标签）
+  const GALLERY_CATS = [
+    {v:'cut',label:'剪发 CUT'},{v:'color',label:'染发 COLOR'},
+    {v:'perm',label:'烫发 PERM'},{v:'treatment',label:'护理 TREATMENT'},
+    {v:'style',label:'造型 STYLE'},{v:'other',label:'其他 OTHER'},
+  ];
+  const galleryCatLabel = v => (GALLERY_CATS.find(c=>c.v===v)||{}).label || v;
 
   // 导航模块：本期仅 articles 可用，其余占位
   const MODULES = [
     {key:'articles', label:'文章管理', ready:true},
     {key:'stylists', label:'造型师',   ready:true},
-    {key:'images',   label:'图片库',   ready:false},
+    {key:'images',   label:'图片库',   ready:true},
     {key:'services', label:'服务价格', ready:false},
     {key:'reservations', label:'预约记录', ready:false},
   ];
@@ -228,6 +246,7 @@
   function renderView(key){
     if (key === 'articles') return renderArticleList();
     if (key === 'stylists') return renderStylistList();
+    if (key === 'images') return renderImageList();
     const m = MODULES.find(x=>x.key===key);
     main.innerHTML = `<div class="placeholder-mod"><div class="big">🚧</div>
       <h2>${m.label}</h2><p>该模块将在后续阶段开放。</p></div>`;
@@ -583,6 +602,153 @@
         await api('/api/admin/stylists', {method:'POST', body:payload});
       }
       toast('已保存'); renderStylistList();
+    }catch(ex){ toast(ex.message,true); }
+  }
+
+  // ================= 图片库 / 作品 =================
+  async function renderImageList(){
+    main.innerHTML = `<div class="page-head"><h2>图片库 / 作品</h2><div class="spacer"></div>
+      <button class="btn btn-primary" id="newImgBtn">+ 新建作品</button></div>
+      <div id="imgListSlot"><div class="empty">加载中…</div></div>`;
+    $('#newImgBtn').addEventListener('click', ()=> renderImageForm(null));
+    try{
+      const list = await api('/api/admin/gallery');
+      const slot = $('#imgListSlot');
+      if(!list.length){ slot.innerHTML = '<div class="empty">还没有作品，点击右上角「新建作品」。</div>'; return; }
+      slot.innerHTML = `<div class="img-grid">${list.map(imgTileHtml).join('')}</div>`;
+      slot.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>renderImageForm(b.dataset.edit));
+      slot.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>delImage(b.dataset.del));
+      slot.querySelectorAll('[data-toggle]').forEach(b=>b.onclick=()=>toggleImagePublish(b.dataset.toggle, b.dataset.pub==='1'));
+    }catch(ex){ toast(ex.message,true); }
+  }
+
+  function imgTileHtml(g){
+    const thumb = g.image
+      ? `<div class="thumb" style="background-image:url('${esc(g.image)}')"></div>`
+      : `<div class="thumb">无图</div>`;
+    const title = g.title_cn || g.title_ja || '';
+    const titleHtml = title ? esc(title) : '<span style="color:#bbb">（无图注）</span>';
+    return `<div class="img-tile">
+      ${thumb}
+      <div class="body">
+        <strong>${titleHtml}</strong>
+        <div class="meta">
+          <span>${esc(g.id)}</span>
+          ${g.category?`<span class="badge cat">${esc(galleryCatLabel(g.category))}</span>`:''}
+          ${g.stylist_id?`<span class="badge cat">@${esc(g.stylist_id)}</span>`:''}
+        </div>
+        <div class="meta">
+          排序 ${esc(String(g.sort))}
+          ${g.published?'<span class="badge on">已上线</span>':'<span class="badge off">下线</span>'}
+        </div>
+        <div class="actions">
+          <button class="btn btn-ghost btn-sm" data-edit="${esc(g.id)}">编辑</button>
+          <button class="btn btn-ghost btn-sm" data-toggle="${esc(g.id)}" data-pub="${g.published?1:0}">${g.published?'下线':'上线'}</button>
+          <button class="btn btn-danger btn-sm" data-del="${esc(g.id)}">删除</button>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  async function toggleImagePublish(id, isPub){
+    try{ await api('/api/admin/gallery/'+id, {method:'PUT', body:{published:!isPub}});
+      toast(isPub?'已下线':'已上线'); renderImageList();
+    }catch(ex){ toast(ex.message,true); }
+  }
+
+  async function delImage(id){
+    if(!confirm('确定删除作品「'+id+'」？此操作不可恢复。')) return;
+    try{ await api('/api/admin/gallery/'+id, {method:'DELETE'});
+      toast('已删除'); renderImageList();
+    }catch(ex){ toast(ex.message,true); }
+  }
+
+  async function renderImageForm(id){
+    const isEdit = !!id;
+    let g = {sort:0, published:true, image:'', title_ja:'', title_cn:'', category:'', stylist_id:''};
+    if(isEdit){
+      try{ g = await api('/api/admin/gallery/'+id); }
+      catch(ex){ toast(ex.message,true); return; }
+    }
+    // 关联造型师下拉数据（取不到不致命）
+    let stylists = [];
+    try{ stylists = await api('/api/admin/stylists'); }catch(_){ stylists = []; }
+    const f = name => esc(g[name]==null?'':g[name]);
+    const catOptions = GALLERY_CATS.map(c=>`<option value="${c.v}" ${g.category===c.v?'selected':''}>${c.label}</option>`).join('');
+    const styOptions = stylists.map(s=>`<option value="${esc(s.id)}" ${g.stylist_id===s.id?'selected':''}>${esc(s.name_cn||s.name_ja||s.id)}（${esc(s.id)}）</option>`).join('');
+    main.innerHTML = `
+    <div class="page-head"><h2>${isEdit?'编辑作品':'新建作品'}</h2></div>
+    <div class="form-card">
+      <div class="grid2">
+        <div class="field">
+          <label>作品 ID</label>
+          <input type="text" id="g_id" value="${f('id')}" ${isEdit?'disabled':''} placeholder="例：work-09">
+          <div class="hint">小写字母/数字/连字符；新建后不可修改</div>
+        </div>
+        <div class="field"><label>展示排序（小在前）</label><input type="text" id="g_sort" value="${f('sort')}" placeholder="1"></div>
+      </div>
+      <div class="field checks">
+        <label><input type="checkbox" id="g_published" ${g.published?'checked':''}> 已上线（取消勾选 = 不在网站显示）</label>
+      </div>
+
+      <div class="section-title">作品图片 *</div>
+      <div class="cover-row">
+        <div class="cover-preview" id="imgPreview" style="width:160px;height:120px;${g.image?`background-image:url('${esc(g.image)}')`:''}"></div>
+        <div style="flex:1">
+          <div class="field" style="margin-bottom:8px"><label>图片 URL</label>
+            <input type="text" id="g_image" value="${f('image')}" placeholder="可直接上传，或粘贴链接"></div>
+          <input type="file" id="imgFile" accept="image/*">
+          <div class="hint">选择图片后自动上传到 Supabase，URL 会填入上方。建议横图（如 4:3）。</div>
+        </div>
+      </div>
+
+      <div class="section-title">图注 / 分类 / 关联（均可留空）</div>
+      <div class="grid2">
+        <div class="field"><label>图注（日文）</label><input type="text" id="g_title_ja" value="${f('title_ja')}" placeholder="例：ハイトーンカラー"></div>
+        <div class="field"><label>图注（中文）</label><input type="text" id="g_title_cn" value="${f('title_cn')}" placeholder="例：高亮染发"></div>
+        <div class="field"><label>分类（作品页筛选标签）</label>
+          <select id="g_category"><option value="">（不分类）</option>${catOptions}</select></div>
+        <div class="field"><label>关联造型师（造型师页作品区）</label>
+          <select id="g_stylist_id"><option value="">（不指定）</option>${styOptions}</select>
+          <div class="hint">指定后，该作品会出现在造型师介绍页对应造型师的作品区</div></div>
+      </div>
+
+      <div class="form-actions">
+        <button class="btn btn-primary" id="saveImgBtn">${isEdit?'保存修改':'创建作品'}</button>
+        <button class="btn btn-ghost" id="cancelImgBtn">取消</button>
+      </div>
+    </div>`;
+
+    $('#cancelImgBtn').onclick = renderImageList;
+    $('#imgFile').onchange = async e=>{
+      const file = e.target.files[0]; if(!file) return;
+      try{
+        toast('图片上传中…');
+        const url = await uploadImage(file, 'gallery');
+        $('#g_image').value = url;
+        $('#imgPreview').style.backgroundImage = `url('${url}')`;
+        toast('图片已上传');
+      }catch(ex){ toast(ex.message,true); }
+    };
+    $('#saveImgBtn').onclick = ()=> saveImage(isEdit, id);
+  }
+
+  async function saveImage(isEdit, id){
+    const val = i => $('#'+i).value.trim();
+    const payload = {
+      sort: val('g_sort'), published: $('#g_published').checked,
+      image: val('g_image'),
+      title_ja: val('g_title_ja'), title_cn: val('g_title_cn'),
+      category: val('g_category'), stylist_id: val('g_stylist_id'),
+    };
+    try{
+      if(isEdit){
+        await api('/api/admin/gallery/'+id, {method:'PUT', body:payload});
+      }else{
+        payload.id = val('g_id');
+        await api('/api/admin/gallery', {method:'POST', body:payload});
+      }
+      toast('已保存'); renderImageList();
     }catch(ex){ toast(ex.message,true); }
   }
 
