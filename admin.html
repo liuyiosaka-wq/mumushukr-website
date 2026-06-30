@@ -58,6 +58,10 @@
   .btn-ghost{background:#fff;border:1px solid var(--border);color:var(--fg)}
   .btn-danger{background:#fff;border:1px solid var(--danger);color:var(--danger)}
   .btn-sm{padding:5px 12px;font-size:13px}
+  .btn[disabled]{opacity:.55;cursor:default}
+  .field label .tr-btn{float:right;padding:2px 10px;font-size:12px;font-weight:500;cursor:pointer}
+  .tr-all{margin-left:auto}
+  .section-title.with-action{display:flex;align-items:center;gap:12px}
 
   table{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden;
         box-shadow:0 1px 3px rgba(0,0,0,.06)}
@@ -196,6 +200,58 @@
   }
 
   function esc(s){ return (s==null?'':String(s)).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+  // ---------- 中→日 自动翻译 ----------
+  async function translateText(text, format){
+    const data = await api('/api/admin/translate', {method:'POST', body:{text, format}});
+    return data.translated || '';
+  }
+  // 把 srcId（中文）翻成日文写入 dstId；btn 显示加载态
+  async function translateInto(srcId, dstId, format, btn){
+    const src = $('#'+srcId), dst = $('#'+dstId);
+    if(!src || !dst) return false;
+    const text = (src.value||'').trim();
+    if(!text){ toast('请先填写中文内容', true); return false; }
+    const old = btn ? btn.textContent : '';
+    if(btn){ btn.disabled = true; btn.textContent = '翻译中…'; }
+    try{
+      dst.value = await translateText(text, format);
+      return true;
+    }catch(ex){ toast(ex.message || '翻译失败', true); return false; }
+    finally{ if(btn){ btn.disabled = false; btn.textContent = old; } }
+  }
+  // 一键翻译：只补「日文空 & 中文非空」的字段，不覆盖已手改的日文
+  async function translateAllEmpty(pairs, btn){
+    const todo = pairs.filter(p=>{
+      const src = $('#'+p.src), dst = $('#'+p.dst);
+      return src && dst && (src.value||'').trim() && !(dst.value||'').trim();
+    });
+    if(!todo.length){ toast('没有需要翻译的空白日文字段'); return; }
+    const old = btn ? btn.textContent : '';
+    if(btn){ btn.disabled = true; }
+    let done = 0;
+    try{
+      await Promise.all(todo.map(async p=>{
+        const src = $('#'+p.src), dst = $('#'+p.dst);
+        try{
+          dst.value = await translateText((src.value||'').trim(), p.fmt||'text');
+        }catch(ex){ /* 单个失败不阻断其它 */ }
+        done++;
+        if(btn){ btn.textContent = `翻译中… ${done}/${todo.length}`; }
+      }));
+      toast(`已翻译 ${done} 个字段，请检查微调`);
+    }finally{ if(btn){ btn.disabled = false; btn.textContent = old; } }
+  }
+  // 渲染表单后调用：为 [data-tr-src] 按钮统一绑定单字段翻译
+  function bindTranslateButtons(){
+    main.querySelectorAll('[data-tr-src]').forEach(btn=>{
+      btn.onclick = ()=> translateInto(btn.dataset.trSrc, btn.dataset.trDst, btn.dataset.trFmt || 'text', btn);
+    });
+  }
+  // 小翻译按钮（放在日文字段 label 内，右对齐）
+  function trBtn(srcId, dstId, fmt){
+    return `<button type="button" class="btn btn-ghost btn-sm tr-btn" data-tr-src="${srcId}" data-tr-dst="${dstId}" data-tr-fmt="${fmt||'text'}">中→日</button>`;
+  }
 
   // ---------- 登录 / 登出 ----------
   $('#loginForm').addEventListener('submit', async e=>{
@@ -342,22 +398,27 @@
         </div>
       </div>
 
-      <div class="section-title">标题 / 摘要 / 作者（中日双语）</div>
+      <div class="section-title with-action">标题 / 摘要 / 作者（中日双语）
+        <button type="button" class="btn btn-ghost btn-sm tr-all" id="trAllArticle">🤖 一键翻译（中→日）</button>
+      </div>
       <div class="grid2">
-        <div class="field"><label>标题（日文）*</label><input type="text" id="f_title_ja" value="${f('title_ja')}"></div>
+        <div class="field"><label>标题（日文）*${trBtn('f_title_cn','f_title_ja','text')}</label><input type="text" id="f_title_ja" value="${f('title_ja')}"></div>
         <div class="field"><label>标题（中文）*</label><input type="text" id="f_title_cn" value="${f('title_cn')}"></div>
-        <div class="field"><label>摘要（日文）</label><textarea id="f_excerpt_ja" style="min-height:70px">${f('excerpt_ja')}</textarea></div>
+        <div class="field"><label>摘要（日文）${trBtn('f_excerpt_cn','f_excerpt_ja','text')}</label><textarea id="f_excerpt_ja" style="min-height:70px">${f('excerpt_ja')}</textarea></div>
         <div class="field"><label>摘要（中文）</label><textarea id="f_excerpt_cn" style="min-height:70px">${f('excerpt_cn')}</textarea></div>
-        <div class="field"><label>作者（日文）</label><input type="text" id="f_author_ja" value="${f('author_ja')}"></div>
+        <div class="field"><label>作者（日文）${trBtn('f_author_cn','f_author_ja','text')}</label><input type="text" id="f_author_ja" value="${f('author_ja')}"></div>
         <div class="field"><label>作者（中文）</label><input type="text" id="f_author_cn" value="${f('author_cn')}"></div>
-        <div class="field"><label>部门标签（日文，选填）</label><input type="text" id="f_dept_ja" value="${f('dept_ja')}"></div>
+        <div class="field"><label>部门标签（日文，选填）${trBtn('f_dept_cn','f_dept_ja','text')}</label><input type="text" id="f_dept_ja" value="${f('dept_ja')}"></div>
         <div class="field"><label>部门标签（中文，选填）</label><input type="text" id="f_dept_cn" value="${f('dept_cn')}"></div>
       </div>
 
       <div class="section-title">正文（Markdown，中日双语）</div>
       <div class="field">
         <label>正文（日文）</label>
-        <div class="body-toolbar"><button type="button" class="btn btn-ghost btn-sm" data-img="f_body_ja">📷 上传并插入图片</button></div>
+        <div class="body-toolbar">
+          <button type="button" class="btn btn-ghost btn-sm" data-img="f_body_ja">📷 上传并插入图片</button>
+          <button type="button" class="btn btn-ghost btn-sm" data-tr-src="f_body_cn" data-tr-dst="f_body_ja" data-tr-fmt="markdown">中→日 翻译正文</button>
+        </div>
         <textarea id="f_body_ja">${f('body_ja')}</textarea>
       </div>
       <div class="field">
@@ -404,6 +465,16 @@
         picker.click();
       };
     });
+
+    // 翻译按钮（字段 + 一键）
+    bindTranslateButtons();
+    $('#trAllArticle').onclick = (e)=> translateAllEmpty([
+      {src:'f_title_cn',   dst:'f_title_ja',   fmt:'text'},
+      {src:'f_excerpt_cn', dst:'f_excerpt_ja', fmt:'text'},
+      {src:'f_author_cn',  dst:'f_author_ja',  fmt:'text'},
+      {src:'f_dept_cn',    dst:'f_dept_ja',    fmt:'text'},
+      {src:'f_body_cn',    dst:'f_body_ja',    fmt:'markdown'},
+    ], e.currentTarget);
 
     $('#saveBtn').onclick = ()=> saveArticle(isEdit, id);
   }
@@ -532,26 +603,28 @@
         </div>
       </div>
 
-      <div class="section-title">姓名 / 职位（中日英）</div>
+      <div class="section-title with-action">姓名 / 职位（中日英）
+        <button type="button" class="btn btn-ghost btn-sm tr-all" id="trAllStylist">🤖 一键翻译（中→日）</button>
+      </div>
       <div class="grid2">
-        <div class="field"><label>姓名（日文）*</label><input type="text" id="s_name_ja" value="${f('name_ja')}"></div>
+        <div class="field"><label>姓名（日文）*${trBtn('s_name_cn','s_name_ja','text')}</label><input type="text" id="s_name_ja" value="${f('name_ja')}"></div>
         <div class="field"><label>姓名（中文）*</label><input type="text" id="s_name_cn" value="${f('name_cn')}"></div>
         <div class="field"><label>姓名（英文 / 罗马字）</label><input type="text" id="s_name_en" value="${f('name_en')}" placeholder="Katuki Yuna"></div>
         <div class="field"><label>职位（英文，大写）</label><input type="text" id="s_role_en" value="${f('role_en')}" placeholder="ART DIRECTOR"></div>
-        <div class="field"><label>职位（日文）</label><input type="text" id="s_role_ja" value="${f('role_ja')}" placeholder="店長"></div>
+        <div class="field"><label>职位（日文）${trBtn('s_role_cn','s_role_ja','text')}</label><input type="text" id="s_role_ja" value="${f('role_ja')}" placeholder="店長"></div>
         <div class="field"><label>职位（中文）</label><input type="text" id="s_role_cn" value="${f('role_cn')}" placeholder="店长"></div>
       </div>
 
       <div class="section-title">擅长 / 语言 / 标签</div>
       <div class="grid2">
-        <div class="field"><label>擅长（日文）</label><input type="text" id="s_specialty_ja" value="${f('specialty_ja')}" placeholder="オールマイティーな技術 / 幅広い客層対応"></div>
+        <div class="field"><label>擅长（日文）${trBtn('s_specialty_cn','s_specialty_ja','text')}</label><input type="text" id="s_specialty_ja" value="${f('specialty_ja')}" placeholder="オールマイティーな技術 / 幅広い客層対応"></div>
         <div class="field"><label>擅长（中文）</label><input type="text" id="s_specialty_cn" value="${f('specialty_cn')}" placeholder="多元全能技术 / 全客层对应"></div>
         <div class="field"><label>语言</label><input type="text" id="s_languages" value="${f('languages')}" placeholder="日本語 / 中文"></div>
         <div class="field"><label>技能标签（逗号分隔）</label><input type="text" id="s_tags" value="${f('tags')}" placeholder="CUT,COLOR,ALL-ROUND"></div>
       </div>
 
       <div class="section-title">简介（中日双语）</div>
-      <div class="field"><label>简介（日文）</label><textarea id="s_bio_ja" style="min-height:130px">${f('bio_ja')}</textarea><div class="hint">直接换行即可，前台按段落显示</div></div>
+      <div class="field"><label>简介（日文）${trBtn('s_bio_cn','s_bio_ja','text')}</label><textarea id="s_bio_ja" style="min-height:130px">${f('bio_ja')}</textarea><div class="hint">直接换行即可，前台按段落显示</div></div>
       <div class="field"><label>简介（中文）</label><textarea id="s_bio_cn" style="min-height:130px">${f('bio_cn')}</textarea></div>
 
       <div class="section-title">预约 / 空档（高级，可留空）</div>
@@ -579,6 +652,15 @@
         toast('照片已上传');
       }catch(ex){ toast(ex.message,true); }
     };
+    // 翻译按钮（字段 + 一键）
+    bindTranslateButtons();
+    $('#trAllStylist').onclick = (e)=> translateAllEmpty([
+      {src:'s_name_cn',      dst:'s_name_ja',      fmt:'text'},
+      {src:'s_role_cn',      dst:'s_role_ja',      fmt:'text'},
+      {src:'s_specialty_cn', dst:'s_specialty_ja', fmt:'text'},
+      {src:'s_bio_cn',       dst:'s_bio_ja',       fmt:'text'},
+    ], e.currentTarget);
+
     $('#saveStyBtn').onclick = ()=> saveStylist(isEdit, id);
   }
 
@@ -704,7 +786,7 @@
 
       <div class="section-title">图注 / 分类 / 关联（均可留空）</div>
       <div class="grid2">
-        <div class="field"><label>图注（日文）</label><input type="text" id="g_title_ja" value="${f('title_ja')}" placeholder="例：ハイトーンカラー"></div>
+        <div class="field"><label>图注（日文）${trBtn('g_title_cn','g_title_ja','text')}</label><input type="text" id="g_title_ja" value="${f('title_ja')}" placeholder="例：ハイトーンカラー"></div>
         <div class="field"><label>图注（中文）</label><input type="text" id="g_title_cn" value="${f('title_cn')}" placeholder="例：高亮染发"></div>
         <div class="field"><label>分类（作品页筛选标签）</label>
           <select id="g_category"><option value="">（不分类）</option>${catOptions}</select></div>
@@ -730,6 +812,7 @@
         toast('图片已上传');
       }catch(ex){ toast(ex.message,true); }
     };
+    bindTranslateButtons(); // 图注「中→日」按钮
     $('#saveImgBtn').onclick = ()=> saveImage(isEdit, id);
   }
 

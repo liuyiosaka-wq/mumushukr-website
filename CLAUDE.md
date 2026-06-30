@@ -82,6 +82,7 @@ SYNC_TOKEN=...               # OpenClaw Webhook 验证 token
 | GET/POST/PUT/DELETE | `/api/admin/stylists[/:id]` | 造型师增删改查（需 `Authorization: Bearer <jwt>`） |
 | GET/POST/PUT/DELETE | `/api/admin/gallery[/:id]` | 作品（图片库）增删改查（需 `Authorization: Bearer <jwt>`） |
 | POST | `/api/admin/upload` | 图片上传到 Supabase Storage（multipart，需鉴权） |
+| POST | `/api/admin/translate` | 中→日 自动翻译，body: `{text, format}`（`text`/`markdown`）→ `{translated}`（需鉴权，复用千问） |
 
 ## 添加专栏文章（CMS 后台，2026-06 起）
 
@@ -93,6 +94,8 @@ SYNC_TOKEN=...               # OpenClaw Webhook 验证 token
 3. 保存即时生效——`column.html` / `article.html` 直接读 `/api/articles`，无需重新部署
 
 `column.html` 渲染列表、`article.html` 用 marked.js 渲染 `body_ja/body_cn`（markdown）。「草稿」（`published=false`）不出现在公开页。
+
+**中→日 自动翻译（编辑表单，2026-06 起）**：文章/造型师/图片库三个表单的每个日文字段旁有「中→日」小按钮（单独翻译该字段、可覆盖重译），文章与造型师表单顶部还有「🤖 一键翻译（中→日）」按钮（只补**空着**的日文字段，不覆盖已手改的）。店主只需填中文，点按钮即由 `POST /api/admin/translate` 调千问翻成日文，再人工微调。后端在 `server/translator.js`（`translateToJa(text,{format})`，`format='markdown'` 时保留正文 Markdown/图片/链接），复用现有 `QWEN_API_KEY`，**不影响 AI 客服**。
 
 **数据库字段**（见 `supabase/schema.sql` 的 `articles` 表）：
 - `id` — kebab-case slug（主键），对应 `article.html?id=<id>`，建后不可改

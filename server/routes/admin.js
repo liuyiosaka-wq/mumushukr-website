@@ -5,6 +5,7 @@ const multer = require('multer');
 const router = express.Router();
 const supabase = require('../db');
 const { requireAdmin } = require('../middleware/auth');
+const { translateToJa } = require('../translator');
 
 const JWT_SECRET = process.env.ADMIN_JWT_SECRET;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
@@ -146,6 +147,22 @@ router.use(requireAdmin);
 
 // GET /api/admin/me —— 校验 token 是否仍有效（前端进页面时探活）
 router.get('/me', (req, res) => res.json({ ok: true, role: req.admin?.role || 'admin' }));
+
+// ============ 中→日 自动翻译（编辑表单用） ============
+// POST /api/admin/translate  body: { text, format }  ->  { translated }
+router.post('/translate', async (req, res) => {
+  const text = (req.body?.text || '').toString();
+  const format = req.body?.format === 'markdown' ? 'markdown' : 'text';
+  if (!text.trim()) return res.status(400).json({ error: 'text_required', message: '请先填写中文内容' });
+  if (text.length > 8000) return res.status(400).json({ error: 'too_long', message: '文本过长，请分段翻译' });
+  try {
+    const translated = await translateToJa(text, { format });
+    res.json({ translated });
+  } catch (err) {
+    console.error('翻译失败:', err.message);
+    res.status(502).json({ error: 'translation_error', message: '翻译失败，请稍后重试' });
+  }
+});
 
 // ============ 文章 CRUD ============
 
