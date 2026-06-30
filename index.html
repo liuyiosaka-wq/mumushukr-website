@@ -269,6 +269,8 @@
   </div>
 </section>
 
+<!-- 首页「精选作品」预览：暂时隐藏（店主作品照片数量不足，待补充后取消注释即可恢复；作品页 gallery.html 及导航入口仍正常） -->
+<!--
 <style>
   #homeGalleryGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:50px}
   #homeGalleryGrid a{position:relative;aspect-ratio:4/3;background:#e8e4df center/cover no-repeat;overflow:hidden;display:block;transition:transform .35s}
@@ -281,7 +283,6 @@
     <h2 class="section-title lang-ja">作品ギャラリー</h2>
     <h2 class="section-title lang-cn">精选作品</h2>
     <div class="section-divider"></div>
-    <!-- 精选作品预览：由 /api/gallery 动态渲染（前 8 张，按后台排序） -->
     <div id="homeGalleryGrid"></div>
     <div class="more-link-wrap">
       <a href="gallery.html" class="more-link lang-ja">作品一覧を見る →</a>
@@ -289,6 +290,7 @@
     </div>
   </div>
 </section>
+-->
 
 <section id="services-preview">
   <div class="container">
@@ -441,6 +443,8 @@
     .catch(()=>{});
 })();
 </script>
+<!-- 首页「精选作品」预览脚本：随上方 section 一并暂时隐藏，恢复时取消注释即可 -->
+<!--
 <script>
 // 首页精选作品预览：从 /api/gallery 拉取前 8 张（链到作品页）
 (function(){
@@ -459,5 +463,6 @@
     .catch(()=>{ const sec = document.getElementById('gallery-preview'); if(sec) sec.style.display = 'none'; });
 })();
 </script>
+-->
 </body>
 </html>
