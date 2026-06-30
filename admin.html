@@ -177,7 +177,7 @@
     return data;
   }
 
-  function esc(s){ return (s||'').replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+  function esc(s){ return (s==null?'':String(s)).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 
   // ---------- 登录 / 登出 ----------
   $('#loginForm').addEventListener('submit', async e=>{
