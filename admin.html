@@ -402,17 +402,22 @@
         <button type="button" class="btn btn-ghost btn-sm tr-all" id="trAllArticle">🤖 一键翻译（中→日）</button>
       </div>
       <div class="grid2">
-        <div class="field"><label>标题（日文）*${trBtn('f_title_cn','f_title_ja','text')}</label><input type="text" id="f_title_ja" value="${f('title_ja')}"></div>
         <div class="field"><label>标题（中文）*</label><input type="text" id="f_title_cn" value="${f('title_cn')}"></div>
-        <div class="field"><label>摘要（日文）${trBtn('f_excerpt_cn','f_excerpt_ja','text')}</label><textarea id="f_excerpt_ja" style="min-height:70px">${f('excerpt_ja')}</textarea></div>
+        <div class="field"><label>标题（日文）*${trBtn('f_title_cn','f_title_ja','text')}</label><input type="text" id="f_title_ja" value="${f('title_ja')}"></div>
         <div class="field"><label>摘要（中文）</label><textarea id="f_excerpt_cn" style="min-height:70px">${f('excerpt_cn')}</textarea></div>
-        <div class="field"><label>作者（日文）${trBtn('f_author_cn','f_author_ja','text')}</label><input type="text" id="f_author_ja" value="${f('author_ja')}"></div>
+        <div class="field"><label>摘要（日文）${trBtn('f_excerpt_cn','f_excerpt_ja','text')}</label><textarea id="f_excerpt_ja" style="min-height:70px">${f('excerpt_ja')}</textarea></div>
         <div class="field"><label>作者（中文）</label><input type="text" id="f_author_cn" value="${f('author_cn')}"></div>
-        <div class="field"><label>部门标签（日文，选填）${trBtn('f_dept_cn','f_dept_ja','text')}</label><input type="text" id="f_dept_ja" value="${f('dept_ja')}"></div>
+        <div class="field"><label>作者（日文）${trBtn('f_author_cn','f_author_ja','text')}</label><input type="text" id="f_author_ja" value="${f('author_ja')}"></div>
         <div class="field"><label>部门标签（中文，选填）</label><input type="text" id="f_dept_cn" value="${f('dept_cn')}"></div>
+        <div class="field"><label>部门标签（日文，选填）${trBtn('f_dept_cn','f_dept_ja','text')}</label><input type="text" id="f_dept_ja" value="${f('dept_ja')}"></div>
       </div>
 
       <div class="section-title">正文（Markdown，中日双语）</div>
+      <div class="field">
+        <label>正文（中文）</label>
+        <div class="body-toolbar"><button type="button" class="btn btn-ghost btn-sm" data-img="f_body_cn">📷 上传并插入图片</button></div>
+        <textarea id="f_body_cn">${f('body_cn')}</textarea>
+      </div>
       <div class="field">
         <label>正文（日文）</label>
         <div class="body-toolbar">
@@ -420,11 +425,6 @@
           <button type="button" class="btn btn-ghost btn-sm" data-tr-src="f_body_cn" data-tr-dst="f_body_ja" data-tr-fmt="markdown">中→日 翻译正文</button>
         </div>
         <textarea id="f_body_ja">${f('body_ja')}</textarea>
-      </div>
-      <div class="field">
-        <label>正文（中文）</label>
-        <div class="body-toolbar"><button type="button" class="btn btn-ghost btn-sm" data-img="f_body_cn">📷 上传并插入图片</button></div>
-        <textarea id="f_body_cn">${f('body_cn')}</textarea>
       </div>
 
       <div class="form-actions">
@@ -607,25 +607,25 @@
         <button type="button" class="btn btn-ghost btn-sm tr-all" id="trAllStylist">🤖 一键翻译（中→日）</button>
       </div>
       <div class="grid2">
-        <div class="field"><label>姓名（日文）*${trBtn('s_name_cn','s_name_ja','text')}</label><input type="text" id="s_name_ja" value="${f('name_ja')}"></div>
         <div class="field"><label>姓名（中文）*</label><input type="text" id="s_name_cn" value="${f('name_cn')}"></div>
+        <div class="field"><label>姓名（日文）*${trBtn('s_name_cn','s_name_ja','text')}</label><input type="text" id="s_name_ja" value="${f('name_ja')}"></div>
         <div class="field"><label>姓名（英文 / 罗马字）</label><input type="text" id="s_name_en" value="${f('name_en')}" placeholder="Katuki Yuna"></div>
         <div class="field"><label>职位（英文，大写）</label><input type="text" id="s_role_en" value="${f('role_en')}" placeholder="ART DIRECTOR"></div>
-        <div class="field"><label>职位（日文）${trBtn('s_role_cn','s_role_ja','text')}</label><input type="text" id="s_role_ja" value="${f('role_ja')}" placeholder="店長"></div>
         <div class="field"><label>职位（中文）</label><input type="text" id="s_role_cn" value="${f('role_cn')}" placeholder="店长"></div>
+        <div class="field"><label>职位（日文）${trBtn('s_role_cn','s_role_ja','text')}</label><input type="text" id="s_role_ja" value="${f('role_ja')}" placeholder="店長"></div>
       </div>
 
       <div class="section-title">擅长 / 语言 / 标签</div>
       <div class="grid2">
-        <div class="field"><label>擅长（日文）${trBtn('s_specialty_cn','s_specialty_ja','text')}</label><input type="text" id="s_specialty_ja" value="${f('specialty_ja')}" placeholder="オールマイティーな技術 / 幅広い客層対応"></div>
         <div class="field"><label>擅长（中文）</label><input type="text" id="s_specialty_cn" value="${f('specialty_cn')}" placeholder="多元全能技术 / 全客层对应"></div>
+        <div class="field"><label>擅长（日文）${trBtn('s_specialty_cn','s_specialty_ja','text')}</label><input type="text" id="s_specialty_ja" value="${f('specialty_ja')}" placeholder="オールマイティーな技術 / 幅広い客層対応"></div>
         <div class="field"><label>语言</label><input type="text" id="s_languages" value="${f('languages')}" placeholder="日本語 / 中文"></div>
         <div class="field"><label>技能标签（逗号分隔）</label><input type="text" id="s_tags" value="${f('tags')}" placeholder="CUT,COLOR,ALL-ROUND"></div>
       </div>
 
       <div class="section-title">简介（中日双语）</div>
-      <div class="field"><label>简介（日文）${trBtn('s_bio_cn','s_bio_ja','text')}</label><textarea id="s_bio_ja" style="min-height:130px">${f('bio_ja')}</textarea><div class="hint">直接换行即可，前台按段落显示</div></div>
       <div class="field"><label>简介（中文）</label><textarea id="s_bio_cn" style="min-height:130px">${f('bio_cn')}</textarea></div>
+      <div class="field"><label>简介（日文）${trBtn('s_bio_cn','s_bio_ja','text')}</label><textarea id="s_bio_ja" style="min-height:130px">${f('bio_ja')}</textarea><div class="hint">直接换行即可，前台按段落显示</div></div>
 
       <div class="section-title">预约 / 空档（高级，可留空）</div>
       <div class="grid2">
@@ -786,8 +786,8 @@
 
       <div class="section-title">图注 / 分类 / 关联（均可留空）</div>
       <div class="grid2">
-        <div class="field"><label>图注（日文）${trBtn('g_title_cn','g_title_ja','text')}</label><input type="text" id="g_title_ja" value="${f('title_ja')}" placeholder="例：ハイトーンカラー"></div>
         <div class="field"><label>图注（中文）</label><input type="text" id="g_title_cn" value="${f('title_cn')}" placeholder="例：高亮染发"></div>
+        <div class="field"><label>图注（日文）${trBtn('g_title_cn','g_title_ja','text')}</label><input type="text" id="g_title_ja" value="${f('title_ja')}" placeholder="例：ハイトーンカラー"></div>
         <div class="field"><label>分类（作品页筛选标签）</label>
           <select id="g_category"><option value="">（不分类）</option>${catOptions}</select></div>
         <div class="field"><label>关联造型师（造型师页作品区）</label>
