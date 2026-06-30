@@ -5,7 +5,7 @@
 //   node scripts/scrape.js
 //
 // 环境变量：
-//   SYNC_URL    - 目标 sync 接口完整 URL，如 https://shukr.vercel.app/api/availability/sync
+//   SYNC_URL    - 目标 sync 接口完整 URL，如 https://mumushukr.com/api/availability/sync
 //   SYNC_TOKEN  - 已有的鉴权 token（与服务端 .env 相同）
 //
 // 行为：抓取失败时直接退出，不动 Supabase（保留旧数据，避免清空）
