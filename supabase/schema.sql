@@ -79,3 +79,39 @@ CREATE INDEX IF NOT EXISTS idx_recruit_submissions_created_at
 
 CREATE INDEX IF NOT EXISTS idx_recruit_submissions_kind
   ON recruit_submissions (kind);
+
+-- 专栏文章表（CMS 后台管理）
+-- 替代原 assets/articles.json + articles/*.md 文件方案，由 admin 后台增删改
+-- body_ja / body_cn 存正文 markdown；cover 存 Storage 公开 URL 或相对路径
+-- 配图上传到 Storage 桶 article-images（public）
+CREATE TABLE IF NOT EXISTS articles (
+  id          TEXT PRIMARY KEY,                 -- kebab-case slug，对应 article.html?id=
+  category    TEXT NOT NULL CHECK (category IN ('trend','care','brand','company','ec','ai')),
+  featured    BOOLEAN NOT NULL DEFAULT FALSE,   -- 整表仅一条 true（应用层保证）
+  published   BOOLEAN NOT NULL DEFAULT TRUE,    -- 草稿 / 上线开关
+  date        DATE NOT NULL,
+  cover       TEXT DEFAULT '',
+  url         TEXT DEFAULT '',                  -- 非空 = 外链，点击新窗口打开
+  title_ja    TEXT NOT NULL,
+  title_cn    TEXT NOT NULL,
+  excerpt_ja  TEXT,
+  excerpt_cn  TEXT,
+  author_ja   TEXT,
+  author_cn   TEXT,
+  dept_ja     TEXT,
+  dept_cn     TEXT,
+  body_ja     TEXT DEFAULT '',
+  body_cn     TEXT DEFAULT '',
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_articles_date ON articles (date DESC);
+
+ALTER TABLE articles ENABLE ROW LEVEL SECURITY;
+
+-- Storage 桶（在 SQL Editor 执行一次；服务端 service_role 上传，公开读取）
+-- INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+-- VALUES ('article-images', 'article-images', true, 10485760,
+--   ARRAY['image/jpeg','image/png','image/webp','image/gif'])
+-- ON CONFLICT (id) DO NOTHING;

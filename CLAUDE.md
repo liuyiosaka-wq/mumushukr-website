@@ -70,33 +70,32 @@ SYNC_TOKEN=...               # OpenClaw Webhook 验证 token
 | GET | `/api/availability` | 查询当前空档缓存 |
 | POST | `/api/availability/sync` | OpenClaw webhook，body: `{token, data}` |
 | POST | `/api/reservations` | 提交预约表单 |
+| GET | `/api/articles` | 公开文章列表（仅 published，不含正文） |
+| GET | `/api/articles/:id` | 公开文章详情（含 body_ja/body_cn） |
+| POST | `/api/admin/login` | 管理员登录，body: `{password}` → 返回 JWT |
+| GET/POST/PUT/DELETE | `/api/admin/articles[/:id]` | 文章增删改查（需 `Authorization: Bearer <jwt>`） |
+| POST | `/api/admin/upload` | 图片上传到 Supabase Storage（multipart，需鉴权） |
 
-## 添加专栏文章
+## 添加专栏文章（CMS 后台，2026-06 起）
 
-`column.html` 由 `assets/articles.json` 数据驱动渲染列表，`article.html` 是通用详情页（marked.js 渲染 markdown）。
+文章已迁移到 **Supabase `articles` 表**，通过后台页面增删改，**不再需要改文件 + git push**（Vercel 生产文件系统只读，这是关键原因）。
 
-**完整流程（含正文 + 配图）：**
+**日常流程：**
+1. 浏览器打开 `/admin.html`，用 `ADMIN_PASSWORD` 登录
+2. 「文章管理」→ 新建/编辑，填双语字段、上传封面与正文插图（自动传到 Storage 桶 `article-images`，返回公开 URL）
+3. 保存即时生效——`column.html` / `article.html` 直接读 `/api/articles`，无需重新部署
 
-1. 想清楚一个 `id`（kebab-case 英文 slug，如 `shukr-1st-anniversary-lottery`），后续所有文件名都用它
-2. 封面图放 `assets/articles/<id>.jpg`
-3. 正文配图放 `assets/articles/<id>/img-1.jpg` 等（每篇一个子文件夹避免撞名）
-4. 写两个正文 markdown：
-   - `articles/<id>.ja.md`（日文）
-   - `articles/<id>.cn.md`（中文）
-   - md 里插图用 `![说明](assets/articles/<id>/img-1.jpg)`
-5. 在 `assets/articles.json` 数组末尾追加一条记录（复制现有任意条改字段）
-6. `git add . && git commit -m "post: <title>" && git push`
+`column.html` 渲染列表、`article.html` 用 marked.js 渲染 `body_ja/body_cn`（markdown）。「草稿」（`published=false`）不出现在公开页。
 
-完成后 `column.html` 的列表卡片自动出现，点击跳转 `article.html?id=<id>` 显示完整正文。
+**数据库字段**（见 `supabase/schema.sql` 的 `articles` 表）：
+- `id` — kebab-case slug（主键），对应 `article.html?id=<id>`，建后不可改
+- `category` — `trend / care / brand / company / ec / ai`，与 column 页 `data-cat` 对齐
+- `featured` — 整表仅一条 `true`（后台保存时应用层自动清零其余，见 `admin.js` 的 `clearOtherFeatured`）
+- `published` — 上线/草稿开关
+- `date` — `YYYY-MM-DD`，渲染转成 `2026.04.18`
+- `cover` / `url` — 封面 URL（可为 Storage URL 或 `assets/` 相对路径）/ 外链（非空则卡片跳外链）
+- `title_ja/cn`（必填）、`excerpt_ja/cn`、`author_ja/cn`、`dept_ja/cn`、`body_ja/cn`（正文 markdown）
 
-**只想做卡片不写正文**：跳过第 3-4 步，详情页会显示卡片摘要 + "正文准备中" 提示。如果文章本身托管在外部（Hot Pepper、SNS 等），把 `url` 字段填外部链接即可，卡片点击会新窗口打开外链。
+**旧文件**：`assets/articles.json` 与 `articles/*.md` 是迁移源头（`scripts/migrate-articles.js` 一次性导入），保留作存档，前端已不再读取。
 
-**字段说明：**
-- `id` — kebab-case slug，对应 markdown 文件名 + 详情页 URL key
-- `category` — `trend / care / brand / company / ec / ai`，必须与 column 页筛选按钮 `data-cat` 对齐
-- `featured` — boolean。整个数组只允许一条为 `true`（钉到顶部大卡）
-- `date` — `YYYY-MM-DD`，渲染时自动转成 `2026.04.18`，未 featured 的文章按日期降序排
-- `cover` — 封面图相对路径；留空则显示条纹占位 + 大写分类标签
-- `title_ja/cn`、`excerpt_ja/cn`、`author_ja/cn` — 必填双语
-- `dept_ja/cn` — 选填部门标签（如「电商事业部」），两边都为空时不渲染
-- `url` — **空** = 跳本站 `article.html?id=<id>`；**填 http(s)://...** = 新窗口打开外链
+**后台架构**：`admin.html`（单页，标准「顶栏+侧边导航+主内容」布局，`renderView` 调度，便于扩展更多模块）→ `server/routes/admin.js`（JWT 鉴权 + CRUD + 上传）+ `server/middleware/auth.js`（验签）+ `server/routes/articles.js`（公开只读）。登录密钥见 `.env` 的 `ADMIN_PASSWORD` / `ADMIN_JWT_SECRET`。

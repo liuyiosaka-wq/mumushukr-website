@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>SHUKR 管理后台</title>
+<style>
+  :root{
+    --bg:#f8f5f0; --fg:#1c1c1c; --fg-muted:#666; --gold:#C4974F;
+    --charcoal:#1c1c1c; --border:#e0dbd4; --sidebar-w:220px; --top-h:60px;
+    --ok:#2e7d32; --warn:#b26a00; --danger:#c62828;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,"Hiragino Sans","Microsoft YaHei",sans-serif;
+       background:var(--bg);color:var(--fg);font-size:14px;line-height:1.6}
+  button{font-family:inherit;cursor:pointer}
+  a{color:var(--gold)}
+
+  /* ---------- 登录页 ---------- */
+  #loginView{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+             background:var(--charcoal);z-index:100}
+  .login-card{background:#fff;padding:40px;border-radius:10px;width:340px;max-width:90vw;
+              box-shadow:0 20px 60px rgba(0,0,0,.3)}
+  .login-card h1{font-size:20px;margin:0 0 4px;letter-spacing:2px}
+  .login-card p{margin:0 0 24px;color:var(--fg-muted);font-size:13px}
+  .login-card input{width:100%;padding:12px;border:1px solid var(--border);border-radius:6px;font-size:15px}
+  .login-card button{width:100%;margin-top:16px;padding:12px;border:none;border-radius:6px;
+                     background:var(--gold);color:#fff;font-size:15px;letter-spacing:1px}
+  .login-err{color:var(--danger);font-size:13px;margin-top:12px;min-height:18px}
+
+  /* ---------- 框架 ---------- */
+  #app{display:none}
+  .topbar{position:fixed;top:0;left:0;right:0;height:var(--top-h);background:var(--charcoal);
+          color:#fff;display:flex;align-items:center;padding:0 24px;z-index:20}
+  .topbar .brand{font-weight:700;letter-spacing:3px}
+  .topbar .brand span{color:var(--gold)}
+  .topbar .spacer{flex:1}
+  .topbar .who{color:#bbb;font-size:13px;margin-right:16px}
+  .topbar button{background:transparent;color:#fff;border:1px solid #555;padding:6px 14px;border-radius:6px;font-size:13px}
+
+  .sidebar{position:fixed;top:var(--top-h);bottom:0;left:0;width:var(--sidebar-w);
+           background:#fff;border-right:1px solid var(--border);padding:16px 0;overflow:auto}
+  .nav-item{display:flex;align-items:center;gap:10px;padding:12px 24px;color:var(--fg);
+            cursor:pointer;border-left:3px solid transparent;font-size:14px}
+  .nav-item:hover{background:var(--bg)}
+  .nav-item.active{border-left-color:var(--gold);background:var(--bg);color:var(--gold);font-weight:600}
+  .nav-item .soon{margin-left:auto;font-size:10px;color:#aaa;border:1px solid #ddd;border-radius:10px;padding:1px 7px}
+
+  .main{margin-left:var(--sidebar-w);margin-top:var(--top-h);padding:28px 32px;min-height:calc(100vh - var(--top-h))}
+
+  /* ---------- 通用控件 ---------- */
+  .page-head{display:flex;align-items:center;margin-bottom:20px}
+  .page-head h2{margin:0;font-size:20px;letter-spacing:1px}
+  .page-head .spacer{flex:1}
+  .btn{border:none;border-radius:6px;padding:9px 18px;font-size:14px}
+  .btn-primary{background:var(--gold);color:#fff}
+  .btn-ghost{background:#fff;border:1px solid var(--border);color:var(--fg)}
+  .btn-danger{background:#fff;border:1px solid var(--danger);color:var(--danger)}
+  .btn-sm{padding:5px 12px;font-size:13px}
+
+  table{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden;
+        box-shadow:0 1px 3px rgba(0,0,0,.06)}
+  th,td{text-align:left;padding:13px 16px;border-bottom:1px solid var(--border);vertical-align:middle}
+  th{background:#faf8f4;font-size:12px;color:var(--fg-muted);letter-spacing:1px;font-weight:600}
+  tr:last-child td{border-bottom:none}
+  td .actions{display:flex;gap:8px;flex-wrap:wrap}
+  .badge{display:inline-block;font-size:11px;padding:2px 9px;border-radius:10px;letter-spacing:.5px}
+  .badge.cat{background:var(--gold-light,#f1e7d6);color:#8a6520;background:#f3ead9;color:#8a6520}
+  .badge.on{background:#e6f4ea;color:var(--ok)}
+  .badge.off{background:#f0f0f0;color:#999}
+  .badge.star{background:#fff4e0;color:var(--warn)}
+
+  /* ---------- 表单 ---------- */
+  .form-card{background:#fff;border-radius:10px;padding:26px;box-shadow:0 1px 3px rgba(0,0,0,.06);max-width:920px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .field{margin-bottom:18px}
+  .field label{display:block;font-size:13px;color:var(--fg-muted);margin-bottom:6px;font-weight:600}
+  .field input[type=text],.field input[type=date],.field select,.field textarea{
+    width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-size:14px;font-family:inherit}
+  .field textarea{resize:vertical;min-height:160px;line-height:1.7}
+  .field .hint{font-size:12px;color:#aaa;margin-top:4px}
+  .checks{display:flex;gap:24px;align-items:center}
+  .checks label{display:flex;align-items:center;gap:7px;font-size:14px;color:var(--fg);cursor:pointer}
+  .section-title{font-size:13px;letter-spacing:2px;color:var(--gold);font-weight:700;
+                 margin:26px 0 14px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+  .cover-row{display:flex;gap:16px;align-items:flex-start}
+  .cover-preview{width:140px;height:90px;border:1px dashed var(--border);border-radius:6px;
+                 background:#faf8f4 center/cover no-repeat;flex-shrink:0}
+  .form-actions{display:flex;gap:12px;margin-top:26px;padding-top:20px;border-top:1px solid var(--border)}
+  .body-toolbar{display:flex;gap:8px;margin-bottom:6px}
+
+  .toast{position:fixed;bottom:24px;right:24px;background:var(--charcoal);color:#fff;padding:13px 22px;
+         border-radius:8px;font-size:14px;z-index:50;opacity:0;transform:translateY(10px);
+         transition:.25s;pointer-events:none;max-width:360px}
+  .toast.show{opacity:1;transform:translateY(0)}
+  .toast.err{background:var(--danger)}
+  .empty{padding:60px;text-align:center;color:#aaa;background:#fff;border-radius:10px}
+  .placeholder-mod{padding:80px 40px;text-align:center;color:#aaa;background:#fff;border-radius:10px}
+  .placeholder-mod .big{font-size:48px;margin-bottom:12px}
+</style>
+</head>
+<body>
+
+<!-- 登录 -->
+<div id="loginView">
+  <form class="login-card" id="loginForm">
+    <h1>SHUKR<span style="color:var(--gold)"> 管理后台</span></h1>
+    <p>请输入管理员密码登录</p>
+    <input type="password" id="pwd" placeholder="密码" autocomplete="current-password" autofocus>
+    <button type="submit">登 录</button>
+    <div class="login-err" id="loginErr"></div>
+  </form>
+</div>
+
+<!-- 主框架 -->
+<div id="app">
+  <div class="topbar">
+    <div class="brand">SHUKR<span> · CMS</span></div>
+    <div class="spacer"></div>
+    <div class="who">管理员</div>
+    <button id="logoutBtn">登出</button>
+  </div>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="main" id="main"></main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  const TOKEN_KEY = 'shukr-admin-token';
+  const CATS = [
+    {v:'trend',label:'潮流 trend'},{v:'care',label:'护理 care'},
+    {v:'brand',label:'品牌 brand'},{v:'company',label:'公司 company'},
+    {v:'ec',label:'电商 ec'},{v:'ai',label:'AI ai'},
+  ];
+  const catLabel = v => (CATS.find(c=>c.v===v)||{}).label || v;
+
+  // 导航模块：本期仅 articles 可用，其余占位
+  const MODULES = [
+    {key:'articles', label:'文章管理', ready:true},
+    {key:'images',   label:'图片库',   ready:false},
+    {key:'services', label:'服务价格', ready:false},
+    {key:'stylists', label:'造型师',   ready:false},
+    {key:'reservations', label:'预约记录', ready:false},
+  ];
+
+  let token = localStorage.getItem(TOKEN_KEY) || '';
+  let currentModule = 'articles';
+  let lastBodyEl = null; // 记录最后聚焦的正文 textarea，供插图插入
+
+  const $ = sel => document.querySelector(sel);
+  const loginView = $('#loginView'), app = $('#app'), main = $('#main');
+
+  // ---------- toast ----------
+  let toastTimer;
+  function toast(msg, isErr){
+    const t = $('#toast'); t.textContent = msg;
+    t.className = 'toast show' + (isErr ? ' err' : '');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(()=>{ t.className = 'toast'; }, 2800);
+  }
+
+  // ---------- API helper ----------
+  async function api(path, {method='GET', body, isForm=false}={}){
+    const headers = {};
+    if (token) headers['Authorization'] = 'Bearer ' + token;
+    if (!isForm && body !== undefined) headers['Content-Type'] = 'application/json';
+    const res = await fetch(path, {
+      method, headers,
+      body: body === undefined ? undefined : (isForm ? body : JSON.stringify(body)),
+    });
+    if (res.status === 401){ doLogout(); throw new Error('登录已失效'); }
+    const data = await res.json().catch(()=>({}));
+    if (!res.ok) throw new Error(data.message || '请求失败');
+    return data;
+  }
+
+  function esc(s){ return (s||'').replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+  // ---------- 登录 / 登出 ----------
+  $('#loginForm').addEventListener('submit', async e=>{
+    e.preventDefault();
+    const err = $('#loginErr'); err.textContent='';
+    try{
+      const data = await fetch('/api/admin/login', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ password: $('#pwd').value })
+      }).then(r=>r.json().then(d=>({ok:r.ok,d})));
+      if(!data.ok) throw new Error(data.d.message || '登录失败');
+      token = data.d.token;
+      localStorage.setItem(TOKEN_KEY, token);
+      enterApp();
+    }catch(ex){ err.textContent = ex.message; }
+  });
+
+  $('#logoutBtn').addEventListener('click', doLogout);
+  function doLogout(){
+    token=''; localStorage.removeItem(TOKEN_KEY);
+    app.style.display='none'; loginView.style.display='flex'; $('#pwd').value='';
+  }
+
+  // ---------- 进入后台 ----------
+  function enterApp(){
+    loginView.style.display='none'; app.style.display='block';
+    renderSidebar();
+    selectModule('articles');
+  }
+
+  function renderSidebar(){
+    $('#sidebar').innerHTML = MODULES.map(m=>`
+      <div class="nav-item${m.key===currentModule?' active':''}" data-mod="${m.key}">
+        <span>${m.label}</span>${m.ready?'':'<span class="soon">敬请期待</span>'}
+      </div>`).join('');
+    $('#sidebar').querySelectorAll('.nav-item').forEach(el=>{
+      el.addEventListener('click', ()=> selectModule(el.dataset.mod));
+    });
+  }
+
+  function selectModule(key){
+    currentModule = key;
+    renderSidebar();
+    renderView(key);
+  }
+
+  // ---------- 视图调度（新增模块只需在此加分支） ----------
+  function renderView(key){
+    if (key === 'articles') return renderArticleList();
+    const m = MODULES.find(x=>x.key===key);
+    main.innerHTML = `<div class="placeholder-mod"><div class="big">🚧</div>
+      <h2>${m.label}</h2><p>该模块将在后续阶段开放。</p></div>`;
+  }
+
+  // ================= 文章管理 =================
+  async function renderArticleList(){
+    main.innerHTML = `<div class="page-head"><h2>文章管理</h2><div class="spacer"></div>
+      <button class="btn btn-primary" id="newBtn">+ 新建文章</button></div>
+      <div id="listSlot"><div class="empty">加载中…</div></div>`;
+    $('#newBtn').addEventListener('click', ()=> renderArticleForm(null));
+    try{
+      const list = await api('/api/admin/articles');
+      const slot = $('#listSlot');
+      if(!list.length){ slot.innerHTML = '<div class="empty">还没有文章，点击右上角「新建文章」。</div>'; return; }
+      slot.innerHTML = `<table><thead><tr>
+        <th>标题</th><th>分类</th><th>日期</th><th>状态</th><th style="width:230px">操作</th>
+        </tr></thead><tbody>${list.map(rowHtml).join('')}</tbody></table>`;
+      slot.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>renderArticleForm(b.dataset.edit));
+      slot.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>delArticle(b.dataset.del));
+      slot.querySelectorAll('[data-toggle]').forEach(b=>b.onclick=()=>togglePublish(b.dataset.toggle, b.dataset.pub==='1'));
+    }catch(ex){ toast(ex.message,true); }
+  }
+
+  function rowHtml(a){
+    return `<tr>
+      <td><strong>${esc(a.title_cn||a.title_ja)}</strong><br>
+          <span style="color:#aaa;font-size:12px">${esc(a.id)}</span>
+          ${a.featured?'<span class="badge star">置顶</span>':''}</td>
+      <td><span class="badge cat">${esc(catLabel(a.category))}</span></td>
+      <td>${esc(a.date)}</td>
+      <td>${a.published?'<span class="badge on">已上线</span>':'<span class="badge off">草稿</span>'}</td>
+      <td><div class="actions">
+        <button class="btn btn-ghost btn-sm" data-edit="${esc(a.id)}">编辑</button>
+        <button class="btn btn-ghost btn-sm" data-toggle="${esc(a.id)}" data-pub="${a.published?1:0}">
+          ${a.published?'下线':'上线'}</button>
+        <button class="btn btn-danger btn-sm" data-del="${esc(a.id)}">删除</button>
+      </div></td></tr>`;
+  }
+
+  async function togglePublish(id, isPub){
+    try{ await api('/api/admin/articles/'+id, {method:'PUT', body:{published:!isPub}});
+      toast(isPub?'已下线':'已上线'); renderArticleList();
+    }catch(ex){ toast(ex.message,true); }
+  }
+
+  async function delArticle(id){
+    if(!confirm('确定删除文章「'+id+'」？此操作不可恢复。')) return;
+    try{ await api('/api/admin/articles/'+id, {method:'DELETE'});
+      toast('已删除'); renderArticleList();
+    }catch(ex){ toast(ex.message,true); }
+  }
+
+  // ---------- 新建 / 编辑表单 ----------
+  async function renderArticleForm(id){
+    const isEdit = !!id;
+    let a = {category:'care', published:true, featured:false, date:'', url:'', cover:'',
+             title_ja:'',title_cn:'',excerpt_ja:'',excerpt_cn:'',author_ja:'',author_cn:'',
+             dept_ja:'',dept_cn:'',body_ja:'',body_cn:''};
+    if(isEdit){
+      try{ a = await api('/api/admin/articles/'+id); }
+      catch(ex){ toast(ex.message,true); return; }
+    }
+    const f = name => esc(a[name]==null?'':a[name]);
+    main.innerHTML = `
+    <div class="page-head"><h2>${isEdit?'编辑文章':'新建文章'}</h2></div>
+    <div class="form-card">
+      <div class="grid2">
+        <div class="field">
+          <label>文章 ID（URL slug）</label>
+          <input type="text" id="f_id" value="${f('id')}" ${isEdit?'disabled':''} placeholder="例：summer-cool-shampoo">
+          <div class="hint">小写字母/数字/连字符；新建后不可修改</div>
+        </div>
+        <div class="field"><label>分类</label>
+          <select id="f_category">${CATS.map(c=>`<option value="${c.v}" ${a.category===c.v?'selected':''}>${c.label}</option>`).join('')}</select>
+        </div>
+        <div class="field"><label>发布日期</label><input type="date" id="f_date" value="${f('date')}"></div>
+        <div class="field"><label>外部链接 URL（选填，填了点击卡片跳外链）</label><input type="text" id="f_url" value="${f('url')}" placeholder="留空 = 跳本站详情页"></div>
+      </div>
+      <div class="field checks">
+        <label><input type="checkbox" id="f_published" ${a.published?'checked':''}> 已上线（取消勾选 = 草稿）</label>
+        <label><input type="checkbox" id="f_featured" ${a.featured?'checked':''}> 设为置顶大卡（全站仅一篇）</label>
+      </div>
+
+      <div class="section-title">封面图</div>
+      <div class="cover-row">
+        <div class="cover-preview" id="coverPreview" style="${a.cover?`background-image:url('${esc(a.cover)}')`:''}"></div>
+        <div style="flex:1">
+          <div class="field" style="margin-bottom:8px"><label>封面 URL</label>
+            <input type="text" id="f_cover" value="${f('cover')}" placeholder="可直接上传，或粘贴链接"></div>
+          <input type="file" id="coverFile" accept="image/*">
+          <div class="hint">选择图片后自动上传到 Supabase，URL 会填入上方。</div>
+        </div>
+      </div>
+
+      <div class="section-title">标题 / 摘要 / 作者（中日双语）</div>
+      <div class="grid2">
+        <div class="field"><label>标题（日文）*</label><input type="text" id="f_title_ja" value="${f('title_ja')}"></div>
+        <div class="field"><label>标题（中文）*</label><input type="text" id="f_title_cn" value="${f('title_cn')}"></div>
+        <div class="field"><label>摘要（日文）</label><textarea id="f_excerpt_ja" style="min-height:70px">${f('excerpt_ja')}</textarea></div>
+        <div class="field"><label>摘要（中文）</label><textarea id="f_excerpt_cn" style="min-height:70px">${f('excerpt_cn')}</textarea></div>
+        <div class="field"><label>作者（日文）</label><input type="text" id="f_author_ja" value="${f('author_ja')}"></div>
+        <div class="field"><label>作者（中文）</label><input type="text" id="f_author_cn" value="${f('author_cn')}"></div>
+        <div class="field"><label>部门标签（日文，选填）</label><input type="text" id="f_dept_ja" value="${f('dept_ja')}"></div>
+        <div class="field"><label>部门标签（中文，选填）</label><input type="text" id="f_dept_cn" value="${f('dept_cn')}"></div>
+      </div>
+
+      <div class="section-title">正文（Markdown，中日双语）</div>
+      <div class="field">
+        <label>正文（日文）</label>
+        <div class="body-toolbar"><button type="button" class="btn btn-ghost btn-sm" data-img="f_body_ja">📷 上传并插入图片</button></div>
+        <textarea id="f_body_ja">${f('body_ja')}</textarea>
+      </div>
+      <div class="field">
+        <label>正文（中文）</label>
+        <div class="body-toolbar"><button type="button" class="btn btn-ghost btn-sm" data-img="f_body_cn">📷 上传并插入图片</button></div>
+        <textarea id="f_body_cn">${f('body_cn')}</textarea>
+      </div>
+
+      <div class="form-actions">
+        <button class="btn btn-primary" id="saveBtn">${isEdit?'保存修改':'创建文章'}</button>
+        <button class="btn btn-ghost" id="cancelBtn">取消</button>
+      </div>
+    </div>`;
+
+    $('#cancelBtn').onclick = renderArticleList;
+
+    // 封面上传
+    $('#coverFile').onchange = async e=>{
+      const file = e.target.files[0]; if(!file) return;
+      try{
+        toast('封面上传中…');
+        const url = await uploadImage(file, $('#f_id').value || 'covers');
+        $('#f_cover').value = url;
+        $('#coverPreview').style.backgroundImage = `url('${url}')`;
+        toast('封面已上传');
+      }catch(ex){ toast(ex.message,true); }
+    };
+
+    // 正文插图：上传后在对应 textarea 光标处插入 markdown
+    main.querySelectorAll('[data-img]').forEach(btn=>{
+      btn.onclick = ()=>{
+        const target = $('#'+btn.dataset.img);
+        const picker = document.createElement('input');
+        picker.type='file'; picker.accept='image/*';
+        picker.onchange = async ()=>{
+          const file = picker.files[0]; if(!file) return;
+          try{
+            toast('图片上传中…');
+            const url = await uploadImage(file, $('#f_id').value || 'body');
+            insertAtCursor(target, `\n![](${url})\n`);
+            toast('已插入图片');
+          }catch(ex){ toast(ex.message,true); }
+        };
+        picker.click();
+      };
+    });
+
+    $('#saveBtn').onclick = ()=> saveArticle(isEdit, id);
+  }
+
+  function insertAtCursor(el, text){
+    const s = el.selectionStart ?? el.value.length, e = el.selectionEnd ?? el.value.length;
+    el.value = el.value.slice(0,s) + text + el.value.slice(e);
+    el.focus(); el.selectionStart = el.selectionEnd = s + text.length;
+  }
+
+  async function uploadImage(file, dir){
+    const fd = new FormData();
+    fd.append('file', file);
+    fd.append('dir', (dir||'misc'));
+    const data = await api('/api/admin/upload', {method:'POST', body:fd, isForm:true});
+    return data.url;
+  }
+
+  async function saveArticle(isEdit, id){
+    const val = i => $('#'+i).value.trim();
+    const payload = {
+      category:val('f_category'), date:val('f_date'), url:val('f_url'), cover:val('f_cover'),
+      published:$('#f_published').checked, featured:$('#f_featured').checked,
+      title_ja:val('f_title_ja'), title_cn:val('f_title_cn'),
+      excerpt_ja:val('f_excerpt_ja'), excerpt_cn:val('f_excerpt_cn'),
+      author_ja:val('f_author_ja'), author_cn:val('f_author_cn'),
+      dept_ja:val('f_dept_ja'), dept_cn:val('f_dept_cn'),
+      body_ja:$('#f_body_ja').value, body_cn:$('#f_body_cn').value,
+    };
+    try{
+      if(isEdit){
+        await api('/api/admin/articles/'+id, {method:'PUT', body:payload});
+      }else{
+        payload.id = val('f_id');
+        await api('/api/admin/articles', {method:'POST', body:payload});
+      }
+      toast('已保存'); renderArticleList();
+    }catch(ex){ toast(ex.message,true); }
+  }
+
+  // ---------- 启动：有 token 则探活，否则显示登录 ----------
+  (async function init(){
+    if(!token){ loginView.style.display='flex'; return; }
+    try{ await api('/api/admin/me'); enterApp(); }
+    catch(_){ doLogout(); }
+  })();
+})();
+</script>
+</body>
+</html>

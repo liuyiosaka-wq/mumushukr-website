@@ -169,20 +169,10 @@
 
   function fmtDate(d) { return (d || '').replace(/-/g, '.'); }
 
-  async function fetchText(path) {
-    const r = await fetch(path, { cache: 'no-store' });
-    if (!r.ok) return '';
-    const text = await r.text();
-    // 防御：如果服务器误把 HTML（如首页兜底）当成 .md 返回，丢弃
-    if (/^\s*<(!doctype|html|head|body)\b/i.test(text)) return '';
-    return text;
-  }
-
-  fetch('assets/articles.json', { cache: 'no-store' })
-    .then(r => r.json())
-    .then(async list => {
-      const a = list.find(x => x.id === id);
-      if (!a) { showError(); return; }
+  fetch('/api/articles/' + encodeURIComponent(id), { cache: 'no-store' })
+    .then(r => { if (!r.ok) throw new Error('not found'); return r.json(); })
+    .then(async a => {
+      if (!a || !a.id) { showError(); return; }
 
       // 标题/meta
       document.getElementById('docTitle').textContent = `${a.title_ja} | ムム株式会社`;
@@ -207,11 +197,9 @@
         cover.innerHTML = '<div class="art-cover-stripe"></div>';
       }
 
-      // 正文：并行拉取中日 markdown
-      const [mdJa, mdCn] = await Promise.all([
-        fetchText(`articles/${id}.ja.md`),
-        fetchText(`articles/${id}.cn.md`),
-      ]);
+      // 正文：直接来自 DB 的 markdown 字段
+      const mdJa = a.body_ja || '';
+      const mdCn = a.body_cn || '';
 
       const fallbackJa = `<p>${a.excerpt_ja || ''}</p><p style="color:#999;font-size:13px;">※ 本文準備中です。</p>`;
       const fallbackCn = `<p>${a.excerpt_cn || ''}</p><p style="color:#999;font-size:13px;">※ 正文准备中。</p>`;
